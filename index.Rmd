@@ -1,0 +1,82 @@
+---
+title: "2019 PSU R Bootcamp"
+---
+
+![](https://www.r-project.org/Rlogo.png)
+
+Welcome to the R Bootcamp for PSU researchers. 
+The goal of this two-day workshop is to provide a broad introduction to the use of the R programming language for social science research. 
+Participants are **not** expected to have prior experience with R or another programming language. 
+The scope and schedule of the course is provided [here](https://psu-psychology.github.io/r-bootcamp-2019/schedule.html).
+
+To register, complete [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7).
+
+## Instructors
+
+Sy-Miin Chow, Ph.D.</br>
+Professor of Human Development and Family Studies</br>
+symiin AT-SIGN psu PERIOD edu</br>
+[http://modslab.org/](http://modslab.org/)</br>
+
+Rick O. Gilmore, Ph.D.</br>
+Professor of Psychology</br>
+rogilmore AT-SIGN psu PERIOD edu</br>
+[http://gilmore-lab.github.io](http://gilmore-lab.github.io)</br>
+
+Michael Hallquist, Ph.D.</br>
+Assistant Professor of Psychology</br>
+michael.hallquist AT-SIGN psu PERIOD edu</br>
+[http://dependpsu.weebly.com/](http://dependpsu.weebly.com/)</br>
+
+Nilam Ram, Ph.D.</br>
+Professor of Human Development and Family Studies</br>
+nilam PERIOD ram AT-SIGN psu PERIOD edu</br>
+
+## Student Coaches
+
+TBA
+
+## Meeting times and location
+
+Thursday, August 22, 2019, 9:00 am - 4:30 pm</br>
+Friday, August 23, 2018, 9:00 am - 4:30 pm</br>
+210 & 211 [Keller Building](http://www.psumap.com/#Keller)</br>
+
+[Detailed schedule](schedule.html)</br>
+
+## About this course
+
+R is one of the core languages in data science. It's free and fun to use. 
+Join us in learning how to use this tool to accelerate your research.
+
+The course *heavily* emphasizes the use of the [RStudio](http://rstudio.com) integrated development environment (IDE).
+You don't have to use RStudio to use R, but we think that doing so makes R an even more powerful tool.
+Plus, RStudio has fully featured free versions, including some available entirely in your web browser.
+
+### What to bring
+
+We ask that you bring an open mind, enthusiasm, and a willingness to ask questions even if they seem trivial.
+The classrooms we have chosen for the bootcamp have computers with Windows 10, so you do *not* need to bring your own computer.
+We will use a standard computing environment set up for your use that takes advantage of the RStudio Server program.
+This means that RStudio will run in your web browser.
+
+You *will* need to make sure that you can log on to the PSU system using your Penn State Access ID (e.g., rog1).
+
+### Laptop users
+
+If you want to bring your own laptop, please be advised that we will have limited ability to support the installation and use of R on your personal machines.
+You will want to take the steps outlined [here](before-the-bootcamp.html) to ensure that your computer can connect to the Penn State wifi.
+If you want to run RStudio in a web browser, then follow [these](rstudio-tlt.html) instructions.
+Or (or in addition) you may want to install [R](https://cran.r-project.org) and [RStudio](https://www.rstudio.com/products/rstudio/download/).
+
+### Course materials
+
+Here is the [GitHub repo](https://github.com/psu-psychology/r-bootcamp-2019/) where the course files are shared.
+
+To download all course materials, you can clone the entire Github repository using the command ```git clone https://github.com/psu-psychology/r-bootcamp-2019.git```.
+You can also use Github Desktop to clone the repository using a more user-friendly interface: <https://desktop.github.com>
+If Git is unfamiliar to you, you can obtain a zip archive of the current version of all files here: <https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip>
+
+## Acknowledgments
+
+We thank the [Department of Psychology](http://psych.la.psu.edu), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science initiative for support.

@@ -1,0 +1,67 @@
+---
+title: "2019 R Bootcamp Schedule"
+output:
+  html_document:
+    toc:  TRUE
+    toc_depth: 2
+    toc_float: TRUE
+    number_section: FALSE
+---
+
+## Interested in attending?
+
+Please register by completing [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7).
+We will ask for confirmation at a later date.
+Please note that space is limited.
+Please don't sign-up if you you are uncertain about whether you will be able to attend.
+
+## Pre-bootcamp survey
+
+Whether or not you want to attend the bootcamp, you are welcome to complete this anonymous (and light-hearted) [survey](https://forms.gle/YyTNDDayMNRWibBy5).
+We'll use the data drawn from it to show how one can use R and R Markdown to create reproducible data processing workflows and even full manuscripts.
+
+## Thu, Aug 22, 2019, 9:00 am - 4:30 pm
+
+### 210 Keller
+
+| [Plenary](talks/bootcamp-day-1-intro.html), 210 Keller |
+|-------------------------------------------------------|
+| 09:00 am • Welcome, introductions, & housekeeping     |
+| 09:15 am • Why We R Here                              |
+| 09:45 am • Break                                      |
+
+| [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
+|----------------------------------------------------------|-|----------------------------------------------------------|
+| 10:00 am - 12:00pm • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00am - 12:00 pm • [Introduction to exploratory factor analysis](talks/IntroBasicEFA_2018_0815.html) (Nilam Ram)  |
+
+| Lunch, Moore 1st floor lobby                         |
+|-------------------------------------------------------|
+| 12:00 pm • Lunch, Moore Building Lobby|
+
+| [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
+|----------------------------------------------------------|-|----------------------------------------------------------|
+| 1:00 pm - 1:45 pm • Data indexing and subsetting (Rick Gilmore) |  | 1:00 pm - 2:00 pm • Introduction to structural equation modeling in lavaan (Michael Hallquist)               |
+| 1:45 pm - 3:00 pm • Packages, scripts, & functions (Rick Gilmore)| | 02:00 pm - 3:00 pm • [Parallel computing](talks/parallel_r.html), batch processing, and big data in R (Michael Hallquist)                |
+| 03:00 - 03:15 pm • Break                  |  | 03:00 pm - 03:15pm • Break                 |
+
+| Plenary, 210 Keller                                     |
+|-------------------------------------------------------|
+| 03:15 pm • [R-eproducible Science with R](talks/r-eproducible-science.html) (Rick Gilmore) |
+| 04:30 pm • End                                            |
+
+## Fri, Aug 23, 2019, 9:00 am - 4:30 pm
+### 210 Keller
+
+| Plenary                                               |
+|-------------------------------------------------------|
+| 09:00 am • Welcome back and Q&A |
+| 09:15 am • Data wrangling & pipelines (primarily tidyverse)
+| 10:30 am • Break |
+| 10:45 am • [Data visualization](talks/ggplot2_tutorial_vallorani.html) (primarily ggplot2) |
+| 12:00 pm • Lunch (pizza & drinks thanks to [SLEIC](http://imaging.psu.edu)), Moore Building Lobby 
+| 01:00 pm • Core programming skills: loops, apply functions, writing functions |
+| 02:00 pm • Best practices in R: script management, versioning, modular coding |
+| 02:45 pm • Break |
+| 03:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data | 
+| 04:30 pm • End |
+| 04:45 pm • Optional Happy Hour @ Whisker's |

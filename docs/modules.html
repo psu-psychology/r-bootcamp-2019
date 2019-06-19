@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R bootcamp topics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 52px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h2 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h3 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h4 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h5 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h6 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Bootcamp</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="before-the-bootcamp.html">Getting ready</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li>
+  <a href="modules.html">Topics</a>
+</li>
+<li>
+  <a href="resources.html">Other resources</a>
+</li>
+<li>
+  <a href="site-info.html">Site info</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R bootcamp topics</h1>
+
+</div>
+
+
+<div id="slow-r-basic-introduction-to-r" class="section level2">
+<h2>Slow R: basic introduction to R</h2>
+<p>This module provides a deliberately slow introduction to R that assumes that you have little or no experience with R and have not worked extensively with other programming languages.</p>
+<!-- - [Slow R](talks/slow-r.html) (Rick Gilmore) | [Download](talks/slow-r.Rmd) -->
+<p><em>Other resources</em></p>
+<ul>
+<li>Kelly Black R tutorial: <a href="https://www.cyclismo.org/tutorial/R/index.html" class="uri">https://www.cyclismo.org/tutorial/R/index.html</a></li>
+<li>James LeBreton <a href="https://psu-psychology.github.io/r-bootcamp/talks/R-Workshop-James.nb.html">R introduction</a> (from R Bootcamp 2017) | <a href="https://github.com/psu-psychology/r-bootcamp/blob/master/docs/talks/R-Workshop-James.Rmd">Rmd source</a></li>
+</ul>
+</div>
+<div id="r-eproducible-science" class="section level2">
+<h2>R-eproducible Science</h2>
+<!-- - [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd). -->
+<!-- - [R Markdown example output](talks/bootcamp-survey.html) using our own survey data | [Download Rmd](talks/bootcamp-survey.Rmd) -->
+<!-- - Complete APA format manuscript based on `papaja` using the survey data, both in the original R Markdown format [Download Rmd](talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version and the final [PDF](talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version. -->
+<hr />
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data wrangling</h2>
+<!-- - [tidyr and dplyr walkthrough](talks/dplyr_walkthrough_2018.html) (Michael Hallquist) | [Rmd](talks/dplyr_walkthrough_2018.Rmd) -->
+<div id="joining-datasets" class="section level3">
+<h3>Joining datasets</h3>
+<!-- - dplyr [joins tutorial](talks/joins_tutorial_bnj.html) (Ben Johnson) | [zip](zips/johnson_joins.zip) | [Rmd](talks/joins_tutorial_bnj.Rmd) -->
+<hr />
+</div>
+</div>
+<div id="data-visualization" class="section level2">
+<h2>Data visualization</h2>
+<!-- - Conceptual overview of [ggplot2 and graphics output](talks/Hallquist_ggplot2_overview.pptx) -->
+<!-- - Alicia Vallorani [ggplot2 walkthrough](talks/ggplot2_tutorial_vallorani.html) -->
+<p><em>Other resources</em></p>
+<ul>
+<li>Jenny Bryan <a href="https://github.com/jennybc/ggplot2-tutorial">ggplot2 tutorial</a> | <a href="https://github.com/jennybc/ggplot2-tutorial/archive/master.zip">Download</a></li>
+<li><a href="http://ggplot2.tidyverse.org/reference/">ggplot2 documentation</a></li>
+<li>ggplot2 tutorial that provides useful guidance on detailed formatting: <a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html" class="uri">https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html</a></li>
+</ul>
+<hr />
+</div>
+<div id="best-practices-in-r-programming" class="section level2">
+<h2>Best practices in R programming</h2>
+<!-- - Setting up a Github repo as an R project | [Video](mov/rstudio-project-on-github.mp4) -->
+<!-- - Using Github within RStudio | [Video](mov/edit-save-commit-push.mp4) -->
+<p><em>Other resources</em></p>
+<ul>
+<li><a href="http://adv-r.had.co.nz/Style.html">Wickham R style guide</a></li>
+</ul>
+<hr />
+</div>
+<div id="correlation-and-regression-in-r" class="section level2">
+<h2>Correlation and regression in R</h2>
+<!-- - Basic [correlation and regression walkthrough](talks/correlation_regression.html) (Michael Hallquist) | [Rmd](talks/correlation_regression.Rmd) -->
+</div>
+<div id="anova-and-categorical-data" class="section level2">
+<h2>ANOVA and categorical data</h2>
+<!-- - Basic [ANOVA and categorical data walkthrough](talks/anova_categorical.html) (Michael Hallquist) | [Rmd](talks/anova_categorical.Rmd) -->
+<p><em>Other resources</em></p>
+<ul>
+<li>More about the <a href="http://singmann.org/anova-in-r-afex-may-be-the-solution-you-are-looking-for/">aov_ez function</a></li>
+<li>Post hoc contrasts in ANOVA using the <a href="https://cran.r-project.org/web/packages/afex/vignettes/afex_anova_example.html">afex package</a></li>
+<li>Probing interactions using the <a href="https://cran.r-project.org/web/packages/jtools/vignettes/interactions.html">jtools package</a></li>
+</ul>
+<hr />
+</div>
+<div id="exploratory-factor-analysis" class="section level2">
+<h2>Exploratory factor analysis</h2>
+<!-- - [Exploratory factor analysis tutorial](talks/IntroBasicEFA_2018_0815.html) (Nilam Ram) | [zip](zips/ram_efa.zip) | [Slides](talks/RBootcamp_IntroFactorAnalysis_2018_0816.pdf) | [Rmd](talks/IntroBasicEFA_2018_0815.Rmd) | [QuantDev link](https://quantdev.ssri.psu.edu/tutorials/intro-basic-exploratory-factor-analysis) -->
+<hr />
+</div>
+<div id="structual-equation-modeling" class="section level2">
+<h2>Structual equation modeling</h2>
+<!-- - Structural equation modeling in [lavaan tutorial](talks/lavaan_tutorial.html) | [zip](zips/hallquist_lavaan.zip) | [Rmd](talks/lavaan_tutorial.Rmd) -->
+<p><em>Other resources</em></p>
+<ul>
+<li>Alison Schreiber We R <a href="https://quantdev.ssri.psu.edu/tutorials/structural-equation-modeling-r-using-lavaan">lavaan walkthrough</a></li>
+<li>Michael Hallquist <a href="https://psu-psychology.github.io/psy-597-SEM/">PSY 597 SEM course in R</a></li>
+<li><a href="http://lavaan.ugent.be/tutorial/index.html">lavaan tutorial</a></li>
+</ul>
+<hr />
+</div>
+<div id="parallel-computing-and-big-data" class="section level2">
+<h2>Parallel computing and big data</h2>
+<!-- - Michael Hallquist [introduction to parallel R](talks/parallel_r.html) | [zip](zips/hallquist_parallel.zip) | [Rmd](talks/parallel_r.Rmd) -->
+<!-- - [Example of parallel computation](R/clock_MEG_lmer.R.txt) on large neuroimaging dataset using foreach package | [Download](R/clock_MEG_lmer.R) -->
+<!-- - Example of [setting a progress bar in a parallel foreach loop](https://gist.github.com/michaelhallquist/530035827ba46d16900b9f5b0169fb45) | [Download the whole script](R/fitVoxelwiseARMA.R) (for context) -->
+<p><em>Other parallel computing resources</em></p>
+<ul>
+<li>R <a href="https://stat.ethz.ch/R-manual/R-devel/library/parallel/doc/parallel.pdf">parallel package documentation</a></li>
+<li>R <a href="https://cran.r-project.org/web/packages/doParallel/vignettes/gettingstartedParallel.pdf">doParallel package documentation</a></li>
+<li>Matt Jones <a href="https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html">Parallel R tutorial</a></li>
+<li>Jonathan Dursi ‘Beyond Single Core’ <a href="https://ljdursi.github.io/beyond-single-core-R">tutorial</a></li>
+</ul>
+<p><em>Other big data resources</em></p>
+<ul>
+<li>Rstudio <a href="https://www.rstudio.com/resources/webinars/working-with-big-data-in-r/">webinar about big data</a></li>
+<li>Useful big data presentation: <a href="http://www.columbia.edu/~sjm2186/EPIC_R/EPIC_R_BigData.pdf" class="uri">http://www.columbia.edu/~sjm2186/EPIC_R/EPIC_R_BigData.pdf</a></li>
+<li>Programming with big data in R (pbdr): <a href="https://pbdr.org" class="uri">https://pbdr.org</a></li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

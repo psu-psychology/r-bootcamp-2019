@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Before the R Bootcamp</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 52px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h2 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h3 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h4 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h5 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.section h6 {
+  padding-top: 57px;
+  margin-top: -57px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R Bootcamp</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="before-the-bootcamp.html">Getting ready</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li>
+  <a href="modules.html">Topics</a>
+</li>
+<li>
+  <a href="resources.html">Other resources</a>
+</li>
+<li>
+  <a href="site-info.html">Site info</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Before the R Bootcamp</h1>
+
+</div>
+
+
+<p>This document describes the steps you must take to ensure that you are able to use your laptop computer during the 2018 R Bootcamp.</p>
+<div id="mandatory" class="section level1">
+<h1>Mandatory</h1>
+<div id="get-a-penn-state-access-account" class="section level2">
+<h2>1. Get a Penn State access account</h2>
+<p>You will need your Penn State <a href="http://www.identity.psu.edu/services/authentication-services/access-accounts/">Access Account</a> user ID (e.g. rog1) in order to access the <code>psu</code> wifi. Your home department should set this up for you.</p>
+</div>
+<div id="set-up-penn-state-psu-wifi-access" class="section level2">
+<h2>2. Set up Penn State (<code>psu</code>) wifi access</h2>
+<p>We suggest that you setup access to the <code>psu</code> wifi prior to attending bootcamp. This will allow you to access all materials during the talks and to use the <a href="rstudio-server-tlt.html">web-based version of RStudio</a> provided by the Teaching and Learning with Technology group.</p>
+<p>To setup access to the <code>psu</code> wifi, you need to be on campus.</p>
+<p>Follow the instructions <a href="http://wireless.psu.edu/wireless.html">here</a> for your specific device and operating system.</p>
+</div>
+<div id="connect-to-penn-states-psu-wifi" class="section level2">
+<h2>3. Connect to Penn State’s <code>psu</code> wifi</h2>
+<p>Once you have connected, try navigating to <a href="https://lxclusterapps.tlt.psu.edu:8787" class="uri">https://lxclusterapps.tlt.psu.edu:8787</a> to test whether you can connect to the cloud-based version of RStudio.</p>
+<hr />
+</div>
+</div>
+<div id="recommended" class="section level1">
+<h1>Recommended</h1>
+<div id="obtain-the-materials-for-bootcamp" class="section level2">
+<h2>1. Obtain the materials for bootcamp</h2>
+<p>Although you need not access or use the materials from bootcamp during the meeting, many attendees may wish to step through the code in parallel with the instructor. You can access all data files and code at our <a href="https://github.com/psu-psychology/r-bootcamp-2018/">GitHub repo</a>. <em>Note:</em> We are still actively updating the materials in preparation for the workshop, so you may need to download updates to these materials over the course of the meeting (details below).</p>
+<p>To download all course materials, you can clone the entire Github repository using the command <code>git clone https://github.com/psu-psychology/r-bootcamp-2018.git</code>. This should be run in a terminal window.</p>
+<p>If you’ve already downloaded the materials, but the instructor suggests getting the latest updates, go to the directory where you’ve stored this the materials on your computer. Then, on the command line, type <code>git pull</code>.</p>
+<p>You can also use Github Desktop to clone the repository using a more user-friendly interface: <a href="https://desktop.github.com" class="uri">https://desktop.github.com</a></p>
+<p>If Git is unfamiliar, you can obtain a zip archive of the current version of all files here: <a href="https://github.com/psu-psychology/r-bootcamp-2018/archive/master.zip" class="uri">https://github.com/psu-psychology/r-bootcamp-2018/archive/master.zip</a>. This link should auto-update, so you get updates by simply downloading this again.</p>
+</div>
+<div id="install-r-and-rstudio" class="section level2">
+<h2>2. Install R and RStudio</h2>
+<p>We suggest having a copy of R and RStudio on your own machine so that you can use R whenever you like! Although you’ll have access to the TLT R server (which can be accessed through the browser), we recommend installing R and RStudio before the meeting.</p>
+<p>If you are using a computer provided by Penn State (e.g., your supervisor’s laboratory), you may need assistance to install these tools. This software is provided under “Software Center” on Windows and “Self Service” on Macs, so with luck, you should be able to install them without needing IT to provide administrative permissions.</p>
+<p>Install R first following instructions: <a href="https://www.r-project.org/">www.r-project.org</a>.</p>
+<p>Install RStudio second.</p>
+<p>Choose the installer for your computer platform from the files listed at <a href="https://www.rstudio.com/products/rstudio/download/#download">www.rstudio.com/products/rstudio/download/#download</a>.</p>
+<p>Once you have installed RStudio, try opening it.</p>
+<div id="install-packages" class="section level3">
+<h3>2.1 Install packages</h3>
+<p>For the Slow-R track, you’ll only need to install the <code>swirl</code> package. From the R Console, enter <code>install.packages('swirl')</code>.</p>
+<p>For the meeting more generally, we suggest the following packages.</p>
+<p>From the R Console, enter <code>install.packages(c('ez', 'car', 'tidyverse', 'pacman', 'GGally', 'jtools'))</code>.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="optional" class="section level1">
+<h1>Optional</h1>
+<div id="set-up-two-factor-authentication-2fa" class="section level2">
+<h2>1. Set-up Two-Factor Authentication (2FA)</h2>
+<p>You should not need 2FA for the bootcamp, but you will need it for other Penn State services. While you are setting up your device(s), you may as well set up 2FA.</p>
+<p>I find that 2FA works really well from my smartphone (iPhone). Follow the detailed instructions at <a href="https://www.identity.psu.edu/set-up-instructions/">www.identity.psu.edu/set-up-instructions/</a></p>
+</div>
+<div id="create-a-github-account" class="section level2">
+<h2>2. Create a GitHub account</h2>
+<p>It is not required for the bootcamp, but you may want to create a GitHub account so you can start using GitHub for your own reproducible workflows and contribute to other open source projects.</p>
+<p>Visit <a href="https://github.com">github.com</a> to create an account.</p>
+</div>
+<div id="install-psus-cisco-anyconnect-virtual-private-network-vpn-client" class="section level2">
+<h2>3. Install PSU’s Cisco AnyConnect Virtual Private Network (VPN) client</h2>
+<p>The VPN client allows you to connect to PSU’s network securely from an off campus location (like your home or favoriate coffee shop) and allows you to use some services that are otherwise only available to users who are on campus. The TLT RStudio server is one of these services. So, if you like the TLT RStudio server and want to use it while you are elsewhere, you’ll want to download, install, and use Cisco AnyConnect.</p>
+<p>Follow the instructions at <a href="http://kb.its.psu.edu/article/891">kb.its.psu.edu/article/891</a> to install the AnyConnect client on your device.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
