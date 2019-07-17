@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -247,48 +248,9 @@ $(document).ready(function () {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -337,8 +299,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -450,7 +410,7 @@ div.tocify {
 <table>
 <colgroup>
 <col width="49%" />
-<col width="1%" />
+<col width="0%" />
 <col width="49%" />
 </colgroup>
 <thead>
@@ -462,9 +422,14 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td>10:00 am - 12:00pm • RStudio, R console, object classes &amp; data types (Rick Gilmore)</td>
+<td>10:00 am - 11:00am • RStudio, R console, object classes &amp; data types (Rick Gilmore)</td>
 <td></td>
-<td>10:00am - 12:00 pm • <a href="talks/IntroBasicEFA_2018_0815.html">Introduction to exploratory factor analysis</a> (Nilam Ram)</td>
+<td>10:00am - 11:00 am • Multilevel models, moderation, &amp; probing interactions in <code>lme4</code> (Nilam Ram)</td>
+</tr>
+<tr class="even">
+<td>11:15 am - 12:00 pm • Hands on with RStudio</td>
+<td></td>
+<td>11:15a - 12:00 pm • Hands on with multilevel models</td>
 </tr>
 </tbody>
 </table>
@@ -483,7 +448,7 @@ div.tocify {
 <table>
 <colgroup>
 <col width="49%" />
-<col width="1%" />
+<col width="0%" />
 <col width="49%" />
 </colgroup>
 <thead>
@@ -495,34 +460,29 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td>1:00 pm - 1:45 pm • Data indexing and subsetting (Rick Gilmore)</td>
+<td>01:00 pm - 01:45 pm • Data indexing and subsetting (Rick Gilmore)</td>
 <td></td>
-<td>1:00 pm - 2:00 pm • Introduction to structural equation modeling in lavaan (Michael Hallquist)</td>
+<td>01:00 pm - 01:45 pm • Introduction to structural equation modeling (SEM) in <code>lavaan</code> (Michael Hallquist)</td>
 </tr>
 <tr class="even">
-<td>1:45 pm - 3:00 pm • Packages, scripts, &amp; functions (Rick Gilmore)</td>
+<td>02:00 pm - 03:00 pm • Hands on practice</td>
 <td></td>
-<td>02:00 pm - 3:00 pm • <a href="talks/parallel_r.html">Parallel computing</a>, batch processing, and big data in R (Michael Hallquist)</td>
+<td>02:00 pm - 3:00 pm • Hands on with <code>lavaan</code></td>
 </tr>
 <tr class="odd">
 <td>03:00 - 03:15 pm • Break</td>
 <td></td>
 <td>03:00 pm - 03:15pm • Break</td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>Plenary, 210 Keller</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>03:15 pm • <a href="talks/r-eproducible-science.html">R-eproducible Science with R</a> (Rick Gilmore)</td>
-</tr>
 <tr class="even">
-<td>04:30 pm • End</td>
+<td>03:15 - 04:00 pm • Packages, scripts, &amp; functions (Rick Gilmore)</td>
+<td></td>
+<td>03:15 - 04:00 pm • Dynamical systems analysis using <code>dynr</code> (Sy-Miin Chow)</td>
+</tr>
+<tr class="odd">
+<td>04:00 - 04:30 pm • Hands on practice</td>
+<td></td>
+<td>04:00 - 04:30 pm • Hands-on practice/demo with <code>dynr</code></td>
 </tr>
 </tbody>
 </table>
@@ -532,9 +492,9 @@ div.tocify {
 <h2>Fri, Aug 23, 2019, 9:00 am - 4:30 pm</h2>
 <div id="keller-1" class="section level3">
 <h3>210 Keller</h3>
-<table style="width:78%;">
+<table>
 <colgroup>
-<col width="77%" />
+<col width="100%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -543,37 +503,43 @@ div.tocify {
 </thead>
 <tbody>
 <tr class="odd">
-<td>09:00 am • Welcome back and Q&amp;A</td>
+<td>09:00 am • R-eproducible Science (Rick Gilmore)</td>
 </tr>
 <tr class="even">
-<td>09:15 am • Data wrangling &amp; pipelines (primarily tidyverse)</td>
+<td>09:30 am • Data wrangling &amp; pipelines (primarily <code>tidyverse</code>) (Michael Hallquist)</td>
 </tr>
 <tr class="odd">
-<td>10:30 am • Break</td>
+<td>10:15 am • Break</td>
 </tr>
 <tr class="even">
-<td>10:45 am • <a href="talks/ggplot2_tutorial_vallorani.html">Data visualization</a> (primarily ggplot2)</td>
+<td>10:30 am • Hands on data wrangling</td>
 </tr>
 <tr class="odd">
-<td>12:00 pm • Lunch (pizza &amp; drinks thanks to <a href="http://imaging.psu.edu">SLEIC</a>), Moore Building Lobby</td>
+<td>11:30 am • iPractice data wrangling assessment</td>
 </tr>
 <tr class="even">
-<td>01:00 pm • Core programming skills: loops, apply functions, writing functions</td>
+<td>12:00 pm • Lunch Moore Building Lobby</td>
 </tr>
 <tr class="odd">
-<td>02:00 pm • Best practices in R: script management, versioning, modular coding</td>
+<td>01:00 pm • Data visualization (Graduate student coaches)</td>
+</tr>
+<tr class="even">
+<td>01:45 pm • Hands on practice</td>
+</tr>
+<tr class="odd">
+<td>02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Graduate student coaches)</td>
 </tr>
 <tr class="even">
 <td>02:45 pm • Break</td>
 </tr>
 <tr class="odd">
-<td>03:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data</td>
+<td>03:00 pm • Hands on practice</td>
 </tr>
 <tr class="even">
-<td>04:30 pm • End</td>
+<td>04:00 pm • End</td>
 </tr>
 <tr class="odd">
-<td>04:45 pm • Optional Happy Hour @ Whisker’s</td>
+<td>04:15 pm • Optional Happy Hour @ Whisker’s</td>
 </tr>
 </tbody>
 </table>
@@ -598,6 +564,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
