@@ -59,7 +59,7 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 | 09:30 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
 | 10:15 am • Break                                            |
 | 10:30 am • Hands on data wrangling                          |
-| 11:30 am • iPractice data wrangling assessment              |
+| 11:30 am • iPRACTISE data wrangling assessment              |
 | 12:00 pm • Lunch Moore Building Lobby                       |
 | 01:00 pm • Data visualization (Graduate student coaches)    |
 | 01:45 pm • Hands on practice                                            |
