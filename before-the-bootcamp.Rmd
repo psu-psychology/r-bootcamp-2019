@@ -3,55 +3,103 @@ title: "Before the R Bootcamp"
 output:
   html_document:
       toc:  TRUE
-      toc_depth: 4
+      toc_depth: 3
       toc_float: TRUE
-      number_section: FALSE
+      number_section: TRUE
 ---
 
-This document describes the steps you must take to ensure that you are able to use your laptop computer during the 2018 R Bootcamp.
+This document describes the steps you must take to ensure that you are able to participate fully in the 2019 R Bootcamp.
 
-# Mandatory
+We have chosen to run the 2019 R Bootcamp in computer classrooms with machines that are already connected to the Penn State network.
+This should make it easier for _everyone_ to participate fully in the workshop without having to waste time on getting personal laptops connected to the network, installing R and RStudio, etc.
+Specifically, we are using a web-browser based version of RStudio that you can access from anywhere with internet access.
 
-## 1. Get a Penn State access account
+That said, you will probably want to set-up R and RStudio on your office, lab, or even personal computers down the line.
+So, we'll provide information about how to do that, too.
+
+# Mandatory pre-workshop activities
+
+## Get a Penn State access account
 
 You will need your Penn State [Access Account](http://www.identity.psu.edu/services/authentication-services/access-accounts/) user ID (e.g. rog1) in order to access the `psu` wifi.
 Your home department should set this up for you.
 
-## 2. Set up Penn State (`psu`) wifi access
+## Set-up Two-Factor Authentication (2FA)
 
-We suggest that you setup access to the `psu` wifi prior to attending bootcamp. This will allow you to access all materials during the talks and to use the [web-based version of RStudio](rstudio-server-tlt.html) provided by the Teaching and Learning with Technology group.
+You will need 2FA for accessing Penn State computing services.
 
-To setup access to the `psu` wifi, you need to be on campus.
+I find that 2FA works really well from my smartphone (iPhone), and there is even an app for my Apple Watch.
+Follow the detailed instructions at [https://www.identity.psu.edu/set-up-instructions/](https://www.identity.psu.edu/set-up-instructions/) to set-up 2FA.
+
+## Test your PSU log-in credentials
+
+Try logging in to a Penn State computer with your new access account and 2FA.
+
+<https://work.psu.edu> is a good place to start.
+This is where you can add email aliases, email vacation notices, etc.
+
+# *Optional* Pre-workshop Activities
+
+## Test RStudio server log-in
+
+With your access ID and 2FA credentials set-up, you can log-in to Penn State computers from any computer cluster.
+If you are a member of a lab with computers connected to the Penn State network, then you can test your log-in credentials on one of those machines.
+If you have set-up your personal machine to access the `psu` wifi network, you can test your log-in from your own machine.
+
+1. Connect to the Penn State network.
+
+You can skip this step if you are working on a machine in a Penn State cluster.
+
+2. Start a web browser.
+
+3. Connect to [https://lxclusterapps.tlt.psu.edu:8787](https://lxclusterapps.tlt.psu.edu:8787)
+
+You should see the following login page:
+    
+<img src="img/rstudio-login.jpg"/>
+
+4. Enter your PSU access ID (e.g., rog1) in the `Username` field (Do **not** add `@psu.edu`), and enter your PSU password in the `Password` field. 
+The use of a password manager like LastPass, 1Password, or DashLane is highly recommended.
+
+5. Hit the `Sign In` button or press return on your keyboard.
+You should see an RStudio window that looks very much like this one.
+
+<img src="img/rstudio-login.jpg"/>
+
+You are now ready to use RStudio Server Pro!
+
+## Set-up a personal computer to access the Penn State network
+
+### Set up Penn State (`psu`) wifi access
+
+To setup access to the `psu` wifi network, you need to be on campus.
 
 Follow the instructions [here](http://wireless.psu.edu/wireless.html) for your specific device and operating system.
 
-## 3. Connect to Penn State's `psu` wifi
+I recommend setting up the `eduroam` profile in addition to the `psu` profile.
+It's extremely useful when you travel to other institutions.
 
-Once you have connected, try navigating to <https://lxclusterapps.tlt.psu.edu:8787> to test whether you can connect to the cloud-based version of RStudio.
+### Connect to Penn State's `psu` wifi
 
-***
+Once you have connected, try navigating to <https://lxclusterapps.tlt.psu.edu:8787> to test whether you can connect.
 
-# Recommended
+## Install PSU's Cisco AnyConnect Virtual Private Network (VPN) client
 
-## 1. Obtain the materials for bootcamp
+The VPN client allows you to connect to PSU's network securely from an off-campus location (like your home or favoriate coffee shop) and allows you to use some services that are otherwise only available to users who are on campus.
+The TLT RStudio Server Pro is one of these services.
+So, if you like the TLT RStudio Server Pro and want to use it while you are elsewhere, you'll want to download, install, and use Cisco AnyConnect Mobile.
 
-Although you need not access or use the materials from bootcamp during the meeting, many attendees may wish to step through the code in parallel with the instructor. You can access all data files and code at our [GitHub repo](https://github.com/psu-psychology/r-bootcamp-2018/). *Note:* We are still actively updating the materials in preparation for the workshop, so you may need to download updates to these materials over the course of the meeting (details below).
+Follow the instructions at [https://pennstate.service-now.com/sp?id=kb_article_view&sys_kb_id=b6132f781bdd3bc4d4eeea0dad4bcbe2](https://pennstate.service-now.com/sp?id=kb_article_view&sys_kb_id=b6132f781bdd3bc4d4eeea0dad4bcbe2) to install the Cisco AnyConnect Mobile client on your device.
 
-To download all course materials, you can clone the entire Github repository using the command ```git clone https://github.com/psu-psychology/r-bootcamp-2018.git```. This should be run in a terminal window.
+## Install R and RStudio
 
-If you've already downloaded the materials, but the instructor suggests getting the latest updates, go to the directory where you've stored this the materials on your computer. Then, on the command line, type ```git pull```. 
+We suggest having a copy of R and RStudio on your own machine so that you can use these tools whenever you like! 
 
-You can also use Github Desktop to clone the repository using a more user-friendly interface: <https://desktop.github.com>
-
-If Git is unfamiliar, you can obtain a zip archive of the current version of all files here: <https://github.com/psu-psychology/r-bootcamp-2018/archive/master.zip>. This link should auto-update, so you get updates by simply downloading this again.
-
-## 2. Install R and RStudio
-
-We suggest having a copy of R and RStudio on your own machine so that you can use R whenever you like! Although you'll have access to the TLT R server (which can be accessed through the browser), we recommend installing R and RStudio before the meeting. 
-
-If you are using a computer provided by Penn State (e.g., your supervisor's laboratory), you may need assistance to install these tools. This software is provided under "Software Center" on Windows and "Self Service" on Macs, so with luck, you should be able to install them without needing IT to provide administrative permissions.
+If you are using a computer provided by Penn State (e.g., your supervisor's laboratory), you may need assistance to install these tools. 
+This software is provided under "Software Center" on Windows and "Self Service" on Macs, so with luck, you should be able to install them without needing IT to provide administrative permissions.
 
 Install R first following instructions: [www.r-project.org](https://www.r-project.org/).
+The machine generating this page is using `r R.version$version.string`.
 
 Install RStudio second.
 
@@ -59,7 +107,9 @@ Choose the installer for your computer platform from the files listed at [www.rs
 
 Once you have installed RStudio, try opening it.
 
-### 2.1 Install packages
+## Install R packages
+
+Packages are groups of tools that extend the R language in useful ways.
 
 For the Slow-R track, you'll only need to install the `swirl` package.
 From the R Console, enter `install.packages('swirl')`.
@@ -68,28 +118,45 @@ For the meeting more generally, we suggest the following packages.
 
 From the R Console, enter `install.packages(c('ez', 'car', 'tidyverse', 'pacman', 'GGally', 'jtools'))`.
 
-***
+## Create a GitHub account
 
-# Optional
-
-## 1. Set-up Two-Factor Authentication (2FA)
-
-You should not need 2FA for the bootcamp, but you will need it for other Penn State services.
-While you are setting up your device(s), you may as well set up 2FA.
-
-I find that 2FA works really well from my smartphone (iPhone).
-Follow the detailed instructions at [www.identity.psu.edu/set-up-instructions/](https://www.identity.psu.edu/set-up-instructions/)
-
-## 2. Create a GitHub account
-
-It is not required for the bootcamp, but you may want to create a GitHub account so you can start using GitHub for your own reproducible workflows and contribute to other open source projects.
+It is not required for the bootcamp, but you may want to create a [GitHub](https://github.com) account so you can start using GitHub for your own reproducible workflows and contribute to other open source projects.
 
 Visit [github.com](https://github.com) to create an account.
 
-## 3. Install PSU's Cisco AnyConnect Virtual Private Network (VPN) client
+## Obtain the materials for bootcamp
 
-The VPN client allows you to connect to PSU's network securely from an off campus location (like your home or favoriate coffee shop) and allows you to use some services that are otherwise only available to users who are on campus.
-The TLT RStudio server is one of these services.
-So, if you like the TLT RStudio server and want to use it while you are elsewhere, you'll want to download, install, and use Cisco AnyConnect.
+Although you need not access or use the materials from bootcamp during the meeting, many attendees may wish to step through the code in parallel with the instructor. 
+You can access all data files and code at our [GitHub repo](https://github.com/psu-psychology/r-bootcamp-2019/). 
+*Note:* We are still actively updating the materials in preparation for the workshop, so you may need to download updates to these materials over the course of the meeting (details below).
 
-Follow the instructions at [kb.its.psu.edu/article/891](http://kb.its.psu.edu/article/891) to install the AnyConnect client on your device.
+To download all course materials, you can clone the entire Github repository using the command ```git clone https://github.com/psu-psychology/r-bootcamp-2018.git```. This should be run in a terminal window.
+
+If you've already downloaded the materials, but the instructor suggests getting the latest updates, go to the directory where you've stored this the materials on your computer. Then, on the command line, type ```git pull```. 
+
+You can also use Github Desktop to clone the repository using a more user-friendly interface: <https://desktop.github.com>.
+
+If Git is unfamiliar to you, you can obtain a zip (compressed) archive of the current version of all files here: <https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip>. 
+This link should auto-update, so you get updates by simply downloading this again.
+
+## Explore Your PASS space
+
+The RStudio Server Pro application uses your PASS space for file storage.
+
+To access your PASS space and upload files to it (like data),
+
+1. Visit [https://webfiles.psu.edu/](https://webfiles.psu.edu/). 
+You will see a login window like this:
+    
+<img src="img/webfiles.psu.edu-login.jpg"/>
+
+2. Enter your Penn State Access ID (e.g. rog1) and password. You should see the WebFiles interface:
+    
+<img src="img/webfiles-window.jpg"/>
+
+3. Click on the `PASS Personal (X)` text or the `+` icon in the left panel.
+This will open a window on the right that shows the contents of your PASS space.
+    
+4. You may create new folders, upload, and download files using the WebFiles application.
+
+5. Press the `logout` button in the upper right to logout when you are finished.
