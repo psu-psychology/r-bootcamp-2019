@@ -19,3 +19,4 @@ output:
   html_document:
     theme: spacelab
     highlight: textmate
+    code_folding: hide

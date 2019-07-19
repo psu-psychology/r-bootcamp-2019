@@ -21,6 +21,7 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -246,6 +247,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -300,6 +304,14 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">2019 PSU R Bootcamp</h1>
@@ -330,6 +342,54 @@ $(document).ready(function () {
 <h2>About this course</h2>
 <p>R is one of the core languages in data science. It’s free and fun to use. Join us in learning how to use this tool to accelerate your research.</p>
 <p>The course <em>heavily</em> emphasizes the use of the <a href="http://rstudio.com">RStudio</a> integrated development environment (IDE). You don’t have to use RStudio to use R, but we think that doing so makes R an even more powerful tool. Plus, RStudio has fully featured free versions, including some available entirely in your web browser.</p>
+</div>
+<div id="whos-registered" class="section level2">
+<h2>Who’s registered?</h2>
+<p>Here are some data about the registrants as of 2019-07-19 14:38:32:</p>
+<pre class="r"><code># Table
+pos_dept &lt;- xtabs(formula = ~ position + dept, data = cd_new)
+knitr::kable(pos_dept)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Ed Ldrshp</th>
+<th align="right">Psych</th>
+<th align="right">TLT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fac</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Grad</td>
+<td align="right">1</td>
+<td align="right">32</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>Post</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>Staff</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ggplot(data = cd_new) +
+  geom_mosaic(aes(x = product(dept, position), fill = dept), na.rm = TRUE) +
+  xlab(&quot;Position&quot;) +
+  ylab(&quot;Dept&quot;)</code></pre>
+<p><img src="index_files/figure-html/mosaic-plot-1.png" width="672" /></p>
 <div id="what-to-bring" class="section level3">
 <h3>What to bring</h3>
 <p>We ask that you bring an open mind, enthusiasm, and a willingness to ask questions even if they seem trivial. The classrooms we have chosen for the bootcamp have computers with Windows 10, so you do <em>not</em> need to bring your own computer. We will use a standard computing environment set up for your use that takes advantage of the RStudio Server program. This means that RStudio will run in your web browser.</p>
@@ -383,6 +443,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -53,6 +53,36 @@ The course *heavily* emphasizes the use of the [RStudio](http://rstudio.com) int
 You don't have to use RStudio to use R, but we think that doing so makes R an even more powerful tool.
 Plus, RStudio has fully featured free versions, including some available entirely in your web browser.
 
+## Who's registered?
+
+Here are some data about the registrants as of `r Sys.time()`:
+
+```{r registrant-data, message=FALSE, warning=FALSE, include=FALSE}
+pkg_list <- c("googlesheets", "googledrive", "tidyverse", "ggplot2", "ggmosaic")
+lapply(pkg_list, require, quietly = TRUE)
+
+r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
+lapply(r_funcs, source, echo = FALSE)
+
+rd <- get_registrant_data()
+cd <- clean_registrant_data(rd)
+cd_new <- clean_dept_field(cd)
+cd_new <- clean_position_field(cd_new)
+```
+
+```{r registrant-table, message=FALSE, warning=FALSE}
+# Table
+pos_dept <- xtabs(formula = ~ position + dept, data = cd_new)
+knitr::kable(pos_dept)
+```
+
+```{r mosaic-plot, message=FALSE, warning=FALSE}
+ggplot(data = cd_new) +
+  geom_mosaic(aes(x = product(dept, position), fill = dept), na.rm = TRUE) +
+  xlab("Position") +
+  ylab("Dept")
+```
+
 ### What to bring
 
 We ask that you bring an open mind, enthusiasm, and a willingness to ask questions even if they seem trivial.
