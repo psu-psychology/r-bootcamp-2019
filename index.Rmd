@@ -22,6 +22,7 @@ Rick O. Gilmore, Ph.D.</br>
 Professor of Psychology</br>
 rogilmore AT-SIGN psu PERIOD edu</br>
 [http://gilmore-lab.github.io](http://gilmore-lab.github.io)</br>
+[http://github.com/gilmore-lab/](http://github.com/gilmore-lab/)
 
 Michael Hallquist, Ph.D.</br>
 Assistant Professor of Psychology</br>
@@ -38,8 +39,9 @@ TBA
 
 ## Meeting times and location
 
-Thursday, August 22, 2019, 9:00 am - 4:30 pm</br>
-Friday, August 23, 2018, 9:00 am - 4:30 pm</br>
+Wednesday, August 21, 2019, 9:00 am - 12:00 pm</br>
+Thursday, August 22, 2019, 12:00 pm - 4:30 pm</br>
+Friday, August 23, 2019, 9:00 am - 4:30 pm</br>
 210 & 211 [Keller Building](http://www.psumap.com/#Keller)</br>
 
 [Detailed schedule](schedule.html)</br>
@@ -59,7 +61,7 @@ Here are some data about the registrants as of `r Sys.time()`:
 
 ```{r registrant-data, message=FALSE, warning=FALSE, include=FALSE}
 pkg_list <- c("googlesheets", "googledrive", "tidyverse", "ggplot2", "ggmosaic")
-lapply(pkg_list, require, quietly = TRUE)
+lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
 
 r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
 lapply(r_funcs, source, echo = FALSE)
@@ -69,6 +71,11 @@ cd <- clean_registrant_data(rd)
 cd_new <- clean_dept_field(cd)
 cd_new <- clean_position_field(cd_new)
 ```
+
+We have `r dim(cd_new)[1]` people registered so far.
+The following table and mosaic plot tell us a bit about them.
+(These data and graphs are generated from the GoogleSheet you completed to register.
+The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)
 
 ```{r registrant-table, message=FALSE, warning=FALSE}
 # Table
@@ -109,4 +116,4 @@ If Git is unfamiliar to you, you can obtain a zip archive of the current version
 
 ## Acknowledgments
 
-We thank the [Department of Psychology](http://psych.la.psu.edu), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science initiative for support.
+We thank the [Department of Psychology](http://psych.la.psu.edu), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science initiative for support of the R Bootcamp initiative.

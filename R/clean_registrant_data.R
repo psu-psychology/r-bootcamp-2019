@@ -1,6 +1,8 @@
 clean_registrant_data <- function(df) {
   if (is.null(df)) stop('Data frame is NULL.')
   
+  library(tidyverse)
+  
   times <- lubridate::mdy_hms(df$`Timestamp`)
   regis_clean <- dplyr::rename(df,
                                email = `Email Address`,

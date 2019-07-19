@@ -1,8 +1,9 @@
 get_registrant_data <- function(verbose = FALSE, sheet_name = 'PSU R Bootcamp 2019 Sign-up (Responses)') {
   
-  require(googledrive)
+  library(googledrive)
+  library(googlesheets)
+  
   drive_auth(use_oob = TRUE)
-  require(googlesheets) 
   options(httr_oob_default = TRUE)
   
   bootcamp_gs <- googlesheets::gs_title(sheet_name)

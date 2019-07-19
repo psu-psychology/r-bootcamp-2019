@@ -20,7 +20,7 @@ Please don't sign-up if you you are uncertain about whether you will be able to 
 Whether or not you want to attend the bootcamp, you are welcome to complete this anonymous (and light-hearted) [survey](https://forms.gle/YyTNDDayMNRWibBy5).
 We'll use the data drawn from it to show how one can use R and R Markdown to create reproducible data processing workflows and even full manuscripts.
 
-## Thu, Aug 22, 2019, 9:00 am - 4:30 pm
+## Wed, Aug 21, 2019, 9:00 am 
 
 ### 210 Keller
 
@@ -37,7 +37,9 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 
 | Lunch, Moore 1st floor lobby                         |
 |-------------------------------------------------------|
-| 12:00 pm • Lunch, Moore Building Lobby|
+| 12:00 pm • Lunch, Moore Building Lobby |
+
+## Thu, Aug 22, 2019, 1:00 pm - 4:30 pm
 
 | [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
 |----------------------------------------------------------|-|----------------------------------------------------------|
@@ -48,6 +50,7 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 | 04:00 - 04:30 pm • Hands on practice |  | 04:00 - 04:30 pm • Hands-on practice/demo with `dynr` |
 
 ## Fri, Aug 23, 2019, 9:00 am - 4:30 pm
+
 ### 210 Keller
 
 | Plenary                                                     |
