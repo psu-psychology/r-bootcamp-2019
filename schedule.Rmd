@@ -32,22 +32,22 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 
 | [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 10:00 am - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00am - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Nilam Ram)  |
-| 11:15 am - 12:00 pm • Hands on with RStudio |  | 11:15a - 12:00 pm • Hands on with multilevel models |
+| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Nilam Ram)  |
+| 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
 | Lunch, Moore 1st floor lobby                         |
 |-------------------------------------------------------|
 | 12:00 pm • Lunch, Moore Building Lobby |
 
-## Thu, Aug 22, 2019, 1:00 pm - 4:30 pm
+## Thu, Aug 22, 2019, 9:00 am - 12:15 pm
 
 | [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 01:00 pm - 01:45 pm • Data indexing and subsetting (Rick Gilmore) |  | 01:00 pm - 01:45 pm • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
-| 02:00 pm - 03:00 pm • Hands on practice   | | 02:00 pm - 3:00 pm • Hands on with `lavaan` |
-| 03:00 - 03:15 pm • Break                  | | 03:00 pm - 03:15pm • Break                 |
-| 03:15 - 04:00 pm • Packages, scripts, & functions (Rick Gilmore)   |  | 03:15 - 04:00 pm • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
-| 04:00 - 04:30 pm • Hands on practice |  | 04:00 - 04:30 pm • Hands-on practice/demo with `dynr` |
+| 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
+| 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |
+| 10:30 - 10:45 am • Break                  | | 10:30 - 10:45 am • Break                 |
+| 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
+| 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
 
 ## Fri, Aug 23, 2019, 9:00 am - 4:30 pm
 
