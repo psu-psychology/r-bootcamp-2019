@@ -14,10 +14,14 @@ clean_dept_field <- function(df) {
   clin <- stringr::str_detect(df$dept, "(C|c)lin")
   cog <- stringr::str_detect(df$dept, "(C|c)ogn")
   
+  # HDFS / Criminology
+  hdfs <- stringr::str_detect(df$dept, "HDFS")
+  
   out_df <- df
   out_df$dept[some_psych] <- "Psych"
   out_df$dept[tlt] <- "TLT"
   out_df$dept[ed_ldr] <- "Ed Ldrshp"
+  out_df$dept[hdfs] <- "HDFS"
   
   out_df$area <- NA
   out_df$area[io] <- "I/O"

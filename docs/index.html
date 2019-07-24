@@ -331,7 +331,7 @@ $(document).ready(function () {
 </div>
 <div id="student-coaches" class="section level2">
 <h2>Student Coaches</h2>
-<p>TBA</p>
+<p>Dan Albohn, dna5021 AT-SIGN psu PERIOD edu Kayla Brown, kwb5191 AT-SIGN psu PERIOD edu</br> Rebecca Janis, ruj134 AT-SIGN psu PERIOD edu</br> Yiming Qian, yxq5055 AT-SIGN psu PERIOD edu</br> Alicia Vallorani, amvalloranipsu AT-SIGN gmail PERIOD com</br> Holly Zaharchuk, hzaharchuk AT-SIGN psu PERIOD edu</p>
 </div>
 <div id="meeting-times-and-location" class="section level2">
 <h2>Meeting times and location</h2>
@@ -345,8 +345,8 @@ $(document).ready(function () {
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-07-19 15:46:03:</p>
-<p>We have 41 people registered so far. The following table and mosaic plot tell us a bit about them. (These data and graphs are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
+<p>Here are some data about the registrants as of 2019-07-24 09:20:50:</p>
+<p>We have 58 people registered so far. The following table and mosaic plot tell us a bit about them. (These data and graphs are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
 <pre class="r"><code># Table
 pos_dept &lt;- xtabs(formula = ~ position + dept, data = cd_new)
 knitr::kable(pos_dept)</code></pre>
@@ -355,6 +355,7 @@ knitr::kable(pos_dept)</code></pre>
 <tr class="header">
 <th></th>
 <th align="right">Ed Ldrshp</th>
+<th align="right">HDFS</th>
 <th align="right">Psych</th>
 <th align="right">TLT</th>
 </tr>
@@ -363,17 +364,20 @@ knitr::kable(pos_dept)</code></pre>
 <tr class="odd">
 <td>Fac</td>
 <td align="right">0</td>
+<td align="right">0</td>
 <td align="right">3</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td>Grad</td>
 <td align="right">1</td>
-<td align="right">32</td>
+<td align="right">4</td>
+<td align="right">42</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td>Post</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">4</td>
 <td align="right">0</td>
@@ -382,6 +386,7 @@ knitr::kable(pos_dept)</code></pre>
 <td>Staff</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">3</td>
 <td align="right">1</td>
 </tr>
 </tbody>
@@ -394,7 +399,7 @@ knitr::kable(pos_dept)</code></pre>
 <div id="what-to-bring" class="section level3">
 <h3>What to bring</h3>
 <p>We ask that you bring an open mind, enthusiasm, and a willingness to ask questions even if they seem trivial. The classrooms we have chosen for the bootcamp have computers with Windows 10, so you do <em>not</em> need to bring your own computer. We will use a standard computing environment set up for your use that takes advantage of the RStudio Server program. This means that RStudio will run in your web browser.</p>
-<p>You <em>will</em> need to make sure that you can log on to the PSU system using your Penn State Access ID (e.g., rog1).</p>
+<p>You <em>will</em> need to make sure that you can log on to the PSU system using your Penn State Access ID (e.g., <code>rog1</code>).</p>
 </div>
 <div id="laptop-users" class="section level3">
 <h3>Laptop users</h3>

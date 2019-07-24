@@ -35,7 +35,12 @@ nilam PERIOD ram AT-SIGN psu PERIOD edu</br>
 
 ## Student Coaches
 
-TBA
+Dan Albohn, dna5021 AT-SIGN psu PERIOD edu
+Kayla Brown, kwb5191 AT-SIGN psu PERIOD edu</br>
+Rebecca Janis, ruj134 AT-SIGN psu PERIOD edu</br>
+Yiming Qian, yxq5055 AT-SIGN psu PERIOD edu</br>
+Alicia Vallorani, amvalloranipsu AT-SIGN gmail PERIOD com</br>
+Holly Zaharchuk, hzaharchuk AT-SIGN psu PERIOD edu
 
 ## Meeting times and location
 
@@ -97,7 +102,7 @@ The classrooms we have chosen for the bootcamp have computers with Windows 10, s
 We will use a standard computing environment set up for your use that takes advantage of the RStudio Server program.
 This means that RStudio will run in your web browser.
 
-You *will* need to make sure that you can log on to the PSU system using your Penn State Access ID (e.g., rog1).
+You *will* need to make sure that you can log on to the PSU system using your Penn State Access ID (e.g., `rog1`).
 
 ### Laptop users
 
