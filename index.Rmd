@@ -37,10 +37,15 @@ nilam PERIOD ram AT-SIGN psu PERIOD edu</br>
 
 Dan Albohn, dna5021 AT-SIGN psu PERIOD edu</br>
 Kayla Brown, kwb5191 AT-SIGN psu PERIOD edu</br>
+Meng Chen, mxc681 AT-SIGN psu PERIOD edu</br>
 Rebecca Janis, ruj134 AT-SIGN psu PERIOD edu</br>
+Linying Ji, lzj114 AT-SIGN psu PERIOD edu</br>
+Jungmin Li, jzl95 AT-SIGN psu PERIOD edu</br>
+Yanling Li, yxl823 AT-SIGN psu PERIOD edu</br>
+Jonathan Park, jjp409 AT-SIGN psu PERIOD edu</br>
 Yiming Qian, yxq5055 AT-SIGN psu PERIOD edu</br>
 Alicia Vallorani, amvalloranipsu AT-SIGN gmail PERIOD com</br>
-Holly Zaharchuk, hzaharchuk AT-SIGN psu PERIOD edu
+Holly Zaharchuk, hzaharchuk AT-SIGN psu PERIOD edu</br>
 
 ## Meeting times and location
 
@@ -68,28 +73,27 @@ Here are some data about the registrants as of `r Sys.time()`:
 pkg_list <- c("googlesheets", "googledrive", "tidyverse", "ggplot2", "ggmosaic")
 lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
 
-r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
-lapply(r_funcs, source, echo = FALSE)
+# r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
+# lapply(r_funcs, source, echo = FALSE)
+source("R/registrants.R")
 
-rd <- get_registrant_data()
-cd <- clean_registrant_data(rd)
-cd_new <- clean_dept_field(cd)
-cd_new <- clean_position_field(cd_new)
+rg <- get_registration_data()
+rg_clean <- clean_registration_data(rg)
 ```
 
-We have `r dim(cd_new)[1]` people registered so far.
+We have `r dim(rg_clean)[1]` people registered so far.
 The following table and mosaic plot tell us a bit about them.
 (These data and graphs are generated from the GoogleSheet you completed to register.
 The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)
 
 ```{r registrant-table, message=FALSE, warning=FALSE}
 # Table
-pos_dept <- xtabs(formula = ~ position + dept, data = cd_new)
+pos_dept <- xtabs(formula = ~ position + dept, data = rg_clean)
 knitr::kable(pos_dept)
 ```
 
 ```{r mosaic-plot, message=FALSE, warning=FALSE}
-ggplot(data = cd_new) +
+ggplot(data = rg_clean) +
   geom_mosaic(aes(x = product(dept, position), fill = dept), na.rm = TRUE) +
   xlab("Position") +
   ylab("Dept")
