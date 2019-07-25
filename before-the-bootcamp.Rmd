@@ -5,7 +5,7 @@ output:
       toc:  TRUE
       toc_depth: 3
       toc_float: TRUE
-      number_section: TRUE
+      number_section: FALSE
 ---
 
 This document describes the steps you must take to ensure that you are able to participate fully in the 2019 R Bootcamp.

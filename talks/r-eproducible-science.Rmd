@@ -68,18 +68,18 @@ They were asked a number of questions, including the following:
 We'll dig into the workflow for gathering, cleaning, and visualizing the bootcamp survey data a little later.
 But let's see what we all said in response to the same question.
 
+
 ```{r load-2018-Bootcamp-survey, include=FALSE}
-survey <- read.csv("../data/survey_clean.csv")
+source("R/clean_survey.R")
 
-# Change order of responses for printing
-survey$Crisis <- factor(survey$Crisis, 
-                        levels = c("Yes, a significant crisis", 
-                                   "Yes, a slight crisis", 
-                                   "No crisis", "Don't know"))
+survey <- get_survey_data()
+survey_clean <- clean_survey_data(survey)
+```
 
-survey_plot <- survey %>%
+```{r make-survey-plot}
+survey_plot <- survey_clean %>%
   ggplot() +
-  aes(x=Crisis, fill=Crisis) +
+  aes(x=crisis, fill=crisis) +
   geom_bar() +
   xlab("Response") +
   theme(axis.text.x = element_blank()) +

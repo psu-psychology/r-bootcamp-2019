@@ -1,3 +1,27 @@
+# survey.R
+#
+# This set of helper functions gathers the 2019 R Bootcamp User Survey and cleans it.
+# 
+# We gather these functions togther to make it easier to source the relevant ones depending
+# on the context.
+#
+# author: Rick Gilmore, rog1@psu.edu
+
+get_survey_data <- function(verbose = FALSE, 
+                            sheet_name = 'PSU R Bootcamp 2019 Survey (Responses)') {
+  # Download 2019 Bootcamp registration data from GoogleSheet
+  library(googledrive)
+  library(googlesheets)
+  
+  drive_auth(use_oob = TRUE)
+  options(httr_oob_default = TRUE)
+  
+  survey_gs <- googlesheets::gs_title(sheet_name)
+  survey_data <- googlesheets::gs_read(ss = survey_gs,
+                                       ws = 'Form Responses 1')
+  survey_data
+}
+
 clean_survey_data <- function(df) {
   # Clean the 2019 R Bootcamp Survey Data
   
