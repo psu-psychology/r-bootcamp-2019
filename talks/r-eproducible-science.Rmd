@@ -738,7 +738,7 @@ But you can learn from my mistakes:
 - Script **everything** you possibly can
     - If you have to repeat something, make a function or write a parameterized script
 - Document **all the time**
-    - Comments in code
+    - Comment your code
     - Update README files
 - Don't be afraid to ask
 - Don't be afraid to work in the open

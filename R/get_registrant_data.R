@@ -1,5 +1,5 @@
 get_registrant_data <- function(verbose = FALSE, sheet_name = 'PSU R Bootcamp 2019 Sign-up (Responses)') {
-  
+  # Download 2019 Bootcamp registration data from GoogleSheet
   library(googledrive)
   library(googlesheets)
   
