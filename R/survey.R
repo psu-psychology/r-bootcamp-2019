@@ -8,7 +8,8 @@
 # author: Rick Gilmore, rog1@psu.edu
 
 get_survey_data <- function(verbose = FALSE, 
-                            sheet_name = 'PSU R Bootcamp 2019 Survey (Responses)') {
+                            sheet_name = 'PSU R Bootcamp 2019 Survey (Responses)',
+                            save_raw = TRUE) {
   # Download 2019 Bootcamp registration data from GoogleSheet
   library(googledrive)
   library(googlesheets)
@@ -19,6 +20,10 @@ get_survey_data <- function(verbose = FALSE,
   survey_gs <- googlesheets::gs_title(sheet_name)
   survey_data <- googlesheets::gs_read(ss = survey_gs,
                                        ws = 'Form Responses 1')
+  
+  if (save_raw) {
+    readr::write_csv(survey_data, "data/csv/survey_raw.csv")
+  }
   survey_data
 }
 
@@ -49,8 +54,7 @@ update_survey_data <- function() {
 }
 
 clean_repro_crisis <- function(df) {
-  df$crisis <- df$`Is there a reproducibility crisis?`
-  df$crisis <- factor(df$crisis, 
+   df$crisis <- factor(df$crisis, 
                           levels = c("Yes, a significant crisis", 
                                      "Yes, a slight crisis", 
                                      "No crisis", "Don't know"))
@@ -129,6 +133,7 @@ clean_survey_names <- function(df) {
   df <- dplyr::rename(df, got_s8 =  `Your enthusiasm for \"Game of Thrones\" Season 8.`)
   df <- dplyr::rename(df, day = `Favorite day of the week`)
   df <- dplyr::rename(df, tidy_data = `Are your data tidy?`)
+  df <- dplyr::rename(df, crisis = `Is there a reproducibility crisis?`)
   
   return(df) 
 }
