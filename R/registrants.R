@@ -37,9 +37,11 @@ save_registration_data <- function(df, fn = "data/csv/registrants.csv") {
 }
 
 update_registration_data <- function() {
-  regis <- get_registration_data()
-  regis_clean <- clean_registration_data(regis)
-  save_registration_data(regis_clean)
+  save_registration_data(
+    clean_registration_data(
+      get_registration_data()
+    ) 
+  )
 }
 
 clean_dept_field <- function(df) {

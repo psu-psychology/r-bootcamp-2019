@@ -2,7 +2,6 @@
 title: "R-eproducible Psychological Science"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
-bibliography: bib/bootcamp.bib
 logo: ../img/psu-logo.png
 output: 
   html_document:
@@ -63,37 +62,7 @@ They were asked a number of questions, including the following:
 [Baker 2016](http://doi.org/10.1038/533452a)
 </div>
 
-### Results from our own bootcamp poll
-
-We'll dig into the workflow for gathering, cleaning, and visualizing the bootcamp survey data a little later.
-But let's see what we all said in response to the same question.
-
-
-```{r load-2018-Bootcamp-survey, include=FALSE}
-source("R/clean_survey.R")
-
-survey <- get_survey_data()
-survey_clean <- clean_survey_data(survey)
-```
-
-```{r make-survey-plot}
-survey_plot <- survey_clean %>%
-  ggplot() +
-  aes(x=crisis, fill=crisis) +
-  geom_bar() +
-  xlab("Response") +
-  theme(axis.text.x = element_blank()) +
-  theme(legend.title = element_blank()) +
-  ggtitle("Is there a reproducibility crisis in psychology?")
-```
-
-<div class="centered">
-```{r plot-survey, echo=FALSE}
-survey_plot
-```
-</div>
-
-## Problems with reproducibility extend beyond psychology and behavioral science
+## Problems with reproducibility extend beyond behavioral science
 
 <div class="centered">
 <a href="http://www.nature.com/polopoly_fs/7.36718.1464174471!/image/reproducibility-graphic-online3.jpg_gen/derivatives/landscape_630/reproducibility-graphic-online3.jpg">
@@ -103,8 +72,10 @@ survey_plot
 ---
 
 <div class="centered">
-<img src="https://cdn.shopify.com/s/files/1/0877/5762/products/Rigor_Mortis_1024x1024.jpg?v=1491240110" height=500px/>
+<img src="https://blogs.sciencemag.org/books/wp-content/uploads/sites/6/2017/03/Rigor-Mortis-300x456.jpg" height=500px/>
 </div>
+
+<!-- Rigor Mortis -->
 
 ## Why is reproducibility hard?
 
@@ -257,15 +228,15 @@ No problem; your colleagues can easily pick-up where you left off.
 Here's the `Make_site.R` script for this bootcamp:
 
 ```
-# Make_site.R
+# make_bootcamp_site.R
 #
 # Updates and makes R bootcamp site
 
-# Survey data (update first because later items depend on it)
-source("R/Make_test_survey.R")
-source("R/Get_bootcamp_googlesheet.R")
-rmarkdown::render("talks/bootcamp-survey.Rmd", 
-                  output_format = "html_document")
+# Update and clean data from registrants and survey
+source("R/registrants.R")
+source("R/survey.R")
+update_registration_data()
+update_survey_data()
 
 # Gilmore's talks
 rmarkdown::render(input = "talks/bootcamp-day-1-intro.Rmd", 
@@ -276,18 +247,6 @@ rmarkdown::render(input = "talks/slow-r.Rmd",
 
 rmarkdown::render(input = "talks/r-eproducible-science.Rmd", 
                   output_format = c("html_document"))
-
-# Sample papja document
-rmarkdown::render(input = "talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd")
-
-# Vallorani tutorial
-rmarkdown::render(input = "talks/ggplot2_tutorial_vallorani.Rmd")
-
-# Hallquist talks
-rmarkdown::render(input = "parallel_r.Rmd")
-
-# Ram talk
-rmarkdown::render(input = "talks/IntroBasicEFA_2018_0815.Rmd")
 
 # Render site last so that updated versions get copied to docs/
 rmarkdown::render_site()
@@ -410,18 +369,21 @@ We can see that the document combines the body text, links, R code chunks and R 
 One of the virtues of R Markdown, of course, is that we could produce different output formats for the same file, either by changing the `output` field in the document header or by issuing a command in the console:
 
 ```
-rmarkdown::render("test.Rmd", output_format = 'pdf_document')
-rmarkdown::render("test.Rmd", output_format = 'word_document')
+rmarkdown::render("test.Rmd", 
+                  output_format = 'pdf_document')
+rmarkdown::render("test.Rmd", 
+                  output_format = 'word_document')
 
 # More than one output_format
-rmarkdown::render("test.Rmd", output_format = c('html_document',
-                                                 'pdf_document',
-                                                 'word_document'))
+rmarkdown::render("test.Rmd", 
+                  output_format = c('html_document',
+                                    'pdf_document',
+                                    'word_document'))
 ```
 
-### R Markdown using 2018 R bootcamp data
+### R Markdown using 2019 R bootcamp data
  
-Over the lunch break, I analyzed the survey data you provided using an R Markdown document [bootcamp-survey.Rmd](bootcamp-survey.Rmd).
+We can use an R Markdown document [bootcamp-survey.Rmd](bootcamp-survey.Rmd) to analyze the survey data.
 Let's open it up and see how it looks.
 
 The default format is an `html_document`, and I've added some additional parameters in the header to produce a table of contents `toc: yes` with numbered sections `number_section: TRUE`, that create a 'floating' menu-like table of contents via `toc_float: TRUE`.
@@ -449,10 +411,8 @@ R Markdown can become one of your super-powers.
 
 ### More about R Markdown
 
-I have just learned that there is a new book coming out called *R Markdown: The Definitive Guide* by Yihui Xie, J. J. Allaire, Garrett Grolemund.
+there is a book called *R Markdown: The Definitive Guide* by Yihui Xie, J. J. Allaire, Garrett Grolemund.
 Here is a link to the e-version of the book: <https://bookdown.org/yihui/rmarkdown/>.
-I've only just started digging in, but I really like what I see so far.
-I'm pretty sure I'll buy a hard copy, since I like to have paper copies of technical books.
 
 ### *Why* write reproducible papers/reports in R Markdown?
 
@@ -485,147 +445,10 @@ There is so much more to say about how to do R-eproducible science.
 Here are some advanced topics we can spend a few minutes discussing, depending on your level of interest.
 These materials will remain available to you for later reference.
 
-- Write *reproducible papers* in R Markdown using [`papaja`](https://github.com/crsh/papaja)
-    - Make [this](gilmore-hallquist-bootcamp-2018-papaja.pdf) from [this](gilmore-hallquist-bootcamp-2018-papaja.Rmd)
 - Version control with git and [GitHub](http://github.com)
 - [Web sites](http://rmarkdown.rstudio.com/rmarkdown_websites.html), [blogs](https://bookdown.org/yihui/blogdown/), (even [books](https://bookdown.org/)) with R Markdown
-
-### Example of a reproducible paper using the `papaja` package
-
-It's possible to write a paper like [this](gilmore-hallquist-bootcamp-2018-papaja.pdf) from an R Markdown document that looks like [this](gilmore-hallquist-bootcamp-2018-papaja.Rmd).
-
-The `papaja` package makes this possible.
-
-#### Headers in `papaja`
-
-The header has some specialized fields, but we can easily understand most of them.
-
-```
----
-title             : "R you ready to write a paper in R Markdown?"
-shorttitle        : "R you ready"
-author: 
-  - name          : "Rick O. Gilmore"
-    affiliation   : "1,2"
-    corresponding : yes    # Define only one corresponding author
-    address       : "Department of Psychology, The Pennsylvania State University, University Park, PA 16802 USA"
-    email         : "rogilmore@psu.edu"
-  - name          : "Michael Hallquist"
-    affiliation   : "1"
-affiliation:
-  - id            : "1"
-    institution   : "The Pennsylvania State University"
-  - id            : "2"
-    institution   : "Databrary.org"
-author_note: |
-  The authors are with the Department of Psychology at The Pennsylvania State University.
-  The authors acknowledge support from the Department of Psychology, the Social, Life, & Engineering Sciences Imaging Center (SLEIC), and the Child Study Center's Open Data in Developmental Science (ODDS) initiative.
-abstract: |
-  Want to write a paper using R Markdown? Keep reading to see how.
-  
-keywords          : "APA, R Markdown"
-wordcount         : "Not that many."
-bibliography      : ["r-references.bib", "references.bib"]
-figsintext        : no
-figurelist        : no
-tablelist         : no
-footnotelist      : no
-lineno            : yes
-lang              : "english"
-class             : "man"
-output            : papaja::apa6_pdf
-editor_options: 
-  chunk_output_type: console
-params:
-  data_file_in: '../data/survey_test.csv'
----
-```
-
-#### Main paper sections
-
-Notice that we set the chunk options so that chunks will run, but not echo their outputs or show warning or error messages.
-
-```
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE)
-```
-This keeps the final output clean.
-
-We load the required packages for our paper, and then write our introduction.
-
-```
-It is possible to write an entire APA-formatted article in R Markdown. 
-This very brief paper shows how it might be done.
-As illustration, we use the data from a short, informal survey of participants in the 2018 R Bootcamp at Penn State.
-```
-
-The methods section is specified as a level 1 `#` heading, with the subsections denoted by level 2 `##` headings.
-
-```
-# Methods {#methods}
-Consistent with open and transparent science practices, we report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study [@Simmons2011-za].
-
-## Participants {#participants}
-
-We asked participants in an optional "R Bootcamp" held at the Pennsylvania State University Department of Psychology on August 16 and 17, 2018 to complete an anonymous survey using a Google Form.
-We asked participants to report how old they felt.
-A total of $n=$`r length(survey$Psych_age_yrs)` respondents answered the survey with a reported felt age of $M$=`r mean(survey$Psych_age_yrs)` and a range of [`r min(survey$Psych_age_yrs)`-`r max(survey$Psych_age_yrs)`] years. 
-```
-
-The package uses the tags in braces `{#methods}` in generating a table of contents.
-Notice that we can add in-text references using the `[@paper_id]` syntax if we've created a bibliography file in the BibTex format (.bib).
-Notice also that we can freely mix LaTex syntax for equations (`$n=$` becomes $n=$) with commands to produce R output `r length(survey$Psych_age_yrs)`.
-This allows us to directly 'grab' information from R, including statistical values, and insert them into our document **without copying and pasting**.
-
-> Text between dollar signs `$x=12$` will be rendered using the LaTex equation engine. Text between single backticks `r hist(rnorm(100))` will be run in the language specified by the first element, here that is `r`.
-
-#### Making tables and figures
-
-`papaja` builds on other R commands to allow us to make APA-formatted tables.
-This chunk uses `dplyr` commands we'll learn about tomorrow to create a new data frame with some basic descriptive statistical information about the variables in our survey.
-Then it creates a properly formatted table using the `apa_table()` command.
-
-```
-descriptives_Banjo <- survey %>%
-  select(R_exp, Banjo) %>%
-  group_by(R_exp) %>%
-  summarise(Mean = mean(Banjo),
-            Median = median(Banjo),
-            SD = sd(Banjo),
-            Min = min(Banjo),
-            Max = max(Banjo))
-
-# Drop the Timestamp column
-descriptives_Banjo[, -1] <- printnum(descriptives_Banjo[, -1])
-
-apa_table(
-  descriptives_Banjo, 
-  caption = "Descriptive statistics of banjo music enthusiasm by R experience.",
-  note = "This table was created with apa_table()",
-  escape = TRUE
-)
-```
-
-Similarly, this chunk uses the `ggplot()` command to create a scatter plot of the relationship between preferred hours of sleep and enthusiasm for banjo music.
-
-```
-Banjo_vs_sleep <- survey %>%
-  ggplot() +
-  aes(x=Sleep_hrs, y=Banjo) +
-  geom_point() +
-  geom_smooth() +
-  theme_apa()
-Banjo_vs_sleep
-```
-
-### Summing up on writing papers with `papaja`
-
-There's much more to say about how to do this than we have time for today.
-This [guide](https://rpubs.com/YaRrr/papaja_guide) or [this](https://github.com/mcfrank/openscience_tutorial/blob/master/rmarkdown_handout.Rmd#writing-apa-format-papers) are good places to start.
-But I think we can all agree that **pushing a button to render a complete paper, including tables, figures, and references, is pretty amazing.**
-
-To be honest, I'm still learning `papaja` and have yet to create and submit a paper using it.
-But I have one in late draft stage and another in process.
-Let me know if you're using `papaja`, and what you think about it.
+- Write *reproducible papers* in R Markdown using [`papaja`](https://github.com/crsh/papaja)
+    - Make [this](gilmore-hallquist-bootcamp-2018-papaja.pdf) from [this](gilmore-hallquist-bootcamp-2018-papaja.Rmd)
     
 ## Version control
 
@@ -754,10 +577,10 @@ In many ways, learning R is like acquiring a super power.
 So, go be super-powerful.
 But remember that with great power comes great responsibility.
 
-# Materials
+# Supporting Materials
 
-This document was produced on `r Sys.time()` in [RStudio](http://rstudio.com) version 1.1.453 using R Markdown.
-The code and materials used to generate the slides may be found at <https://github.com/psu-psychology/r-bootcamp-2018/>. 
+This document was produced on `r Sys.time()` in [RStudio](http://rstudio.com) version 1.2.1335 using R Markdown.
+The code and materials used to generate the slides may be found at <https://github.com/psu-psychology/r-bootcamp-2019/>. 
 Information about the R Session that produced the slides is as follows:
 
 ```{r session-info}

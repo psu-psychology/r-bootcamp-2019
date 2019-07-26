@@ -1,0 +1,394 @@
+---
+title: "Gathering, Cleaning, & Visualizing 2019 Bootcamp Survey data"
+author: "Rick Gilmore"
+date: '`r Sys.time()`'
+output:
+  html_document:
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+params:
+  data_file_out: "../data/csv/survey.csv"
+  data_file_in:  "../data/csv/survey_raw.csv"
+  supporting_functions: "../R/survey.R"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Goals
+
+- Download and clean data from 2019 R Bootcamp Survey
+- Visualize data
+- Demonstrate scripting of data gathering and cleaning
+
+# Preliminaries
+
+Load required packages.
+
+```{r load-packages}
+library(tidyverse)
+library(googlesheets)
+library(dataMaid)
+```
+
+# Load data and examine
+
+The survey data are stored in a [Google Sheet](https://docs.google.com/spreadsheets/d/1YrKFrPz38FV-JbJKlp7wGQAw9IagVJFMuLbCLY7HMeA/edit?usp=sharing). 
+We'll use the `googlesheets` package to open it and create a data frame. Documentation about the package can be found [here](https://cran.r-project.org/web/packages/googlesheets/vignettes/basic-usage.html).
+
+There are some idiosyncrasies in using the `googlesheets` package in an R Markdown document because it requires interaction with the console, so I created a separate R function to gather/get/download these data.
+If you open the `R/survey.R` file, you will see a function that looks like this:
+
+```
+get_survey_data <- function(verbose = FALSE,
+                            sheet_url = "https://docs.google.com/spreadsheets/d/1YrKFrPz38FV-JbJKlp7wGQAw9IagVJFMuLbCLY7HMeA/"
+                            sheet_name = 'PSU R Bootcamp 2019 Survey (Responses)') {
+  # Download 2019 Bootcamp registration data from GoogleSheet
+  library(googledrive)
+  library(googlesheets)
+  
+  drive_auth(use_oob = TRUE)
+  options(httr_oob_default = TRUE)
+  
+  survey_gs <- googlesheets::gs_title(sheet_name)
+  survey_data <- googlesheets::gs_read(ss = survey_gs,
+                                       ws = 'Form Responses 1')
+  survey_data
+}
+```
+
+We'll load a previously saved version of the raw survey data here.
+
+```{r load-raw-survey}
+source(params$supporting_functions)
+survey <- readr::read_csv(params$data_file_in)
+```
+
+## Inspecting the data 
+
+The `str()` or 'structure' command is also a great way to see what you've got.
+
+```{r}
+str(survey)
+```
+
+Clearly, we need to do some cleaning before we can do anything with this.
+
+## Cleaning data
+
+Let's start by turning `Timestamp` into a proper date and time.
+The `lubridate` package helps us manipulate character strings (`chr`) into dates and times.
+The `Timestamp` variable is in a format common in the U.S. -- month/day/year -- but this format is not universal.
+The `mdy_hms` command in lubridate converts the month/day/year (mdy) format followed by the time with hours, minutes, and seconds (hms) into a more flexible and universal format involving UTC (universal coordinated time or 'Zulu' time).
+
+```{r}
+survey$Timestamp <- lubridate::mdy_hms(survey$Timestamp)
+survey$Timestamp
+```
+
+We also note that the `Other programming languages you know` question will need some work to be useful for data analysis.
+Let's look at this variable specifically:
+
+```{r}
+survey$`Other programming languages you know`
+```
+
+We'll have to parse this into different languages.
+Note that we can refer to the `Other programming languages you know` variable using back-tick characters: ````.
+A bit later, we'll want to simplify these variable names.
+For now, the following function from `R/survey.R` does most of what we need to do.
+
+```
+clean_other_languages <- function(df) {
+  # Clean the 'Other programming languages you know' field
+  out_df <- df
+  
+  # Create Booleans for different languages/language categories
+  python <- stringr::str_detect(df$`Other programming languages you know`, "(P|p)ython")
+  spss_sas <- stringr::str_detect(df$`Other programming languages you know`, "SPSS/SAS")
+  mplus <- stringr::str_detect(df$`Other programming languages you know`, "(M|m)plus")
+  lisrel <- stringr::str_detect(df$`Other programming languages you know`, "(L|l)isrel")
+  none <- stringr::str_detect(df$`Other programming languages you know`, "None")
+  js_html_css <- stringr::str_detect(df$`Other programming languages you know`, "HTML")
+  java <- stringr::str_detect(df$`Other programming languages you know`, "Java")
+  unix <- stringr::str_detect(df$`Other programming languages you know`, "nix")
+  swift <- stringr::str_detect(df$`Other programming languages you know`, "Swift")
+  msdos <- stringr::str_detect(df$`Other programming languages you know`, "MS DOS")
+  
+  # Create new fields for each language; easier to gather separately
+  out_df$python <- NA
+  out_df$python[python == TRUE] <- "python"
+  
+  out_df$spss_sas <- NA
+  out_df$spss_sas[spss_sas == TRUE] <- "spss_sas"
+  
+  out_df$mplus <- NA
+  out_df$mplus[mplus == TRUE] <- "mplus"
+  
+  out_df$lisrel <- NA
+  out_df$lisrel[lisrel == TRUE] <- "lisrel"
+  
+  out_df$none <- NA
+  out_df$none[none == TRUE] <- "none"
+  
+  out_df$js_html_css <- NA
+  out_df$js_html_css[js_html_css == TRUE] <- "js_html_css"
+  
+  out_df$java <- NA
+  out_df$java[java == TRUE] <- "java"
+  
+  out_df$unix <- NA
+  out_df$unix[unix == TRUE] <- "unix"
+  
+  out_df$swift <- NA
+  out_df$swift[swift == TRUE] <- "swift"
+  
+  out_df$msdos <- NA
+  out_df$msdos[msdos == TRUE] <- "msdos"
+  
+  return(out_df)
+}
+```
+
+Let's run it.
+
+```{r}
+survey <- clean_other_languages(survey)
+```
+
+This function creates new Boolean variables for each language we pulled out of the `Other programming languages you know` column.
+Later, we'll combine these into a single variable.
+
+Next, we notice that the `Preferred number of hours spent sleeping/day` is a `char` variable, and we really want this to be a number.
+
+```{r}
+survey$`Preferred number of hours spent sleeping/day`
+```
+
+The following function fixes the "7-8" error.
+
+```
+clean_hrs_sleep <- function(df) {
+  # `Preferred number of hours spent sleeping/day`
+  
+  # "7-8"
+  clean_this <- df$`Preferred number of hours spent sleeping/day` == "7-8"
+  df$`Preferred number of hours spent sleeping/day`[clean_this] <- "7.5"
+  df$`Preferred number of hours spent sleeping/day` <- as.numeric(df$`Preferred number of hours spent sleeping/day`)
+  
+  return(df)
+}
+```
+
+So, we'll run that.
+
+```{r}
+survey <- clean_hrs_sleep(survey)
+```
+
+Now, we're ready to create shorter, but still-human-readable names for the variables.
+My preferred style is to use lowercase names with underscores.
+
+```
+clean_survey_names <- function(df) {
+  # Create shorter names for variables
+  df <- dplyr::rename(df, time_stamp = Timestamp)
+  df <- dplyr::rename(df, r_exp = `Your current level of experience/expertise with R`)
+  df <- dplyr::rename(df, other_langs = `Other programming languages you know`)
+  df <- dplyr::rename(df, beverage = `Your favorite beverage`)
+  df <- dplyr::rename(df, age_yrs = `Age in years`)
+  df <- dplyr::rename(df, sleep_hrs = `Preferred number of hours spent sleeping/day`)
+  df <- dplyr::rename(df, got_s8 =  `Your enthusiasm for \"Game of Thrones\" Season 8.`)
+  df <- dplyr::rename(df, day = `Favorite day of the week`)
+  df <- dplyr::rename(df, tidy_data = `Are your data tidy?`)
+  
+  return(df) 
+}
+```
+
+Let's clean the names.
+
+```{r}
+survey <- clean_survey_names(survey)
+```
+
+Next, we'll want to make a 'tidier' data frame with the languages a person reports knowing.
+A tidy data file for this would be 'longer' with a column called, say `lang_known` and with duplicate values in the other fields.
+
+```
+gather_known_langs <- function(df) {
+  # Create tidy data tibble when there are multiple languages known
+  df1 <- dplyr::select(df, time_stamp, python:msdos)
+  df2 <- tidyr::gather(df1, "lang", "lang_known", -time_stamp)
+  df3 <- dplyr::filter(df2, !is.na(lang_known))
+  df4 <- dplyr::select(df3, -lang)
+  df5 <- dplyr::left_join(df, df4, by = 'time_stamp')
+  df6 <- dplyr::select(df5, -other_langs, -(python:msdos))
+  return(df6)
+}
+```
+
+We'll use the `dplyr::gather()` function for this.
+Michael is about to go into great detail about this sort of data munging.
+
+```{r}
+survey <- gather_known_langs(survey)
+```
+
+Finally, we'll clean-up the `Is there a reproducibility crisis?` variable we've already renamed `crisis`.
+
+```{r}
+survey <- clean_repro_crisis(survey)
+```
+
+## Cleaning data with functions
+
+You'll note that I've written separate functions to deal with each step of the data cleaning.
+This seems like good practice to me since I really want to think about each variable separately.
+If I create a separate function to clean each variable, I can also keep separate things separate.
+
+At the top of the `R/survey.R` file, you'll see functions that combine these simplier functions:
+
+To combine the steps I used to clean the data, I run:
+
+```
+clean_survey_data <- function(df) {
+  # Clean the 2019 R Bootcamp Survey Data
+  
+  df_0 <- clean_timestamp(df)
+  df_1 <- clean_other_languages(df_0)
+  df_2 <- clean_hrs_sleep(df_1)
+  df_3 <- clean_survey_names(df_2)
+  df_4 <- gather_known_langs(df_3)
+  df_5 <- clean_repro_crisis(df_4)
+  
+  return(df_5)
+}
+```
+
+This means that to update and clean the survey data, something I've done many times, I just run:
+
+```
+survey <- get_survey_data
+survey <- clean_survey_data(survey)
+```
+
+This automates the entire process and makes it **REPRODUCIBLE**.
+
+The last step is to save the new cleaned file so we don't have to do this again.
+
+```{r save-survey-data}
+save_survey_data(survey, params$data_file_out)
+```
+
+Indeed, I've written an `update_survey_data()` function that combines all of these gathering, cleaning, and saving steps:
+
+```
+update_survey_data <- function() {
+  save_survey_data(
+    clean_survey_data(
+      get_survey_data()
+      )
+  )
+}
+```
+
+# Visualization
+
+Now, we follow Mike Meyer's advice: "Plot your data!"
+Who's Mike Meyer?
+Rick's stats professor from grad school.
+He had us use 'Splus' a forerunner of R, and he was an inspiring and funny professor.
+
+## Descriptive plots
+
+```{r R-exp-hist, fig.cap="Distribution of prior R experience"}
+R_exp_hist <- survey %>%
+  ggplot() +
+  aes(x=r_exp) +
+  geom_histogram(stat = "count") # R_exp is discrete
+R_exp_hist
+```
+
+We observe that this is not ordered in the way we'd expect, so let's fix that.
+
+```{r}
+survey$r_exp <- ordered(survey$r_exp, c("none", "limited", "some", "pro"))
+
+R_exp_hist <- survey %>%
+  ggplot() +
+  aes(x=r_exp) +
+  geom_histogram(stat = "count") # R_exp is discrete
+R_exp_hist
+```
+
+Much better!
+
+```{r Sleep_hrs_hist, fig.cap="Distribution of preferred sleep hrs/day"}
+Sleep_hrs_hist <- survey %>%
+  ggplot() +
+  aes(x=sleep_hrs) +
+  geom_histogram() # Sleep_hrs is continuous
+Sleep_hrs_hist
+```
+
+# Data documentation (codebook)
+
+Every data set should be documented.
+You can generate a template data codebook with some useful summary information using the package `dataMaid`.
+
+```{r make_dataMaid_codebook}
+if(!require(dataMaid)){install.packages('dataMaid')}
+library(dataMaid)
+dataMaid::makeCodebook(data = survey, 
+                       reportTitle = 'Codebook for 2019 R bootcamp survey', 
+                       replace = TRUE)
+```
+
+Then, we can look at the `codebook_survey.Rmd` file and edit it as needed, especially the section with the code descriptions.
+
+```
+---------------------------------------------------------------------------
+Label   Variable            Class         # unique  Missing   Description  
+                                            values                         
+------- ------------------- ----------- ---------- ---------- -------------
+        **[time\_stamp]**   POSIXct             15   0.00 %                
+
+        **[r\_exp]**        ordered              4   0.00 %                
+
+        **[got\_s8]**       numeric              7   0.00 %                
+
+        **[beverage]**      character            6   0.00 %                
+
+        **[age\_yrs]**      numeric             13   0.00 %                
+
+        **[sleep\_hrs]**    numeric              8   0.00 %                
+
+        **[day]**           character            5   0.00 %                
+
+        **[tidy\_data]**    character            3   0.00 %                
+
+        **[crisis]**        factor               1  100.00 %               
+
+        **[lang\_known]**   character           10   0.00 %                
+---------------------------------------------------------------------------
+```
+
+# Analysis
+
+I could use a document like this to plan out my analysis plan **before** I conduct it.
+If I used simulated data, I could make sure that my workflow will run when I get real (cleaned) data.
+I could even preregister my analysis plan before I conduct it.
+That doesn't preclude later exploratory analyses, but it does hold me and my collaborators accountable for what I predicted in advance.
+
+# Notes
+
+Notice that I sometimes put a label like `R-exp-hist` in the brackets `{}`for a given 'chunk' of R code. The main reasons to do this are:
+
+- It sometimes makes it easier to debug your code.
+- In some cases, you can have this 'chunk' name serve as the file name for a figure you generate within a chunk.
+- These chunk names are useful for making tables, figures, and equations that generate their own numbers.

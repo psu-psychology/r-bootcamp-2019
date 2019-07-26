@@ -32,7 +32,7 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 
 | [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Nilam Ram)  |
+| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
 | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
 | Lunch, Moore 1st floor lobby                         |
