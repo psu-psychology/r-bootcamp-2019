@@ -35,6 +35,19 @@ clean_survey_data <- function(df) {
   return(df_5)
 }
 
+save_survey_data <- function(df, fn = "data/csv/survey.csv", verbose = FALSE) {
+  write.csv(df, fn, row.names = FALSE)
+  if (verbose) message(paste0("Survey data saved to ", fn))
+}
+
+update_survey_data <- function() {
+  save_survey_data(
+    clean_survey_data(
+      get_survey_data()
+      )
+  )
+}
+
 clean_repro_crisis <- function(df) {
   df$crisis <- df$`Is there a reproducibility crisis?`
   df$crisis <- factor(df$crisis, 
