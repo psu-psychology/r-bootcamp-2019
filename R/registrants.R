@@ -54,7 +54,7 @@ clean_dept_field <- function(df) {
   ed_ldr <- stringr::str_detect(df$dept, "Educational Leadership")
   
   # Psychology
-  some_psych <- stringr::str_detect(df$dept, "(p|P)(s|a)ych")
+  some_psych <- stringr::str_detect(df$dept, "(p|P)(s|a)ych") | stringr::str_detect(df$dept, "Social")
   io <- stringr::str_detect(df$dept, "I/O")
   devel <- stringr::str_detect(df$dept, "(D|d)evel")
   soc <- stringr::str_detect(df$dept, "(S|s)ocial")
@@ -62,7 +62,7 @@ clean_dept_field <- function(df) {
   cog <- stringr::str_detect(df$dept, "(C|c)ogn")
   
   # HDFS / Criminology
-  hdfs <- stringr::str_detect(df$dept, "HDFS")
+  hdfs <- stringr::str_detect(df$dept, "HDFS") | stringr::str_detect(df$dept, "Human")
   
   # Biobehavioral Health
   bbh <- stringr::str_detect(df$dept, "Biobe") | stringr::str_detect(df$dept, "BBH")
@@ -96,6 +96,7 @@ clean_position_field <- function(df) {
   fac <- stringr::str_detect(df$position, "Faculty")
   grad <- stringr::str_detect(df$position, "Grad")
   post <- stringr::str_detect(df$position, "Post")
+  ug <- stringr::str_detect(df$position, "Undergrad")
   
   out_df <- df
   
@@ -103,6 +104,7 @@ clean_position_field <- function(df) {
   out_df$position[grad] <- "Grad"
   out_df$position[fac] <- "Fac"
   out_df$position[staff] <- "Staff"
+  out_df$position[ug] <- "Undergrad"
   
   return(out_df)
 }

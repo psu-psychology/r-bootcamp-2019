@@ -79,27 +79,19 @@ lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
 # r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
 # lapply(r_funcs, source, echo = FALSE)
 source("R/registrants.R")
-
-rg <- get_registration_data()
-rg_clean <- clean_registration_data(rg)
+update_registration_data()
+rg <- readr::read_csv("data/csv/registrants.csv")
 ```
 
-We have `r dim(rg_clean)[1]` people registered so far.
-The following table and mosaic plot tell us a bit about them.
-(These data and graphs are generated from the GoogleSheet you completed to register.
+We have `r dim(rg)[1]` people registered so far.
+The following table tells us a bit about them.
+(These data are generated from the GoogleSheet you completed to register.
 The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)
 
 ```{r registrant-table, message=FALSE, warning=FALSE}
-# Table
-pos_dept <- xtabs(formula = ~ position + dept, data = rg_clean)
+# Make table
+pos_dept <- xtabs(formula = ~ position + dept, data = rg)
 knitr::kable(pos_dept)
-```
-
-```{r mosaic-plot, message=FALSE, warning=FALSE}
-ggplot(data = rg_clean) +
-  geom_mosaic(aes(x = product(dept, position), fill = dept), na.rm = TRUE) +
-  xlab("Position") +
-  ylab("Dept")
 ```
 
 ### What to bring

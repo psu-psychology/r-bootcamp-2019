@@ -346,18 +346,20 @@ $(document).ready(function () {
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-07-26 11:08:37:</p>
-<p>We have 71 people registered so far. The following table and mosaic plot tell us a bit about them. (These data and graphs are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
-<pre class="r"><code># Table
-pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg_clean)
+<p>Here are some data about the registrants as of 2019-07-30 14:00:51:</p>
+<p>We have 79 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
+<pre class="r"><code># Make table
+pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg)
 knitr::kable(pos_dept)</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th></th>
 <th align="right">BBH</th>
+<th align="right">Ecology</th>
 <th align="right">Ed Ldrshp</th>
 <th align="right">HDFS</th>
+<th align="right">IST</th>
 <th align="right">Neuro</th>
 <th align="right">Psych</th>
 <th align="right">TLT</th>
@@ -370,6 +372,8 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">4</td>
 <td align="right">0</td>
 </tr>
@@ -377,9 +381,11 @@ knitr::kable(pos_dept)</code></pre>
 <td>Grad</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">8</td>
 <td align="right">1</td>
-<td align="right">48</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">51</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -387,6 +393,8 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
 <td align="right">0</td>
 <td align="right">4</td>
 <td align="right">0</td>
@@ -397,16 +405,24 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">3</td>
 <td align="right">1</td>
 </tr>
+<tr class="odd">
+<td>Undergrad</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
 </tbody>
 </table>
-<pre class="r"><code>ggplot(data = rg_clean) +
-  geom_mosaic(aes(x = product(dept, position), fill = dept), na.rm = TRUE) +
-  xlab(&quot;Position&quot;) +
-  ylab(&quot;Dept&quot;)</code></pre>
-<p><img src="index_files/figure-html/mosaic-plot-1.png" width="672" /></p>
 <div id="what-to-bring" class="section level3">
 <h3>What to bring</h3>
 <p>We ask that you bring an open mind, enthusiasm, and a willingness to ask questions even if they seem trivial. The classrooms we have chosen for the bootcamp have computers with Windows 10, so you do <em>not</em> need to bring your own computer. We will use a standard computing environment set up for your use that takes advantage of the RStudio Server program. This means that RStudio will run in your web browser.</p>
