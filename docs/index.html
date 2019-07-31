@@ -346,8 +346,8 @@ $(document).ready(function () {
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-07-30 14:00:51:</p>
-<p>We have 79 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
+<p>Here are some data about the registrants as of 2019-07-31 15:45:05:</p>
+<p>We have 84 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The are processed entirely in an R-based workflow that updates automatically everytime we regenerate this website.)</p>
 <pre class="r"><code># Make table
 pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg)
 knitr::kable(pos_dept)</code></pre>
@@ -359,6 +359,7 @@ knitr::kable(pos_dept)</code></pre>
 <th align="right">Ecology</th>
 <th align="right">Ed Ldrshp</th>
 <th align="right">HDFS</th>
+<th align="right">HHD</th>
 <th align="right">IST</th>
 <th align="right">Neuro</th>
 <th align="right">Psych</th>
@@ -374,6 +375,7 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
 <td align="right">4</td>
 <td align="right">0</td>
 </tr>
@@ -382,10 +384,11 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">10</td>
+<td align="right">11</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">51</td>
+<td align="right">53</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -394,6 +397,7 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">2</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">4</td>
@@ -407,11 +411,13 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
 <td align="right">3</td>
 <td align="right">1</td>
 </tr>
 <tr class="odd">
 <td>Undergrad</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -440,7 +446,7 @@ knitr::kable(pos_dept)</code></pre>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2>Acknowledgments</h2>
-<p>We thank the <a href="http://psych.la.psu.edu">Department of Psychology</a>, the <a href="https://hhd.psu.edu/hdfs/">Department of Human Development &amp; Family Studies (HDFS)</a>, <a href="https://tlt.psu.edu/">Penn State’s Teaching and Learning With Technology (TLT)</a>, the <a href="http://imaging.psu.edu">Social, Life, &amp; Engineering Sciences Imaging Center (SLEIC)</a>, and the <a href="http://csc.la.psu.edu">Child Study Center’s</a> Open Data and Developmental Science initiative for support of the R Bootcamp initiative.</p>
+<p>We thank the <a href="http://psych.la.psu.edu">Department of Psychology</a>, the <a href="https://hhd.psu.edu/hdfs/">Department of Human Development &amp; Family Studies (HDFS)</a>, <a href="https://tlt.psu.edu/">Penn State’s Teaching and Learning With Technology (TLT)</a>, the <a href="http://imaging.psu.edu">Social, Life, &amp; Engineering Sciences Imaging Center (SLEIC)</a>, and the <a href="http://csc.la.psu.edu">Child Study Center’s</a> Open Data and Developmental Science (ODDS) initiative for support of the R Bootcamp.</p>
 </div>
 
 

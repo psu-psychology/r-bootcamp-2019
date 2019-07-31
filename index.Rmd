@@ -120,4 +120,4 @@ If Git is unfamiliar to you, you can obtain a zip archive of the current version
 
 ## Acknowledgments
 
-We thank the [Department of Psychology](http://psych.la.psu.edu), the [Department of Human Development & Family Studies (HDFS)](https://hhd.psu.edu/hdfs/), [Penn State's Teaching and Learning With Technology (TLT)](https://tlt.psu.edu/), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science initiative for support of the R Bootcamp initiative.
+We thank the [Department of Psychology](http://psych.la.psu.edu), the [Department of Human Development & Family Studies (HDFS)](https://hhd.psu.edu/hdfs/), [Penn State's Teaching and Learning With Technology (TLT)](https://tlt.psu.edu/), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science (ODDS) initiative for support of the R Bootcamp.
