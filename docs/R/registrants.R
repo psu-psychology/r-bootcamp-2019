@@ -34,6 +34,7 @@ clean_registration_data <- function(df) {
 save_registration_data <- function(df, fn = "data/csv/registrants.csv") {
   df <- dplyr::select(df, -email, -first, -last)
   write.csv(df, fn, row.names = FALSE)
+  message(paste0("Updated data file saved to '", fn, "'"))
 }
 
 update_registration_data <- function() {
@@ -70,6 +71,10 @@ clean_dept_field <- function(df) {
   # Neuroscience
   neuro <- stringr::str_detect(df$dept, "Neuro")
   
+  # Health and Human Development centers
+  hhd <- stringr::str_detect(df$dept, "Center for Healthy Aging") |
+    stringr::str_detect(df$dept, "Methodology center")
+  
   out_df <- df
   out_df$dept[some_psych] <- "Psych"
   out_df$dept[tlt] <- "TLT"
@@ -77,6 +82,7 @@ clean_dept_field <- function(df) {
   out_df$dept[hdfs] <- "HDFS"
   out_df$dept[bbh] <- "BBH"
   out_df$dept[neuro] <- "Neuro"
+  out_df$dept[hhd] <- "HHD"
   
   out_df$area <- NA
   out_df$area[io] <- "I/O"
