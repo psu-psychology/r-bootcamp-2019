@@ -86,7 +86,7 @@ rg <- readr::read_csv("data/csv/registrants.csv")
 We have `r dim(rg)[1]` people registered so far.
 The following table tells us a bit about them.
 (These data are generated from the GoogleSheet you completed to register.
-The are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)
+The data are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)
 
 ```{r registrant-table, message=FALSE, warning=FALSE}
 # Make table
