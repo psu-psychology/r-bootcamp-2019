@@ -48,6 +48,9 @@ update_registration_data <- function() {
 clean_dept_field <- function(df) {
   if (is.null(df)) stop('Data frame is NULL.')
   
+  # "Prevention Research Center"
+  prev_ctr <- stringr::str_detect(df$dept, "Prevention")
+  
   # "Teaching & Learning with Technology - AND - Geography/GIS"
   tlt <- stringr::str_detect(df$dept, "Teaching ")
   
@@ -83,6 +86,7 @@ clean_dept_field <- function(df) {
   out_df$dept[bbh] <- "BBH"
   out_df$dept[neuro] <- "Neuro"
   out_df$dept[hhd] <- "HHD"
+  out_df$dept[prev_ctr] <- "Prev Ctr"
   
   out_df$area <- NA
   out_df$area[io] <- "I/O"
