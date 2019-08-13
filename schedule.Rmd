@@ -55,14 +55,14 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 
 | Plenary                                                     |
 |-------------------------------------------------------------|
-| 09:00 am • R-eproducible Science (Rick Gilmore)             |
-| 09:30 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
-| 10:15 am • Break                                            |
-| 10:30 am • Hands on data wrangling                          |
-| 11:30 am • iPRACTISE data wrangling assessment              |
+| 09:00 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
+| 09:45 am • Data wrangling hands-on                          |
+| 10:30 am • Break                                            |
+| 10:45 am • Data visualization (Graduate student coaches)    |
+| 11:30 am • Data visualization hands-on                      |
 | 12:00 pm • Lunch Moore Building Lobby                       |
-| 01:00 pm • Data visualization (Graduate student coaches)    |
-| 01:45 pm • Hands on practice                                            |
+| 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
+| 01:30 pm • R-eproducible Science (Rick Gilmore)             |
 | 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Graduate student coaches) |
 | 02:45 pm • Break                                            |
 | 03:00 pm • Hands on practice                                |
