@@ -78,6 +78,10 @@ clean_dept_field <- function(df) {
   hhd <- stringr::str_detect(df$dept, "Center for Healthy Aging") |
     stringr::str_detect(df$dept, "Methodology center")
   
+  # CSD
+  csd <- stringr::str_detect(df$dept, "COMMUNICATION ") |
+    stringr::str_detect(df$dept, "Communication")
+  
   out_df <- df
   out_df$dept[some_psych] <- "Psych"
   out_df$dept[tlt] <- "TLT"
@@ -87,6 +91,7 @@ clean_dept_field <- function(df) {
   out_df$dept[neuro] <- "Neuro"
   out_df$dept[hhd] <- "HHD"
   out_df$dept[prev_ctr] <- "Prev Ctr"
+  out_df$dept[csd] <- "CSD"
   
   out_df$area <- NA
   out_df$area[io] <- "I/O"
