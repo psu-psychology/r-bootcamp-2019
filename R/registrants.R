@@ -32,7 +32,9 @@ clean_registration_data <- function(df) {
 }
 
 save_registration_data <- function(df, fn = "data/csv/registrants.csv") {
+  # Drop email and names from data file saved on GitHub
   df <- dplyr::select(df, -email, -first, -last)
+  
   write.csv(df, fn, row.names = FALSE)
   message(paste0("Updated data file saved to '", fn, "'"))
 }
@@ -127,6 +129,20 @@ clean_position_field <- function(df) {
 convert_timestamp <- function(df) {
   df$Timestamp <- lubridate::mdy_hms(df$Timestamp)
   return(df)
+}
+
+extract_emails <- function() {
+  # Get and clean before extracting
+  d0 <- get_registration_data()
+  d1 <- clean_registration_data(d0)
+  
+  d2 <- dplyr::mutate(d1, name = paste(first, last), sep=" ")
+  
+  # Select and drop duplicates
+  d3 <- dplyr::select(d2, name, email)
+  
+  d4 <- dplyr::filter(d3, email %in% unique(email))
+  d4
 }
 
 clean_registration_field_names <- function(df) {
