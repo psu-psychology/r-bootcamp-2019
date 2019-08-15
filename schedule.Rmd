@@ -20,9 +20,13 @@ Please don't sign-up if you you are uncertain about whether you will be able to 
 Whether or not you want to attend the bootcamp, you are welcome to complete this anonymous (and light-hearted) [survey](https://forms.gle/YyTNDDayMNRWibBy5).
 We'll use the data drawn from it to show how one can use R and R Markdown to create reproducible data processing workflows and even full manuscripts.
 
-## Wed, Aug 21, 2019, 9:00 am 
+## Wed, Aug 21, 2019 
 
-### 210 Keller
+### 8:30 am, Moore Building lobby 
+
+Continental breakfast, coffee and tea.
+
+### 9:00 am - 12:00 pm, 210 & 211 Keller 
 
 | [Plenary](talks/bootcamp-day-1-intro.html), 210 Keller |
 |-------------------------------------------------------|
@@ -35,11 +39,13 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 | 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
 | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
-| Lunch, Moore 1st floor lobby                         |
-|-------------------------------------------------------|
-| 12:00 pm • Lunch, Moore Building Lobby |
+## Thu, Aug 22, 2019 
 
-## Thu, Aug 22, 2019, 9:00 am - 12:15 pm
+### 8:30 am, Moore Building lobby
+
+Continental breakfast, coffee and tea.
+
+### 9:00 am - 12:15 pm, 210 & 211 Keller 
 
 | [Slow-R Track](talks/slow-r.html), 210 Keller |  | Fast-R Track, 211 Keller |
 |----------------------------------------------------------|-|----------------------------------------------------------|
@@ -49,9 +55,13 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 | 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
 | 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
 
-## Fri, Aug 23, 2019, 9:00 am - 4:30 pm
+## Fri, Aug 23, 2019
 
-### 210 Keller
+### 8:30 am, Moore Building lobby
+
+Continental breakfast, coffee and tea.
+
+### 9:00 am - 4:30 pm, 210 & 211 Keller 
 
 | Plenary                                                     |
 |-------------------------------------------------------------|
@@ -60,7 +70,7 @@ We'll use the data drawn from it to show how one can use R and R Markdown to cre
 | 10:30 am • Break                                            |
 | 10:45 am • Data visualization (Graduate student coaches)    |
 | 11:30 am • Data visualization hands-on                      |
-| 12:00 pm • Lunch Moore Building Lobby                       |
+| 12:00 pm • Lunch in Moore Building Lobby                       |
 | 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
 | 01:30 pm • R-eproducible Science (Rick Gilmore)             |
 | 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Graduate student coaches) |

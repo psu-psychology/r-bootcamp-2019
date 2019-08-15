@@ -32,7 +32,9 @@ clean_registration_data <- function(df) {
 }
 
 save_registration_data <- function(df, fn = "data/csv/registrants.csv") {
+  # Drop email and names from data file saved on GitHub
   df <- dplyr::select(df, -email, -first, -last)
+  
   write.csv(df, fn, row.names = FALSE)
   message(paste0("Updated data file saved to '", fn, "'"))
 }

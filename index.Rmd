@@ -9,7 +9,9 @@ The goal of this two-day workshop is to provide a broad introduction to the use 
 Participants are **not** expected to have prior experience with R or another programming language. 
 The scope and schedule of the course is provided [here](https://psu-psychology.github.io/r-bootcamp-2019/schedule.html).
 
-To register, complete [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7).
+**Bootcamp registration is now closed. See you next week!**
+
+<!-- To register, complete [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7). -->
 
 ## Instructors
 
@@ -33,7 +35,8 @@ Nilam Ram, Ph.D.</br>
 Professor of Human Development and Family Studies</br>
 nilam PERIOD ram AT-SIGN psu PERIOD edu</br>
 
-Mimi Brinberg</br>
+Mimi Brinberg, M.S.</br>
+mjb6504 AT-SIGN psu PERIOD edu</br>
 
 ## Student Coaches
 
@@ -52,12 +55,15 @@ Holly Zaharchuk, hzaharchuk AT-SIGN psu PERIOD edu</br>
 
 ## Meeting times and location
 
-Wednesday, August 21, 2019, 9:00 am - 12:00 pm</br>
-Thursday, August 22, 2019, 9:00 am - 12:15 pm</br>
-Friday, August 23, 2019, 9:00 am - 4:30 pm</br>
-210 & 211 [Keller Building](http://www.psumap.com/#Keller)</br>
+Wednesday, August 21, 2019, 9:00 am - 12:00 pm (breakfast 8:30 am)</br>
+Thursday, August 22, 2019, 9:00 am - 12:15 pm (breakfast 8:30 am)</br>
+Friday, August 23, 2019, 9:00 am - 4:30 pm (breakfast 8:30 am; lunch 12:15 pm)</br>
 
-[Detailed schedule](schedule.html)</br>
+Meals and beverages in the [Moore Building Lobby](http://www.psumap.com/#Moore).
+
+Sessions in 210 & 211 [Keller Building](http://www.psumap.com/#Keller)</br>
+
+A [detailed schedule](schedule.html) may be found by following the link.</br>
 
 ## About this course
 
@@ -120,4 +126,4 @@ If Git is unfamiliar to you, you can obtain a zip archive of the current version
 
 ## Acknowledgments
 
-We thank the [Department of Psychology](http://psych.la.psu.edu), the [Department of Human Development & Family Studies (HDFS)](https://hhd.psu.edu/hdfs/), [Penn State's Teaching and Learning With Technology (TLT)](https://tlt.psu.edu/), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science (ODDS) initiative for support of the R Bootcamp.
+We thank the [Department of Psychology](http://psych.la.psu.edu), the [Department of Human Development & Family Studies (HDFS)](https://hhd.psu.edu/hdfs/), [Penn State's Teaching and Learning With Technology (TLT)](https://tlt.psu.edu/), the [Social, Life, & Engineering Sciences Imaging Center (SLEIC)](http://imaging.psu.edu), and the [Child Study Center's](http://csc.la.psu.edu) Open Data and Developmental Science (ODDS) initiative for financial and staff support of the R Bootcamp.

@@ -131,20 +131,6 @@ convert_timestamp <- function(df) {
   return(df)
 }
 
-extract_emails <- function() {
-  # Get and clean before extracting
-  d0 <- get_registration_data()
-  d1 <- clean_registration_data(d0)
-  
-  d2 <- dplyr::mutate(d1, name = paste(first, last), sep=" ")
-  
-  # Select and drop duplicates
-  d3 <- dplyr::select(d2, name, email)
-  
-  d4 <- dplyr::filter(d3, email %in% unique(email))
-  d4
-}
-
 clean_registration_field_names <- function(df) {
   if (is.null(df)) stop('Data frame is NULL.')
 
