@@ -54,10 +54,12 @@ update_survey_data <- function() {
 }
 
 clean_repro_crisis <- function(df) {
-   df$crisis <- factor(df$crisis, 
-                          levels = c("Yes, a significant crisis", 
+   df$crisis <- factor(df$crisis,
+                       levels = c("Yes, a significant crisis", 
                                      "Yes, a slight crisis", 
-                                     "No crisis", "Don't know"))
+                                     "No crisis", "Don't know"),
+                       labels = c("Significant", "Slight",
+                                  "No crisis", "Don't know"))
   return(df)
 }
 

@@ -9,7 +9,10 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
-    code_folding: show
+    code_folding: hide
+params:
+    supporting_functions: "../R/survey.R"
+    survey_data_fn: "../data/csv/survey.csv"
 ---
 
 ```{r setup, include=FALSE}
@@ -25,7 +28,7 @@ library(tidyverse)
 1. The reproducibility 'crisis'
 2. What does reproducible science look like?
 3. Using R & RStudio for R-eproducible science
-4. Advanced topics in R-eproducible science
+4. ~~Advanced topics in R-eproducible science~~
 5. The future of reproducible psychological science
         
 # The reproducibility crisis
@@ -61,6 +64,22 @@ They were asked a number of questions, including the following:
 
 [Baker 2016](http://doi.org/10.1038/533452a)
 </div>
+
+## Do we all agree?
+
+```{r crisis-or-not}
+source(params$supporting_functions)
+survey <- readr::read_csv(params$survey_data_fn)
+
+survey$crisis <- ordered(survey$crisis, c("Significant", "Slight", "No crisis", "Don't know"))
+
+survey %>%
+  dplyr::filter(., !is.na(crisis)) %>%
+  ggplot2::ggplot(.) +
+  aes(x = crisis, fill = crisis) +
+  geom_bar(stat = "count") +
+  scale_y_discrete(breaks = c(0, 5, 10, 15), limits = 0:15)
+```
 
 ## Problems with reproducibility extend beyond behavioral science
 

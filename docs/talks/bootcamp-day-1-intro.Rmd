@@ -76,7 +76,8 @@ registrants <- readr::read_csv(paste0(params$path2root, "data/csv/registrants.cs
 dept_plot <- registrants %>%
   ggplot(.) +
   aes(x = dept, fill = dept) +
-  geom_bar()
+  geom_bar() +
+  theme(legend.position = "none")
 ```
 
 ```{r show-dept-plot, echo=FALSE, fig.align="center"}
@@ -89,7 +90,8 @@ dept_plot
 pos_plot <- registrants %>%
   ggplot(.) +
   aes(x = position, fill = position) +
-  geom_bar()
+  geom_bar() +
+  theme(legend.position = "none")
 ```
 
 ```{r show-position-plot, echo=FALSE, fig.align="center"}
@@ -110,13 +112,19 @@ time_plot <- registrants %>%
 time_plot
 ```
 
-
 ## Housekeeping
 
-- Bootcamp materials on GitHub: <https://github.com/psu-psychology/r-bootcamp-2018>
-- Bootcamp website: <http://psu-psychology.github.io/r-bootcamp-2018>
-- **Survey**: Please complete this anonymous (and light-hearted) [survey](https://docs.google.com/forms/d/1l5OX8PcN_lfVn3ykr_PtHCzhRbWzMbxhqtgILD45zRg/edit) *before lunch*.
-- **Sessions are being video recorded**. Last year's is on [Databrary](http://doi.org/10.17910/B7.473)
+- Bootcamp materials on GitHub: <https://github.com/psu-psychology/r-bootcamp-2019>
+- Bootcamp website: <http://psu-psychology.github.io/r-bootcamp-2019>
+- **Survey**: Please complete this anonymous (and light-hearted) [survey](https://docs.google.com/forms/d/1NFNWAfCckA8Vxlb6LDa4RUqn7OB3FcgJTjXdRC8_JBs/edit) *before the end of the day tomorrow (Thursday)*.
+- **Sessions are being video recorded**. 2017 is on [Databrary](http://doi.org/10.17910/B7.473).
+
+## Housekeeping continued
+
+- Toilets on this floor near elevators
+- Two stairway entrances/exits
+- No food or drink in these rooms
+- Use Zoom to follow along, but do **NOT** unmute sound unless you have headphones
 
 ## Schedule
 
@@ -126,18 +134,20 @@ time_plot
 
 ## Day 1 (Wed 8/21) Schedule
 
-| | Plenary, 210 & 211 Keller |
-|-|-------------------------------------------------------|
-| | 09:00 am • Welcome, introductions, & housekeeping     |
-| | 09:15 am • Why We R Here                              |
-| | 09:45 am • Break                                      |
+08:30 am • Breakfast in Moore lobby
+
+| [Plenary](talks/bootcamp-day-1-intro.html), 210 Keller, [Zoom webinar](https://psu.zoom.us/j/984037146) |
+|-------------------------------------------------------|
+| 09:00 am • Welcome, introductions, & housekeeping     |
+| 09:15 am • Why We R Here                              |
+| 09:45 am • Break                                      |
 
 ## Day 1 (Wed 8/21) Schedule
 
-| |Slow-R Track, 210 Keller |  | Fast-R Track, 211 Keller |
-|-|---------------------------------------------------------|-|----------------------------------------------------------|
-| | 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
-| | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
+| [Slow-R Track](talks/slow-r.html), 210 Keller, [Zoom webinar](https://psu.zoom.us/j/985720879) |  | Fast-R Track, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
+|----------------------------------------------------------|-|----------------------------------------------------------|
+| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
+| 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
 </br>
 
@@ -147,36 +157,34 @@ time_plot
 
 ## Day 2 (Thu 8/22) Schedule
 
-| | Slow-R Track, 210 Keller |  | Fast-R Track, 211 Keller |
-|-|----------------------------------------------------------|-|----------------------------------------------------------|
-| | 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
-| | 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |
-| | 10:30 - 10:45 am • Break                  | | 10:30 - 10:45 am • Break                 |
-| | 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
-| | 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
+08:30 am • Breakfast in Moore lobby
+
+| [Slow-R Track](talks/slow-r.html), 210 Keller, [Zoom webinar](https://psu.zoom.us/j/367554693) |  | Fast-R Track, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
+|----------------------------------------------------------|-|----------------------------------------------------------|
+| 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
+| 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |
+| 10:30 - 10:45 am • Break                  | | 10:30 - 10:45 am • Break                 |
+| 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
+| 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
 
 ## Day 3 (Fri 8/23) Schedule
 
-| | Plenary, 210 & 211 Keller                                                     |
-|-|-------------------------------------------------------------|
-| | 09:00 am • R-eproducible Science (Rick Gilmore)             |
-| | 09:30 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
-| | 10:15 am • Break                                            |
-| | 10:30 am • Hands on data wrangling                          |
-| | 11:30 am • iPRACTISE data wrangling assessment              |
-| | 12:00 pm • Lunch Moore Building Lobby                       |
+08:30 am • Breakfast in Moore lobby
 
-## Day 3 (Fri 8/23) Schedule
-
-| | Plenary, 210 & 211 Keller                                                     |
-|-|-------------------------------------------------------------|
-| | 01:00 pm • Data visualization (Graduate student coaches)    |
-| | 01:45 pm • Hands on practice                                            |
-| | 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Graduate student coaches) |
-| | 02:45 pm • Break                                            |
-| | 03:00 pm • Hands on practice                                |
-| | 04:00 pm • End                                              |
-| | 04:15 pm • Optional Happy Hour @ Whisker's                  |
+| Plenary 210 & 211 Keller, [Morning Zoom webinar](https://psu.zoom.us/j/460935266), [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889) | |-------------------------------------------------------------|
+| 09:00 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
+| 09:45 am • Data wrangling hands-on                          |
+| 10:30 am • Break                                            |
+| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis)    |
+| 11:30 am • Data visualization hands-on                      |
+| 12:00 pm • Lunch in Moore Building Lobby                       |
+| 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
+| 01:30 pm • R-eproducible Science (Rick Gilmore)             |
+| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) |
+| 02:45 pm • Break                                            |
+| 03:00 pm • Hands on practice                                |
+| 04:00 pm • End                                              |
+| 04:15 pm • Optional Happy Hour @ Whisker's                  |   |
 
 ## Aspirations & Philosophy
 
@@ -230,4 +238,4 @@ time_plot
 
 - Slow R (stay here in 210 Keller)
 - Fast R (go next door to 211 Keller)
-- Lunch (Moore Building Lobby)
+- Coffee in Moore lobby
