@@ -1,0 +1,286 @@
+---
+title: "Basic Analyses in R"
+author: "Daniel Albohn, Kayla Brown, & Yiming Qian"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE)
+options(width = 150)
+```
+
+# Load and preprocess data
+First load the required packages for this walk through.
+
+```{r packages}
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion")
+lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
+```
+
+**Optional package**
+```{r optional-package}
+# devtools::install_github("ropensci/skimr")
+library("skimr")
+```
+
+The data set being used for this walk through is automatically loaded when `psych` is loaded.
+You can examine what each of the columns represent by looking at the data set's help
+page with `?sat.act`.
+
+Next, just to get a snapshot of the data, we can use `head` and `str`. Notice that `gender` and
+`education` are integer columns despite being categorical variables.
+
+```{r head}
+head(sat.act)
+```
+
+```{r str}
+str(sat.act)
+```
+
+## Preprocessing integers into factors
+Since some of the analyses we will be running require categorical variables, we first need to
+preprocess some of the numeric columns into categories. Let's quickly add two columns
+to the data set for factored versions of of `gender` and `education`.
+
+```{r preprocess-data}
+sat_act <- sat.act %>%
+  # mutate(., gender_fac = ifelse(gender == 1, "male", "female") %>%
+  mutate(.,
+    gender_fac = case_when(gender == 1 ~ "male",
+                           gender == 2 ~ "female"),
+    education_fac = case_when(education == 0 ~ "none",
+                              education == 1 ~ "some_hs",
+                              education == 2 ~ "high_school",
+                              education == 3 ~ "some_college",
+                              education == 4 ~ "college",
+                              education == 5 ~ "graduate")
+  )
+  
+```
+
+# Describe data
+Before analysis, we can obtain descriptive statistics quickly by utilizing the `describe()` function
+in the `psych` package.
+
+```{r describe-1}
+describe(sat_act)
+```
+
+The `describe()` function also allows to descriptive statistics by a grouping variable
+using the partner function `describeBy()`. If we wanted to get descriptive statistics
+by `gender_fac` we simply pass that column to an argument.
+
+```{r describe-2}
+describeBy(sat_act, group = c("gender_fac"))
+```
+
+We can add multiple grouping variables in the same manner.
+
+```{r describe-3}
+describeBy(sat_act, group = c("gender_fac", "education_fac"))
+```
+
+**Optional**
+While `describe` is useful for quick glimpses at the data, it does not always play
+nicely with the `tidyverse`. If you wanted to stick with a more "pure" `tidyverse`
+approach to descriptive statistics, you can use `skimr`.
+
+```{r}
+sat_act %>% 
+  skimr::skim(.)
+```
+
+While `skim()` doesn't provide as much descriptive detail as `describe`, it
+does provide the basics, and a useful visual representation of the data.
+
+Similarly, for obtaining descriptives by grouping variables you can utilize the
+`group_by()` function.
+
+```{r}
+sat_act %>% 
+  group_by(., gender_fac) %>% 
+  skimr::skim(.)
+```
+
+```{r}
+sat_act %>% 
+  group_by(., education_fac) %>% 
+  skimr::skim(.)
+```
+
+# Chi-squared
+Suppose we wanted to see if number of males or females differed by education level.
+One way to accomplish this is to perform a chi-squared test of independence.
+In R, the `chisq.test()` function expects a contingency table in order to produce
+the appropriate statistic. A contingency table provides count data by groups.
+
+```{r table}
+edu_gender_table <- table(sat_act$education_fac, sat_act$gender_fac)
+print(edu_gender_table)
+```
+
+Next, we simply pass the contingency table to the `chisq.test()` function.
+
+```{r chi-squared}
+chi_test <- chisq.test(edu_gender_table)
+chi_test
+```
+
+It appears as though the two variables are not independent. We will examine
+the pairwise comparisons in a moment to get a better idea of which variables
+are driving these results.
+
+We can get the observed, expected, and residuals from the saved object.
+
+```{r chi-observed}
+chi_test$observed
+```
+
+```{r chi-expected}
+chi_test$expected
+```
+
+We could also get the chi-squared statistic from the table `summary()`
+
+```{r chi-summary}
+summary(edu_gender_table)
+```
+
+## Pairwise comparisons
+If we want to compare each level with the other in our contingency table
+we can computed those with pairwise comparisons using `rcompanion`.
+
+```{r rcomp-pairwise}
+rcompanion::pairwiseNominalIndependence(edu_gender_table,
+                                        fisher = FALSE,
+                                        gtest = FALSE,
+                                        correct = "holm")
+```
+
+or compare both groups between each other with `pairwise.t.test`. Note that this
+method requires that original, numeric data.
+
+```{r broom-pairwise}
+pairwise <- pairwise.t.test(sat_act$gender, sat_act$education, p.adjust.method = "holm")
+broom::tidy(pairwise)
+```
+
+# Correlations
+Moving beyond categorical variables, we next test the relationship between numeric values using
+simple correlation. Correlation is done using the `cor()` function.
+
+Suppose we want to see if the ACT scores increase with age.
+
+```{r cor-cov}
+# Covariance
+# cov(sat_act$age, sat_act$ACT)
+
+# Correlation
+cor(sat_act$age, sat_act$ACT)
+```
+
+A small correlation, but no test of significance. To obtain significance values, you
+must pass your data to `cor.test()`. Note that this can be done by passing `x` and `y`
+or using the formula method (which will be used for linear models).
+
+```{r}
+# Default method
+# cor.test(sat_act$age, sat_act$ACT)
+
+# Formula method
+cor.test(~ sat_act$age + sat_act$ACT, data = sat_act)
+```
+
+You can also pass a dataframe of values to the `cor` function to get a simple
+correlation matrix (a la SPSS).
+
+```{r}
+cor(sat_act[c("age","ACT","SATV","SATQ")], use = "pairwise.complete.obs")
+```
+
+# Linear models
+
+# ANOVA
+
+# Hands on practice: data analyses
+For this hands on practice, load the `spi` data set from the `psych` package.
+
+1. Check the help file, structure, and first few observations of the data
+
+```{r}
+
+```
+
+2. Change the integer categorical variables to factors by cross-referencing
+the help page and filling in the pipeline below (note when knitting this
+document, you may want to change `eval` to `TRUE` once you complete this
+exercise)
+
+```{r eval = FALSE}
+spi <- spi %>%
+  mutate(.,
+    sex_fac = case_when(),
+    health_fac = case_when(),
+    education_fac = case_when(),
+    smoke_fac = case_when(),
+    exer_fac = case_when()
+  )
+```
+
+## Descriptives and Chi-squared
+
+1. Use either `describe()` or `skim()` to describe the data by each categorical
+variable
+
+```{r}
+
+```
+
+
+2. Describe the data by both categorical variables at once
+
+```{r}
+
+```
+
+
+3. Perform a chi-squared test assessing whether there is a differences in smoking
+by education level
+
+```{r}
+
+```
+
+## Correlation
+
+1. Get the covariance and correlation matrix for the relationship between
+three numeric values of your choosing
+
+```{r}
+
+```
+
+2. Perform a test of significance on two of the variables selected above
+
+```{r}
+
+```
+
+
+## Linear models
+
+## ANOVAs
+
+
+
+
+
