@@ -160,7 +160,7 @@ summary(edu_gender_table)
 
 ## Visualizing Chi-Squared
 Aside from simply printing a table, we can visualize frequencies with a mosaic plot. See the
-[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Chi-Squared)
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#chi-squared)
 for an example.
 
 ## Pairwise comparisons
@@ -185,7 +185,7 @@ pairwise
 # Correlations
 Moving beyond categorical variables, we next test the relationship between numeric values using
 simple correlation. See the 
-[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Correlation)
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#correlation)
 for more in-depth explnations.
 
 Correlation is done using the `cor()` function. Suppose we want to see if the ACT scores increase with age.
@@ -213,7 +213,7 @@ cor.test(~ sat_act$age + sat_act$ACT, data = sat_act)
 ## Visualizing Correlations
 To visualize this relationship, we can pass the raw data to `ggplot` and get a simple regression line using
 `stat_smooth()` with the `lm` method. See
-[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Correlation)
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#correlation)
 for an example.
 
 ## Additional Correlation Functions
@@ -694,8 +694,10 @@ TukeyHSD(res.aov3, which = "dose")
 t-test: comparing means between two groups in a sample (t.test function)
 Linear regression: comparing one or more factors in a sample (lm or lmer function)
 
-# Hands on practice: data analyses
-For this hands on practice, load the `spi` data set from the `psych` package.
+# Hands on practice: Data Dnalyses
+Download the [practice RMarkdown file](https://github.com/psu-psychology/r-bootcamp-2019/raw/master/talks/data_analyses_practice.Rmd)
+and open it. We will be using the `spi` data set from the `psych` package for the practice
+questions.
 
 1. Check the help file, structure, and first few observations of the data
 
