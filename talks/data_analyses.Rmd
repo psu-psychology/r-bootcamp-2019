@@ -4,6 +4,8 @@ author: "Daniel Albohn, Kayla Brown, & Yiming Qian"
 date: "`r Sys.time()`"
 output:
   html_document:
+    code_foldering: show
+    mathjax: default
     theme: spacelab
     toc: yes
     toc_depth: 3
@@ -20,13 +22,14 @@ options(width = 150, digits = 3)
 # Load and preprocess data
 First load the required packages for this walk through.
 
-```{r packages}
-pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car")
-lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
+```{r packages, message = FALSE}
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
+              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables")
+purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)
 ```
 
 **Optional package**
-```{r optional-package}
+```{r optional-package, message = FALSE}
 # devtools::install_github("ropensci/skimr")
 library("skimr")
 ```
@@ -155,6 +158,11 @@ We could also get the chi-squared statistic from the table `summary()`
 summary(edu_gender_table)
 ```
 
+## Visualizing Chi-Squared
+Aside from simply printing a table, we can visualize frequencies with a mosaic plot. See the
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Chi-Squared)
+for an example.
+
 ## Pairwise comparisons
 If we want to compare each level with the other in our contingency table
 we can computed those with pairwise comparisons using `rcompanion`.
@@ -166,19 +174,21 @@ rcompanion::pairwiseNominalIndependence(edu_gender_table,
                                         correct = "holm")
 ```
 
-or compare both groups between each other with `pairwise.t.test`. Note that this
-method requires that original, numeric data.
+Or with `pairwise.t.test`. Note that this method requires that original, numeric data.
 
 ```{r broom-pairwise}
 pairwise <- pairwise.t.test(sat_act$gender, sat_act$education, p.adjust.method = "holm")
-broom::tidy(pairwise)
+# broom::tidy(pairwise)
+pairwise
 ```
 
 # Correlations
 Moving beyond categorical variables, we next test the relationship between numeric values using
-simple correlation. Correlation is done using the `cor()` function.
+simple correlation. See the 
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Correlation)
+for more in-depth explnations.
 
-Suppose we want to see if the ACT scores increase with age.
+Correlation is done using the `cor()` function. Suppose we want to see if the ACT scores increase with age.
 
 ```{r cor-cov}
 # Covariance
@@ -200,6 +210,13 @@ or using the formula method (which will be used for linear models).
 cor.test(~ sat_act$age + sat_act$ACT, data = sat_act)
 ```
 
+## Visualizing Correlations
+To visualize this relationship, we can pass the raw data to `ggplot` and get a simple regression line using
+`stat_smooth()` with the `lm` method. See
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#Correlation)
+for an example.
+
+## Additional Correlation Functions
 You can also pass a dataframe of values to the `cor` function to get a simple
 correlation matrix (a la SPSS).
 
@@ -207,7 +224,309 @@ correlation matrix (a la SPSS).
 cor(sat_act[c("age","ACT","SATV","SATQ")], use = "pairwise.complete.obs")
 ```
 
+Or, optionally for easier-on-the-eyes output we can use a number of specialized functions.
+
+```{r hmisc-corr}
+Hmisc::rcorr(sat_act[c("age","ACT","SATV","SATQ")] %>% as.matrix(.))
+```
+
+```{r apa-corr}
+apaTables::apa.cor.table(sat_act[c("age","ACT","SATV","SATQ")])
+```
+
 # Linear models
+The overall goal is to give you an introduction to conducting regression analyses or linear modeling in R.
+
+## Single-predictor (simple) regression
+
+Let's turn to 'simple' linear regression (one predictor, one outcome), then scale to multiple regression (many predictors, one outcome). The standard linear regression model is implemented by the `lm` function in R. The `lm` function uses ordinary least squares (OLS) which estimates the parameter by minimizing the squared residuals.
+
+In simple regression, we are interested in a relationship of the form:
+
+$$
+Y = B_0 + B_1 X
+$$
+
+where $Y$ is the dependent variable (criterion) and $X$ is the predictor (covariate). The intercept is represented by $B0$ and the slope for the $X$ predictor by $B1$.
+
+Let's take a look at the simple case of stopping distance (braking) as a function of car speed.
+
+```{r}
+ggplot(sat.act, aes(x=SATQ, y=SATV)) + 
+  geom_point(color='darkblue', size = 3) + 
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE, color='black', size=1.2) +
+  labs(x="Math Score", y="Verbal Score")
+```
+
+When conducting regression, we typically try to capture linear relationships among variables. We can introduce higher-order polynomial terms (e.g., quadratic models) or splines (more flexible shapes), but this beyond the scope here.
+
+Fortunately, this relationship looks quite linear! The higher the math score the higher the verbal score.
+
+In R regression models, we use the `~` operator to denote 'regressed on'. It's not especially intuitive, but we say the criterion is regressed on the predictor. Here, if we think speed is a key cause of stopping distance, we'd say 'braking distance regressed on speed' or 'speed predicts braking distance.'
+
+In formula terms, this is `SATV ~ SATQ`, which we pass as the first argument to `lm()`.
+
+```{r}
+lm_SAT <- lm(SATV ~ SATQ, data=sat.act)
+summary(lm_SAT)
+```
+
+The output contains individual parameter estimates of the model (here, just the intercept and slope), their standard errors, significance tests, and p-values (one degree of freedom). We also get global information such as the sum of squared errors and the coefficient of determination ($R^2$).
+
+### Regression diagnostics
+
+We can also get useful diagnostic plots for free using the `plot()` function:
+
+```{r}
+plot(lm_SAT)
+```
+
+The `ggfortify` package also provides an `autoplot` function that gives similar diagnostics within a handy ggplot-based graph.
+
+```{r}
+autoplot(lm_SAT)
+```
+
+### Bootstrap estimates and confidence intervals
+
+Using functionality from the `car` and `boot` packges, we can easily get estimates of the regression coefficients and standard errors using nonparametric bootstrapping, which relaxes the normal theory assumption on the standard errors and, therefore, the significance tests. Likewise, the model does not assume normally distributed error.
+
+Nonparametric bootstrapping approximates the sampling distribution for a statistic of interest (e.g., a slope) by resampling the existing data with replacement many times and examining the resulting density.
+
+```{r}
+sat.act.na <- na.omit(sat.act)
+lm_SAT.na <- lm(SATV ~ SATQ, data=sat.act.na)
+system.time(lm_SAT.boot <- Boot(lm_SAT.na, R=2000))
+summary(lm_SAT.boot, high.moments=TRUE)
+```
+
+We can use the object to obtain 95% bootstrapped confidence intervals using the 'bias corrected, accelerated' method (aka bca).
+```{r}
+confint(lm_SAT.boot, level=.95, type="bca")
+```
+
+And we can easily compare the bootstrapped and standard OLS models:
+```{r}
+hist(lm_SAT.boot, legend="separate")
+```
+
+## Multiple regression
+
+We can easily extend to larger regression models by adding terms to the right side of the formula. For example, in the `sat.act` dataset, we could examine the extent to which the math scores (`SATQ`) is a function of both verbal scores (`SATV`), age (`age`), and sex (`gender`, 1 = male, 2 = female).
+
+```{r}
+asv_model <- lm(SATQ ~ age + gender + SATV, sat.act)
+summary(asv_model)
+
+sv_model <- lm(SATQ ~ gender + SATV, sat.act)
+summary(sv_model)
+```
+
+It appears that these are both influential predictors. We could examine the relationship graphically.
+
+### Visualizing regression data
+
+```{r}
+ggplot(sat.act, aes(x=SATV, y=SATQ, color=factor(gender))) + 
+  geom_point() + 
+  scale_color_discrete(name="Sex", breaks = c("1", "2"), labels = c("Male", "Female")) +
+  labs(title = "Multiple Regression", x = "SATV", y = "SATQ") +
+  stat_smooth(method=lm, se=FALSE)
+```
+
+### Getting results into a tidy, useful format
+
+Note that the `broom` package is very useful for extracting global and specific statistics from many models in R, including regression models. The introductory vignette provides a number of useful examples: <https://cran.r-project.org/web/packages/broom/vignettes/broom.html>. Here, what if we want to save the global statistics and parameter estimates into data.frame objects?
+
+We can use the `glance` function to get the global model statistics.
+```{r}
+broom::glance(asv_model)
+```
+
+And the `tidy` function yields the parameter table
+
+```{r}
+broom::tidy(asv_model)
+```
+
+As can imagine (and saw earlier in the functional programming overview), the ability to extract regression statistics into a tidy data.frame is a boon to scaling your analyses to multiple models and datasets.
+
+### Modeling interactions
+
+We can use the `*` operator in R to ask that both the constituent variables and their interaction(s) are entered into the model. For example:
+
+```{r}
+int_model <- lm(SATQ ~ gender*age*SATV, sat.act)
+summary(int_model)
+```
+
+This model includes individual effects of sex (`gender`) and age (`age`), as well as their interation (`gender:age`). This highlights that the asterisk operator `*` will compute all possible interations among the specified predictors. For example, `a*b*c*d` will generate all effets up through and including the `a x b x c x d` interation. By contrast, if you wish to specify a given interaction manually/directly, use the colon operator (e.g., `a:b`). The downside of the colon operator is that it doesn't guarantee that the corresponding lower-level effects are included, which is usually a sane default position. As a reminder, you should essentially never include an interation without including the lower level effects, because this can misassign the variance.
+
+```{r}
+#handy 2-way interation plotting function from jtools.
+ggplot(data=sat.act, 
+       aes(x=age, y=SATQ, colour = factor(gender))) +
+  geom_jitter()+
+  labs(x = "Age", y = "Math Score", colour = "Sex") +
+  theme_bw()+
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  stat_smooth(method='lm', se=TRUE, fullrange=TRUE) +
+  scale_color_manual(labels = c("Male", "Female"), values = c("#d21959", "#4aded3"))
+theme(axis.text=element_text(size=12),
+      axis.title=element_text(size=14))
+```
+
+What do we see? Males tend to have higher math scores and maintain these scores with age. Women have lower maths scores and show a decreasing trend as they get older.
+
+## Contrasts in regression
+
+(Some of the code and text here has been adapted from Russell Lenth's excellent `emmeans` documentation: <https://cran.r-project.org/web/packages/emmeans/>)
+
+One of the handiest packages in the R regression universe is `emmeans`, which can provide the 'expected marginal means' (em means), as well as a host of other contrasts and comparisons. In particular, it is very easy to test simple slopes and pairwise differences. Furthermore, the package works with `multcomp` to handle correction for multiple comparisons. See the longer documentation [here](https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html).
+
+Let's look at the concentration of leucine in a study of pigs who were fed differing levels of protein in the diet (9, 12, 15, and 18%) and different protein sources (fish, soybean, milk). The concentration has a long positive tail, so here we log transform it to normalize things somewhat.
+
+```{r}
+sat.act$agef[sat.act$age < 25] <- 1
+sat.act$agef[sat.act$age >= 25 & sat.act$age <= 50] <- 2
+sat.act$agef[sat.act$age > 50] <- 3
+
+sat.act2 <- sat.act
+sat.act2$agef <- as.factor(sat.act2$agef)
+sat.act2$gender <- as.factor(sat.act2$gender)
+sat.lm <- lm(SATQ ~ agef + SATV, data = sat.act2)
+summary(sat.lm)
+```
+
+This output is hard to look at because there are many dummy codes and we have to infer the reference condition for each factor (usually alphabetical). Also, we do not have an intuitive sense of the expected means in each condition because they depend on the sum of the intercept and the specific dummy code for the condition interest, averaging over the other factor.
+
+We can obtain the expected means for each condition.
+
+### Expected means for protein source
+
+```{r}
+sat.emm.s <- emmeans(sat.lm, "agef")
+print(sat.emm.s)
+```
+
+### Expected means for protein level
+```{r}
+sat.emm.p <- emmeans(sat.lm, "SATV")
+print(sat.emm.p)
+```
+
+### Means in each cell of the factorial design
+```{r}
+print(emmeans(sat.lm, ~agef*SATV))
+```
+
+### Pairwise comparisons among protein sources
+
+If we wanted to compare the pairwise differences in the effect of protein source on leucine concentration while controlling for protein percentage (and potentially other variables we add to the model), we could use the `pairs` function:
+
+```{r}
+sat_pairs <- pairs(sat.emm.s)
+print(sat_pairs)
+```
+
+Note that you can get a sense of the contrasts being tested by `emmeans` by examining the `@linfct` slot of the object. I've learned *a lot* by examining these contrast matrices and thinking about how to setup a (focal) contrast of interest. Also note that you get p-value adjustment for free (here, Tukey's HSD method).
+
+Contrasts for the predicted mean level of leucine contrast for each protein source, controlling for protein percentage.
+```{r}
+sat.emm.s@linfct
+```
+
+What are the pairwise contrasts for the protein sources?
+```{r}
+sat_pairs@linfct
+```
+
+The `emmeans` package also provides useful plots to understand pairwise differences:
+
+```{r}
+plot(sat.emm.s, comparisons = TRUE)
+```
+
+The blue bars are confidence intervals for the EMMs, and the red arrows are for the comparisons among them. If an arrow from one mean overlaps an arrow from another group, the difference is not significant, based on the adjust setting (which defaults to "tukey"). (Note: Don't ever use confidence intervals for EMMs to perform comparisons; they can be very misleading.)
+
+### Pairwise differences and simple slopes in regression
+
+Consider a model in which we examine the association between SATQ and SATV across age. Here, we regress SATV on SATQ, age (three levels), and their interaction.
+
+```{r}
+fit_sat <- lm(SATQ ~ SATV * agef, data = sat.act2)
+summary(fit_sat)
+car::Anova(fit_sat, type="III") #overall effects of predictors in the model
+```
+
+Note that this yields a categorical (species) x continuous (petal width) interaction. The output from `car::Anova` indicates that the interaction is significant, but we need more detailed guidance on how the slope for petal width is moderated by species. We can visualize the interaction as follows:
+
+```{r}
+ggplot(data=sat.act2, 
+       aes(x=SATV, y=SATQ, colour = factor(agef))) +
+  geom_jitter()+
+  labs(x = "Verbal Score", y = "Math Score", colour = "Age") +
+  theme_bw()+
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  stat_smooth(method='lm', se=FALSE, fullrange=TRUE) +
+  scale_color_manual(labels = c("Under 25", "25-50", "Over 50"), values = c("red", "green", "blue"))
+theme(axis.text=element_text(size=12),
+      axis.title=element_text(size=14))
+```
+
+In a simple slopes test, we might wish to know whether the slope for `Petal.Width` is non-zero in each species individually. Let's start by getting the estimated marginal means for each species.
+
+```{r}
+emmeans(fit_sat, ~agef)
+```
+
+And pairwise differences between species:
+
+```{r}
+pairs(emmeans(fit_sat, ~agef))
+```
+
+Transitioning to SATV, because we are interested its linear effect (slope), we use the `emtrends` function to estimate the slope in each species individually. In terms of simple slopes, we test whether the SATV slope is non-zero in each age group. The `infer` argument in the summary of `emtrends` requests t-tests and p-values for the slopes.
+
+```{r}
+summary(emtrends(model = fit_sat, ~agef, var="SATV"), infer=TRUE)
+```
+
+Finally, we could examine pairwise differences between slopes among age groups.
+
+```{r}
+pairs(emtrends(model = fit_sat, ~agef, var="SATV"))
+```
+
+### A few other emmeans features
+In the sat.act dataset, we have treated age as a factor. If we keep this representation (as opposed to entering age as continuous), we can easily get orthogonal polynomial contrasts in `emmeans`. For example, is the effect of age linearly related to SATV, or might it be quadratic or cubic?
+
+```{r}
+sat.emm.p <- emmeans(sat.lm, "agef")
+ply <- contrast(sat.emm.p, "poly")
+ply
+coef(ply) #show the contrast coefficients
+```
+
+There is a lot more on probing interations here: <https://cran.r-project.org/web/packages/emmeans/vignettes/interactions.html>.
+
+Finally, we can examine effects in multivariate regression models (i.e., multiple DVs). Here, we can examine the both the verbal and math scores and if they are associated with age, gender (sex), education, or ACT scores. 
+
+```{r}
+org.int <- lm(cbind(SATV, SATQ) ~ age + gender + education + ACT, data = sat.act2)
+summary(org.int)
+```
+
 
 # ANOVA
 The overall goal is to give you a very quick introduction to conducting one-way ANOVA and two-way ANOVA in R.
@@ -219,7 +538,7 @@ $$\frac{S^2_{treatment} + S^2_{error}}{S^2_{error}}$$
 Variance = (sum of square deviation from the mean)/(degrees of freedom)=SS/df
 Sum of Squares: 
 $$SS_{Total}= SS_{between}+SS_{within}$$
-$$\sum(Y_{i.j}-\bar{Y_T})= \sum(\bar{Y_{ai}-\bar{Y_T})+\sum(Y_{i.j}-\bar{Y_{ai})$$
+$$\sum(Y_{i.j}-\bar{Y_T})= \sum(\bar(Y_{ai}-\bar{Y_T})+\sum(Y_{i.j}-\bar{Y_{ai}})$$
 Degrees of freedom:
 $$df_{Total}= df_{between}+df_{within}$$
 
@@ -436,10 +755,10 @@ three numeric values of your choosing
 2. Perform a test of significance on two of the variables selected above
 
 ```{r}
-
+  
 ```
 
-## Linear models
+## Linear Models
 
 ## ANOVAs
 
