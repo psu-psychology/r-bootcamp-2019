@@ -12,7 +12,7 @@ output:
 
 This module provides a deliberately slow introduction to R that assumes that you have little or no experience with R and have not worked extensively with other programming languages.
 
-<!-- - [Slow R](talks/slow-r.html) (Rick Gilmore) | [Download](talks/slow-r.Rmd) -->
+- [Slow R](talks/slow-r.html) (Rick Gilmore) | [Download](talks/slow-r.Rmd)
 
 *Other resources*
 
@@ -21,9 +21,9 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ## R-eproducible Science
 
-<!-- - [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd). -->
-<!-- - [R Markdown example output](talks/bootcamp-survey.html) using our own survey data | [Download Rmd](talks/bootcamp-survey.Rmd) -->
-<!-- - Complete APA format manuscript based on `papaja` using the survey data, both in the original R Markdown format [Download Rmd](talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version and the final [PDF](talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version. -->
+- [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd).
+- [R Markdown example output](talks/bootcamp-survey.html) using our own survey data | [Download Rmd](talks/bootcamp-survey.Rmd)
+- Complete APA format manuscript based on `papaja` using the survey data, both in the original R Markdown format [Download Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version and the final [PDF](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version.
 
 ***
 
@@ -83,7 +83,7 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
-## Structual equation modeling
+## Structural equation modeling
 
 <!-- - Structural equation modeling in [lavaan tutorial](talks/lavaan_tutorial.html) | [zip](zips/hallquist_lavaan.zip) | [Rmd](talks/lavaan_tutorial.Rmd) -->
 

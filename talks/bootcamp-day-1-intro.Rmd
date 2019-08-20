@@ -13,7 +13,7 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      cache = TRUE)
+                      cache = FALSE)
 
 pkg_list <- c("tidyverse", "ggplot2")
 lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
@@ -51,6 +51,7 @@ source(paste0(params$path2root, "R/registrants.R"))
 - Mimi Brinberg
 - Kayla Brown
 - Meng Chen
+- Nate Hall
 
 ---
 
@@ -77,7 +78,8 @@ dept_plot <- registrants %>%
   ggplot(.) +
   aes(x = dept, fill = dept) +
   geom_bar() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  coord_flip()
 ```
 
 ```{r show-dept-plot, echo=FALSE, fig.align="center"}
@@ -123,7 +125,7 @@ time_plot
 
 - Toilets on this floor near elevators
 - Two stairway entrances/exits
-- No food or drink in these rooms
+- No food or drink (except water bottles with lids) in these rooms
 - Use Zoom to follow along, but do **NOT** unmute sound unless you have headphones
 
 ## Schedule
