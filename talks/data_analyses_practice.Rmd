@@ -29,23 +29,25 @@ For this hands on practice, load the `spi` data set from the `psych` package.
 
 ```
 
-2. Change the integer categorical variables to factors by cross-referencing
+2. Change the integer categorical or factor variables by cross-referencing
 the help page and filling in the pipeline below (note when knitting this
 document, you may want to change `eval` to `TRUE` once you complete this
-exercise)
+exercise). Use either `ifelse()`, `case_when()`, or `factor()` then make
+sure that your code appropriately changed each variable with `str()` or
+`class()`
 
 ```{r eval = FALSE}
 spi <- spi %>%
   mutate(.,
-    sex_fac = case_when(),
-    health_fac = case_when(),
-    education_fac = case_when(),
-    smoke_fac = case_when(),
-    exer_fac = case_when()
+    sex = factor(),
+    health = factor(),
+    education = factor(),
+    smoke = factor(),
+    exer = factor()
   )
 
 # Write your code here!
-
+str(spi)
 ```
 
 ## Descriptives and Chi-squared
