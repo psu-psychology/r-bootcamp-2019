@@ -24,24 +24,27 @@ purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)
 ```
 
 ```{r}
-sat_act <- sat.act %>%
-  # mutate(., gender_fac = ifelse(gender == 1, "male", "female") %>%
-  mutate(.,
-    gender_fac = case_when(gender == 1 ~ "male",
-                           gender == 2 ~ "female"),
-    education_fac = case_when(education == 0 ~ "none",
-                              education == 1 ~ "some_hs",
-                              education == 2 ~ "high_school",
-                              education == 3 ~ "some_college",
-                              education == 4 ~ "college",
-                              education == 5 ~ "graduate")
-  )
+# sat_act <- sat.act %>%
+#   mutate(., gender_fac = ifelse(gender == 1, "male", "female")) %>%
+#   mutate(.,
+#     gender_fac = case_when(gender == 1 ~ "male",
+#                            gender == 2 ~ "female"),
+#     education_fac = case_when(education == 0 ~ "none",
+#                               education == 1 ~ "some_hs",
+#                               education == 2 ~ "high_school",
+#                               education == 3 ~ "some_college",
+#                               education == 4 ~ "college",
+#                               education == 5 ~ "graduate")
+#   )
+data("sat.act", package="psych")
+sat.act <- sat.act %>% dplyr::rename(sex=gender) %>%
+mutate(sex = factor(sex, levels = c(1,2), labels = c("male", "female")))
 ```
 
 # Chi-Squared
 ## Visualizing Chi-Squared.
 ```{r fig.height=7, fig.width=7}
-vcd::mosaic(~ gender_fac+education_fac, data = sat_act, shade = TRUE, legend = TRUE)
+vcd::mosaic(~ sex+education, data = sat.act, shade = TRUE, legend = TRUE)
 ```
 
 # Correlation
@@ -59,12 +62,16 @@ To visualize this relationship, we can pass the raw data to `ggplot` and get a s
 `stat_smooth()` with the `lm` method.
 
 ```{r}
-ggplot(sat_act, aes(x=age, y=ACT)) +
+ggplot(sat.act, aes(x=age, y=ACT)) +
   geom_jitter(width=0.1) +
   stat_smooth(method="lm", se=FALSE)
 ```
 
 # Linear Models
+```{r}
+lm_SAT <- lm(SATV ~ SATQ, data=sat.act)
+```
+
 ## Notes on overarching regression principles
 
 In simple regression, we are interested in a relationship of the form:
@@ -93,7 +100,7 @@ Nonparametric bootstrapping approximates the sampling distribution for a statist
 # with two predictors -- one categorical, one continous
 It appears that these are both influential predictors. We could examine the relationship graphically.
 ```{r}
-ggplot(sat.act, aes(x=SATV, y=SATQ, color=factor(gender))) + 
+ggplot(sat.act, aes(x=SATV, y=SATQ, color=sex)) + 
   geom_point() + 
   scale_color_discrete(name="Sex", breaks = c("1", "2"), labels = c("Male", "Female")) +
   labs(title = "Multiple Regression", x = "SATV", y = "SATQ") +
@@ -104,7 +111,7 @@ ggplot(sat.act, aes(x=SATV, y=SATQ, color=factor(gender))) +
 ```{r}
 # 2-way interation plotting
 ggplot(data=sat.act, 
-       aes(x=age, y=SATQ, colour = factor(gender))) +
+       aes(x=age, y=SATQ, colour = sex)) +
   geom_jitter()+
   labs(x = "Age", y = "Math Score", colour = "Sex") +
   theme_bw()+
@@ -124,6 +131,17 @@ theme(axis.text=element_text(size=12),
 ## emmeans plots
 The `emmeans` package also provides useful plots to understand pairwise differences:
 ```{r}
+sat.act$agef[sat.act$age < 25] <- 1
+sat.act$agef[sat.act$age >= 25 & sat.act$age <= 50] <- 2
+sat.act$agef[sat.act$age > 50] <- 3
+
+# setting as factors
+sat.act$agef <- as.factor(sat.act$agef)
+sat.act$gender <- as.factor(sat.act$sex)
+
+# running the model
+sat.lm <- lm(SATQ ~ agef + SATV, data = sat.act)
+sat.emm.s <- emmeans(sat.lm, "agef")
 plot(sat.emm.s, comparisons = TRUE)
 ```
 The blue bars are confidence intervals for the EMMs, and the red arrows are for the comparisons among them. If an arrow from one mean overlaps an arrow from another group, the difference is not significant, based on the adjust setting (which defaults to "tukey"). (Note: Don't ever use confidence intervals for EMMs to perform comparisons; they can be very misleading.)
@@ -132,7 +150,7 @@ The blue bars are confidence intervals for the EMMs, and the red arrows are for 
 ## visualizing the interaction from pairwise comparisons
 We can visualize the interaction as follows:
 ```{r}
-ggplot(data=sat.act2, 
+ggplot(data=sat.act, 
        aes(x=SATV, y=SATQ, colour = factor(agef))) +
   geom_jitter()+
   labs(x = "Verbal Score", y = "Math Score", colour = "Age") +
@@ -163,7 +181,7 @@ coef(ply) #show the contrast coefficients
 ## Multivariate regeression models
 Finally, we can examine effects in multivariate regression models (i.e., multiple DVs). Here, we can examine the both the verbal and math scores and if they are associated with age, gender (sex), education, or ACT scores. 
 ```{r}
-org.int <- lm(cbind(SATV, SATQ) ~ age + gender + education + ACT, data = sat.act2)
+org.int <- lm(cbind(SATV, SATQ) ~ age + gender + education + ACT, data = sat.act)
 summary(org.int)
 ```
 

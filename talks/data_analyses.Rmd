@@ -293,7 +293,7 @@ hist(lm_SAT.boot, legend="separate")
 We can easily extend to larger regression models by adding terms to the right side of the formula. For example, in the `sat.act` dataset, we could examine the extent to which the math scores (`SATQ`) is a function of both verbal scores (`SATV`), age (`age`), and sex (`gender`, 1 = male, 2 = female).
 
 ```{r}
-asv_model <- lm(SATQ ~ age + gender + SATV, sat.act)
+asv_model <- lm(SATQ ~ age + sex + SATV, sat.act)
 summary(asv_model)
 ```
 
@@ -315,7 +315,7 @@ broom::tidy(asv_model)
 We can use the `*` operator in R to ask that both the constituent variables and their interaction(s) are entered into the model. For example:
 
 ```{r}
-int_model <- lm(SATQ ~ gender*age*SATV, sat.act)
+int_model <- lm(SATQ ~ sex*age*SATV, sat.act)
 summary(int_model)
 ```
 
@@ -337,7 +337,7 @@ sat.act$agef[sat.act$age > 50] <- 3
 
 # setting as factors
 sat.act$agef <- as.factor(sat.act$agef)
-sat.act$gender <- as.factor(sat.act$gender)
+sat.act$gender <- as.factor(sat.act$sex)
 
 # running the model
 sat.lm <- lm(SATQ ~ agef + SATV, data = sat.act)
