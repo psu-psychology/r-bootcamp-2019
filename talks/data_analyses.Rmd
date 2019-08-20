@@ -1,0 +1,596 @@
+---
+title: "Basic Analyses in R"
+author: "Daniel Albohn, Kayla Brown, & Yiming Qian"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    code_foldering: show
+    mathjax: default
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE)
+options(width = 150, digits = 3)
+```
+
+# Load and preprocess data
+First load the required packages for this walk through.
+
+```{r packages, message = FALSE}
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
+              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables",
+              "ggfortify")
+purrr::walk(pkg_list, require, quietly = TRUE, character.only = TRUE)
+```
+
+**Optional package**
+```{r optional-package, message = FALSE}
+# devtools::install_github("ropensci/skimr")
+library("skimr")
+```
+
+The data set being used for this walk through is automatically loaded when `psych` is loaded.
+You can examine what each of the columns represent by looking at the data set's help
+page with `?sat.act`.
+
+Next, just to get a snapshot of the data, we can use `head` and `str`. Notice that `sex` and
+`education` are integer columns despite being categorical variables.
+
+```{r head-source}
+data("sat.act", package="psych")
+sat.act <- sat.act %>% dplyr::rename(sex=gender) %>%
+mutate(sex = factor(sex, levels = c(1,2), labels = c("male", "female")))
+
+# Alternatively...
+# source("R/load_sat_act.R")
+head(sat.act)
+```
+
+```{r str}
+str(sat.act)
+```
+
+## Preprocessing integers into factors
+Since some of the analyses we will be running require categorical variables,
+we first need to preprocess some of the integer columns into categories/factors.
+
+```{r preprocess-data}
+labels <- c("none", "some_hs", "high_school",
+            "some_college", "college", "graduate")
+
+sat.act <- sat.act %>%
+  mutate(.,
+         education = factor(education, levels = (0:5), labels = labels)
+         # education = case_when(education == 0 ~ "none",
+         #                       education == 1 ~ "some_hs",
+         #                       education == 2 ~ "high_school",
+         #                       education == 3 ~ "some_college",
+         #                       education == 4 ~ "college",
+         #                       education == 5 ~ "graduate")
+  )
+  
+```
+
+# Describe data
+Before analysis, we can obtain descriptive statistics quickly by utilizing the `describe()` function
+in the `psych` package.
+
+```{r describe-1}
+describe(sat.act)
+```
+
+The `describe()` function also allows to descriptive statistics by a grouping variable
+using the partner function `describeBy()`. If we wanted to get descriptive statistics
+by `sex_fac` we simply pass that column to an argument.
+
+```{r describe-2}
+describeBy(sat.act, group = c("sex"))
+```
+
+We can add multiple grouping variables in the same manner.
+
+```{r describe-3}
+describeBy(sat.act, group = c("sex", "education"))
+```
+
+**Optional**
+While `describe` is useful for quick glimpses at the data, it does not always play
+nicely with the `tidyverse`. If you wanted to stick with a more "pure" `tidyverse`
+approach to descriptive statistics, you can use `skimr`.
+
+```{r}
+sat.act %>% 
+  skimr::skim(.)
+```
+
+While `skim()` doesn't provide as much descriptive detail as `describe`, it
+does provide the basics, and a useful visual representation of the data.
+
+Similarly, for obtaining descriptives by grouping variables you can utilize the
+`group_by()` function.
+
+```{r skimr}
+sat.act %>% 
+  group_by(., sex) %>% 
+  skimr::skim(.)
+```
+
+```{r}
+sat.act %>% 
+  group_by(., education) %>% 
+  skimr::skim(.)
+```
+
+# Chi-squared
+Suppose we wanted to see if number of males or females differed by education level.
+One way to accomplish this is to perform a chi-squared test of independence.
+In R, the `chisq.test()` function expects a contingency table in order to produce
+the appropriate statistic. A contingency table provides count data by groups.
+
+```{r table}
+edu_sex_table <- table(sat.act$education, sat.act$sex)
+print(edu_sex_table)
+```
+
+Next, we simply pass the contingency table to the `chisq.test()` function.
+
+```{r chi-squared}
+chi_test <- chisq.test(edu_sex_table)
+chi_test
+```
+
+It appears as though the two variables are not independent. We will examine
+the pairwise comparisons in a moment to get a better idea of which variables
+are driving these results.
+
+We can get the observed, expected, and residuals from the saved object.
+
+```{r chi-observed}
+chi_test$observed
+```
+
+```{r chi-expected}
+chi_test$expected
+```
+
+We could also get the chi-squared statistic from the table `summary()`
+
+```{r chi-summary}
+summary(edu_sex_table)
+```
+
+## Visualizing Chi-Squared
+Aside from simply printing a table, we can visualize frequencies with a mosaic plot. See the
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#chi-squared)
+for an example.
+
+## Pairwise comparisons
+If we want to compare each level with the other in our contingency table
+we can computed those with pairwise comparisons using `rcompanion`.
+
+```{r rcomp-pairwise}
+rcompanion::pairwiseNominalIndependence(edu_sex_table,
+                                        fisher = FALSE,
+                                        gtest = FALSE,
+                                        correct = "holm")
+```
+
+# Correlations
+Moving beyond categorical variables, we next test the relationship between numeric values using
+simple correlation. See the 
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#correlation)
+for more in-depth explnations.
+
+Correlation is done using the `cor()` function. Suppose we want to see if the ACT scores increase with age.
+
+```{r cor-cov}
+# Covariance
+# cov(sat.act$age, sat.act$ACT)
+
+# Correlation
+cor(sat.act$age, sat.act$ACT)
+```
+
+A small correlation, but no test of significance. To obtain significance values, you
+must pass your data to `cor.test()`. Note that this can be done by passing `x` and `y`
+or using the formula method (which will be used for linear models).
+
+```{r}
+# Default method
+# cor.test(sat.act$age, sat.act$ACT)
+
+# Formula method
+cor.test(~ sat.act$age + sat.act$ACT, data = sat.act)
+```
+
+## Visualizing Correlations
+To visualize this relationship, we can pass the raw data to `ggplot` and get a simple regression line using
+`stat_smooth()` with the `lm` method. See
+[supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#correlation)
+for an example.
+
+## Additional Correlation Functions
+You can also pass a dataframe of values to the `cor` function to get a simple
+correlation matrix (a la SPSS).
+
+```{r}
+cor(sat.act[c("age","ACT","SATV","SATQ")], use = "pairwise.complete.obs")
+```
+
+Or, optionally for easier-on-the-eyes output we can use a number of specialized functions.
+
+```{r hmisc-corr}
+Hmisc::rcorr(sat.act[c("age","ACT","SATV","SATQ")] %>% as.matrix(.))
+```
+
+```{r apa-corr}
+apaTables::apa.cor.table(sat.act[c("age","ACT","SATV","SATQ")])
+```
+
+# Linear models
+## Introduction
+The overall goal is to give you an introduction to conducting regression analyses or linear modeling in R.
+
+### Single-predictor (simple) regression
+Let's turn to 'simple' linear regression (one predictor, one outcome), then scale to multiple regression (many predictors, one outcome). The standard linear regression model is implemented by the `lm` function in R. The `lm` function uses ordinary least squares (OLS) which estimates the parameter by minimizing the squared residuals.
+
+Let's take a look at the simple case of the association between SAT math and verbal scores.
+
+```{r}
+ggplot(sat.act, aes(x=SATQ, y=SATV)) + 
+  geom_point(color='darkblue', size = 3) + 
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE, color='black', size=1.2) +
+  labs(x="Math Score", y="Verbal Score")
+```
+This relationship looks quite linear. The higher the math score the higher the verbal score.
+
+In R regression models, we use the `~` operator to denote 'regressed on'. It's not especially intuitive, but we say the criterion is regressed on the predictor. Here, if we think verbal is predictive of math, we'd say 'math regressed on verbal' or 'verbal predicts math.'
+
+In formula terms, this is `SATV ~ SATQ`, which we pass as the first argument to `lm()`.
+
+```{r}
+lm_SAT <- lm(SATV ~ SATQ, data=sat.act)
+summary(lm_SAT)
+```
+
+The output contains individual parameter estimates of the model (here, just the intercept and slope), their standard errors, significance tests, and p-values (one degree of freedom). We also get global information such as the sum of squared errors and the coefficient of determination ($R^2$).
+
+### Regression diagnostics
+The `ggfortify` package also provides an `autoplot` function that gives similar diagnostics within a handy ggplot-based graph.
+
+```{r}
+autoplot(lm_SAT)
+```
+
+### Bootstrap estimates and confidence intervals
+Using functionality from the `car` and `boot` packges, we can easily get estimates of the regression coefficients and standard errors using nonparametric bootstrapping, which relaxes the normal theory assumption on the standard errors and, therefore, the significance tests. Likewise, the model does not assume normally distributed error.
+
+```{r}
+sat.act.na <- na.omit(sat.act)
+lm_SAT.na <- lm(SATV ~ SATQ, data=sat.act.na)
+system.time(lm_SAT.boot <- Boot(lm_SAT.na, R=2000))
+summary(lm_SAT.boot, high.moments=TRUE)
+```
+
+We can use the object to obtain 95% bootstrapped confidence intervals using the 'bias corrected, accelerated' method (aka bca).
+```{r}
+confint(lm_SAT.boot, level=.95, type="bca")
+```
+
+And we can easily compare the bootstrapped and standard OLS models:
+```{r}
+hist(lm_SAT.boot, legend="separate")
+```
+
+
+## Multiple regression
+We can easily extend to larger regression models by adding terms to the right side of the formula. For example, in the `sat.act` dataset, we could examine the extent to which the math scores (`SATQ`) is a function of both verbal scores (`SATV`), age (`age`), and sex (`gender`, 1 = male, 2 = female).
+
+```{r}
+asv_model <- lm(SATQ ~ age + gender + SATV, sat.act)
+summary(asv_model)
+```
+
+## Getting results into a tidy, useful format
+Note that the `broom` package is very useful for extracting global and specific statistics from many models in R, including regression models. The introductory vignette provides a number of useful examples: <https://cran.r-project.org/web/packages/broom/vignettes/broom.html>. Here, what if we want to save the global statistics and parameter estimates into data.frame objects?
+
+We can use the `glance` function to get the global model statistics.
+```{r}
+broom::glance(asv_model)
+```
+
+And the `tidy` function yields the parameter table
+```{r}
+broom::tidy(asv_model)
+```
+
+
+## Modeling interactions
+We can use the `*` operator in R to ask that both the constituent variables and their interaction(s) are entered into the model. For example:
+
+```{r}
+int_model <- lm(SATQ ~ gender*age*SATV, sat.act)
+summary(int_model)
+```
+
+This model includes individual effects of sex (`gender`) and age (`age`), as well as their interation (`gender:age`). This highlights that the asterisk operator `*` will compute all possible interations among the specified predictors. For example, `a*b*c*d` will generate all effets up through and including the `a x b x c x d` interation. By contrast, if you wish to specify a given interaction manually/directly, use the colon operator (e.g., `a:b`). The downside of the colon operator is that it doesn't guarantee that the corresponding lower-level effects are included, which is usually a sane default position. As a reminder, you should essentially never include an interation without including the lower level effects, because this can misassign the variance.
+
+What do we see? Males tend to have higher math scores and maintain these scores with age. Women have lower maths scores and show a decreasing trend as they get older.
+
+## Contrasts in regression
+(Some of the code and text here has been adapted from Russell Lenth's excellent `emmeans` documentation: <https://cran.r-project.org/web/packages/emmeans/>)
+
+One of the handiest packages in the R regression universe is `emmeans`, which can provide the 'expected marginal means' (em means), as well as a host of other contrasts and comparisons. In particular, it is very easy to test simple slopes and pairwise differences. Furthermore, the package works with `multcomp` to handle correction for multiple comparisons. See the longer documentation [here](https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html).
+
+Let's look how age and verbal scores may interact to predict math scores.
+```{r}
+# creating age groups for pairwise comparisons
+sat.act$agef[sat.act$age < 25] <- 1
+sat.act$agef[sat.act$age >= 25 & sat.act$age <= 50] <- 2
+sat.act$agef[sat.act$age > 50] <- 3
+
+# setting as factors
+sat.act$agef <- as.factor(sat.act$agef)
+sat.act$gender <- as.factor(sat.act$gender)
+
+# running the model
+sat.lm <- lm(SATQ ~ agef + SATV, data = sat.act)
+summary(sat.lm)
+```
+
+This output is hard to look at because there are many dummy codes and we have to infer the reference condition for each factor (usually alphabetical). Also, we do not have an intuitive sense of the expected means in each condition because they depend on the sum of the intercept and the specific dummy code for the condition interest, averaging over the other factor.
+
+We can obtain the expected means for each condition.
+
+### Expected means for age group
+```{r}
+sat.emm.s <- emmeans(sat.lm, "agef")
+print(sat.emm.s)
+```
+
+### Expected means for verbal scores
+```{r}
+sat.emm.p <- emmeans(sat.lm, "SATV")
+print(sat.emm.p)
+```
+
+### Means in each cell of the factorial design
+```{r}
+print(emmeans(sat.lm, ~agef*SATV))
+```
+
+## Pairwise comparisons among protein sources
+If we wanted to compare the pairwise differences in the effect of age group on math scores while controlling for verbal scores (and potentially other variables we add to the model), we could use the `pairs` function:
+
+```{r}
+sat_pairs <- pairs(sat.emm.s)
+print(sat_pairs)
+```
+
+Note that you can get a sense of the contrasts being tested by `emmeans` by examining the `@linfct` slot of the object. I've learned *a lot* by examining these contrast matrices and thinking about how to setup a (focal) contrast of interest. Also note that you get p-value adjustment for free (here, Tukey's HSD method).
+
+Contrasts for the predicted mean level of math scores contrast for each age group, controlling for verbal score.
+```{r}
+sat.emm.s@linfct
+```
+
+What are the pairwise contrasts for verbal scores?
+```{r}
+sat_pairs@linfct
+```
+
+### Pairwise differences and simple slopes in regression
+Consider a model in which we examine the association between SATQ and SATV across age. Here, we regress SATV on SATQ, age (three levels), and their interaction.
+
+```{r}
+fit_sat <- lm(SATQ ~ SATV*agef, data = sat.act)
+summary(fit_sat)
+car::Anova(fit_sat, type="III") #overall effects of predictors in the model
+```
+
+Note that this yields a categorical (age group) x continuous (verbal scores) interaction. The output from `car::Anova` indicates that the interaction is significant, but we need more detailed guidance on how the slope for verbal scores is moderated by age group. 
+
+In a simple slopes test, we might wish to know whether the slope for `SATV` is non-zero in each age group individually. Let's start by getting the estimated marginal means for each age group.
+```{r}
+emmeans(fit_sat, ~agef)
+```
+
+And pairwise differences between age groups:
+```{r}
+pairs(emmeans(fit_sat, ~agef))
+```
+
+Transitioning to SATV, because we are interested its linear effect (slope), we use the `emtrends` function to estimate the slope in each species individually. In terms of simple slopes, we test whether the SATV slope is non-zero in each age group. The `infer` argument in the summary of `emtrends` requests t-tests and p-values for the slopes.
+
+```{r}
+summary(emtrends(model = fit_sat, ~agef, var="SATV"), infer=TRUE)
+```
+
+Finally, we could examine pairwise differences between slopes among age groups.
+```{r}
+pairs(emtrends(model = fit_sat, ~agef, var="SATV"))
+```
+
+There is a lot more on probing interations here: <https://cran.r-project.org/web/packages/emmeans/vignettes/interactions.html>.
+
+# ANOVA
+The overall goal is to give you a very quick introduction to conducting one-way ANOVA and two-way ANOVA in R.
+
+Analysis of variance (ANOVA) provides a statistical test of whether two or more population means are equal. It is based on the law of total variance, where the observed variance in particular variable is partitioned into components attributable to differnt sources of variation. When the population means are equal, the differences among the group means reflect the operation of experimental error alone (within-groups deviation). When the population means are not equal, the differences among the group means will reflect the operation of both experimental error (within-groups deviation) and treatment effects (between-group deviation). In ANOVA, we produce the ratio of: 
+
+$$\frac{S^2_{treatment} + S^2_{error}}{S^2_{error}}$$
+
+Variance = (sum of square deviation from the mean)/(degrees of freedom)=SS/df
+Sum of Squares: 
+$$SS_{Total}= SS_{between}+SS_{within}$$
+$$\sum(Y_{i.j}-\bar{Y_T})= \sum(\bar(Y_{ai}-\bar{Y_T})+\sum(Y_{i.j}-\bar{Y_{ai}})$$
+Degrees of freedom:
+$$df_{Total}= df_{between}+df_{within}$$
+
+***
+### For a single factor
+
+The one-way ANOVA is an extension of independent two-sample t-test for comparing means in a situation where there are two groups or more than two groups. In one-way ANOVA, the data is organized into several groups base on one single grouping variable (also called factor variable).
+
+#### One-way ANOVA Assumptions: 
+    - Independence of observations
+    - Normality (normal distributions of the residuals)
+    - Homoscendasticity (equal variances for all groups)
+
+1. Normality
+``` {r test-assumption-2}
+df<-ToothGrowth
+df$dose <- factor(df$dose, 
+                  levels = c(0.5, 1, 2),
+                  labels = c("D0.5", "D1", "D2"))
+kruskal.test(len ~ supp, data = df)
+```
+
+From the output above we can see that the p-value is not less than the significance level of 0.05. 
+
+2. Homogeneity of variances
+``` {r test-assumption-3}
+leveneTest(len ~ supp, data = df)
+```
+
+From the output above we can see that the p-value is not less than the significance level of 0.05. This means that there is no evidence to suggest that the variance across groups is statistically significantly different. Therefore, we can assume the homogeneity of variances in the different treatment groups.
+
+``` {r one-way-ANOVA-demonstration-1}
+table(df$supp) # there are three levels
+group_by(df, supp) %>%
+  summarise(
+    count = n(),
+    mean = mean(len, na.rm = TRUE),
+    sd = sd(len, na.rm = TRUE)
+  )
+```
+
+``` {r one-way-ANOVA-demonstration-2}
+# Compute the analysis of variance
+res.aov <- aov(len ~ supp, data = df)
+# Summary of the analysis
+summary(res.aov)
+```
+As the p-value is more than the significance level 0.05, we can conclude that there are no significant differences between the groups.
+
+#### Box plots
+Plot weight by group and color by group
+``` {r one-way-ANOVA-visualization-1}
+ggplot(df, aes(x=supp, y=len)) + 
+  geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) +
+  geom_jitter(shape=16, position=position_jitter(0.2))
+
+```
+
+#### Check the homogeneity of variance assumption
+``` {r one-way-ANOVA-visualization-2}
+plot(res.aov, 1)
+```
+In the plot below, there is no evident relationships between residuals and fitted values (the mean of each groups), which is good. Points 23, 26 are detected as outliers, which can severely affect normality and homogeneity of variance. It can be useful to remove outliers to meet the test assumptions.
+
+#### Check the normality assumption
+``` {r one-way-ANOVA-visualization-3}
+plot(res.aov, 2)
+```
+QQ-plot is used to check the assumption that the residuals are normally distributed. It should approximately follow a straight line.
+
+#### Multiple pairwise-comparison between the means of groups
+In one-way ANOVA test, a significant p-value indicates that some of the group means are different, but we don’t know which pairs of groups are different. It’s possible to perform multiple pairwise-comparison, to determine if the mean difference between specific pairs of group are statistically significant. 
+Example: Tukey HSD (Tukey Honest Significant Differences, R function: TukeyHSD()) 
+
+``` {r one-way-ANOVA-post-hoc}
+TukeyHSD(res.aov)
+```
+diff: difference between means of the two groups
+lwr, upr: the lower and the upper end point of the confidence interval at 95% (default)
+p adj: p-value after adjustment for the multiple comparisons.
+
+***
+### For two factors
+
+Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. The number of level may vary in each factor.
+
+#### Two-way ANOVA test Assumptions:
+1. There is no difference in the means of factor A
+2. There is no difference in the means of factor B
+3. There is no interaction between factors A and B
+4. Normality (normal distributions of the residuals )
+5. Homoscendasticity (equal variances for all groups)
+The alternative hypothesis for cases 1 and 2 is: the means are not equal.
+The alternative hypothesis for case 3 is: there is an interaction between A and B.
+
+``` {r two-way-ANOVA-demonstration-1}
+table(df$supp, df$dose)
+group_by(df, supp, dose) %>%
+  summarise(
+    count = n(),
+    mean = mean(len, na.rm = TRUE),
+    sd = sd(len, na.rm = TRUE)
+  )
+```
+In two-way ANOVA, we assume the sample sizes within cells are equal. If not, the ANOVA test should be handled differently (Type-III sums of squares).
+
+#### We want to know if tooth length depends on supp and dose.
+``` {r two-way-ANOVA-demonstration-2}
+res.aov2 <- aov(len ~ supp + dose, data = df)
+summary(res.aov2)
+```
+From the ANOVA table we can conclude that both supp and dose are statistically significant, highlighted with *. Dose is the most significant factor variable. These results would lead us to believe that changing delivery methods (supp) or the dose of vitamin C, will impact significantly the mean tooth length.
+
+#### Note the above fitted model is called additive model. It makes an assumption that the two factor variables are independent. If you think that these two variables might interact to create an synergistic effect, replace the plus symbol (+) by an asterisk (*), as follow.
+``` {r two-way-ANOVA-demonstration-3}
+res.aov3 <- aov(len ~ supp * dose, data = df)
+summary(res.aov3)
+```
+It can be seen that the two main effects (supp and dose) are statistically significant, as well as their interaction.
+
+#### Line plots with multiple groups
+Plot tooth length ("len") by groups ("dose")
+Color box plot by a second group: "supp"
+``` {r two-way-ANOVA-visualization-1}
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- rename(data_sum, c("mean" = varname))
+ return(data_sum)
+}
+df3 <- data_summary(df, varname="len", 
+                    groupnames=c("supp", "dose"))
+ggplot(df3, aes(x=dose, y=len, group=supp, color=supp)) + 
+    geom_errorbar(aes(ymin=len-sd, ymax=len+sd), width=.1, 
+    position=position_dodge(0.05)) +
+    geom_line() + geom_point()+
+   scale_color_brewer(palette="Paired")+theme_minimal()
+```
+
+#### Multiple pairwise-comparison between the means of groups
+It is to determine if the mean difference between specific pairs of group are statistically significant.
+``` {r two-way-ANOVA-post-hoc}
+TukeyHSD(res.aov3, which = "dose")
+```
+
+### Alternative: 
+
+t-test: comparing means between two groups in a sample (t.test function)
+Linear regression: comparing one or more factors in a sample (lm or lmer function)
+
+# Hands on practice: Data Analyses
+Download the [practice RMarkdown file](https://github.com/psu-psychology/r-bootcamp-2019/raw/master/talks/data_analyses_practice.Rmd)
+and open it. We will be using the `spi` data set from the `psych` package for the practice
+questions.
+
+
+
+
+
