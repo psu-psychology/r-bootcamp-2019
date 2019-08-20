@@ -119,6 +119,11 @@ clean_hrs_sleep <- function(df) {
   # "7-8"
   clean_this <- df$`Preferred number of hours spent sleeping/day` == "7-8"
   df$`Preferred number of hours spent sleeping/day`[clean_this] <- "7.5"
+
+  # 8-9
+  clean_this_too <- df$`Preferred number of hours spent sleeping/day` == "8-9"
+  df$`Preferred number of hours spent sleeping/day`[clean_this_too] <- "8.5"
+
   df$`Preferred number of hours spent sleeping/day` <- as.numeric(df$`Preferred number of hours spent sleeping/day`)
   
   return(df)

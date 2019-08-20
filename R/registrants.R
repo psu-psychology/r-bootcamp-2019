@@ -84,6 +84,13 @@ clean_dept_field <- function(df) {
   csd <- stringr::str_detect(df$dept, "COMMUNICATION ") |
     stringr::str_detect(df$dept, "Communication")
   
+  # EESI
+  eesi <- stringr::str_detect(df$dept, "EESI") | 
+    stringr::str_detect(df$dept, "Earth and")
+  
+  # Spanish, Italian, and Portuguese
+  span_it <- stringr::str_detect(df$dept, "Spanish")
+  
   out_df <- df
   out_df$dept[some_psych] <- "Psych"
   out_df$dept[tlt] <- "TLT"
@@ -94,6 +101,8 @@ clean_dept_field <- function(df) {
   out_df$dept[hhd] <- "HHD"
   out_df$dept[prev_ctr] <- "Prev Ctr"
   out_df$dept[csd] <- "CSD"
+  out_df$dept[eesi] <- "EESI"
+  out_df$dept[span_it] <- "Span-It-Port"
   
   out_df$area <- NA
   out_df$area[io] <- "I/O"
