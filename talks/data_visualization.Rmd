@@ -1,5 +1,5 @@
 ---
-title: "Data Visualization Penn State R Bootcamp 2019"
+title: "Basic Visualization in R"
 author: "Holly Zaharchuk, Rebecca Janis & Alicia Vallorani"
 date: "`r Sys.time()`"
 output:
