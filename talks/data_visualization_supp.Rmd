@@ -1,5 +1,5 @@
 ---
-title: "Data Visualization Supplement Penn State R Bootcamp 2019"
+title: "Supplemental Materials for Data Visualization"
 author: "Holly Zaharchuk, Rebecca Janis & Alicia Vallorani"
 date: "`r Sys.time()`"
 output:
@@ -22,6 +22,8 @@ pacman::p_load(tidyverse, psych, interactions, vcd) # install (if needed) and lo
 # Load data and convert sex and education to factors
 source("R/load_sat_act.R")
 ```
+
+The purpose of this document is to provide additional options for visualiziation of data. Questions about code can be directed to Alicia Vallorani (auv27@psu.edu).
 
 # Scatterplots
 When you have a large number of data points, you can add jitter to the points (i.e., slightly vary the location of the points) to handle this overplotting issue.
