@@ -26,7 +26,6 @@ This markdown is designed to provide an introduction to data visualization in R.
 ### What is ggplot()?
 The ggplot() function sets the foundation for building any kind of plot. We need to pass ggplot() two main pieces of information: the name of the dataset and the names of the columns in the dataset that we want to plot.
 
-
 ## psych::sat.act dataset
 Here, we can see that there's one column per variable and one row per subject. This is how we want the data to be set up for plotting in ggplot(). This way, we can easily specify the variables we are interested in, and we know that we have a unique value for each subject. Here's an example with the age and ACT variables.
 ```{r}
