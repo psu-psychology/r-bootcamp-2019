@@ -22,6 +22,7 @@ bootcamp_pkgs <- c("afex",
                    "plyr",
                    "psych",
                    "rcompanion",
+                   "skimr",
                    "swirl",
                    "tidyverse",
                    "tufte")
@@ -30,9 +31,15 @@ install_bootcamp_pkgs <- function(pkgs = bootcamp_pkgs) {
   install_packages(bootcamp_pkgs)
 }
 
+test_bootcamp_pkg_install <- function() {
+  if (install_packages()) {
+    message("Test passes")
+  }
+}
+
 install_pacman <- function() {
   if (!require(pacman)) {
-    message("Installing 'pacman'")
+    message("Installing 'pacman' package")
     install.packages("pacman")
   }
   library(pacman)
@@ -53,4 +60,5 @@ install_packages <- function(pkg_list = c("tidyverse", "ggplot2")) {
     } else {
       stop("'pkg_list' is NULL.")
     }
+  return(TRUE)
 }
