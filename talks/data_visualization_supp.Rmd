@@ -46,40 +46,40 @@ ggplot(sat.act, aes(age, ACT, color=education)) +
 # Bar Graphs
 ```{r}
 # Bar graph with additional element stacked
-ggplot(sat.act, aes(education_factor, ACT, fill=gender_factor)) +
+ggplot(sat.act, aes(education_factor, ACT, fill=sex_factor)) +
   geom_bar(stat="summary", fun.y="mean") +
   scale_fill_grey() +
   ylab("Average score") +
   xlab("Education level") +
-  labs(fill="Gender") +
-  ggtitle("Average ACT scores at each education level by gender") +
+  labs(fill="Sex") +
+  ggtitle("Average ACT scores at each education level by sex") +
   scale_y_continuous(expand=c(0,0)) +
   theme_classic()
 
 # Bar graph with additional element dodged
-ggplot(sat.act, aes(education_factor, ACT, fill=gender_factor)) +
+ggplot(sat.act, aes(education_factor, ACT, fill=sex_factor)) +
   geom_bar(stat="summary", fun.y="mean", position="dodge") +
   scale_fill_grey() +
   ylab("Average score") +
   xlab("Education level") +
-  labs(fill="Gender") +
-  ggtitle("Average ACT scores at each education level by gender") +
+  labs(fill="Sex") +
+  ggtitle("Average ACT scores at each education level by sex") +
   scale_y_continuous(expand=c(0,0)) +
   theme_classic()
 ```
 
-Instead of plotting the bars side-by-side, we can use facet_wrap() to create separate graphs for each gender. It's also possible to set the limits on the axes manually, so the bars don't run into the labels.
+Instead of plotting the bars side-by-side, we can use facet_wrap() to create separate graphs for each sex. It's also possible to set the limits on the axes manually, so the bars don't run into the labels.
 
 ```{r}
 # Bar graph with additional element stacked
-ggplot(sat.act, aes(education_factor, ACT, fill=gender_factor)) +
+ggplot(sat.act, aes(education_factor, ACT, fill=sex_factor)) +
   geom_bar(stat="summary", fun.y="mean") +
-  facet_wrap(~gender_factor) +
+  facet_wrap(~sex_factor) +
   scale_fill_grey() +
   ylab("Average score") +
   xlab("Education level") +
-  labs(fill="Gender") +
-  ggtitle("Average ACT scores at each education level by gender") +
+  labs(fill="Sex") +
+  ggtitle("Average ACT scores at each education level by sex") +
   scale_y_continuous(expand=c(0,0), limits=c(0,36)) +
   theme_classic()
 ```
@@ -89,7 +89,7 @@ ggplot(sat.act, aes(education_factor, ACT, fill=gender_factor)) +
 ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = sex)) +
   geom_boxplot() + 
   geom_jitter(position=position_jitterdodge(), alpha = .2) + 
-  labs(fill = "sex",
+  labs(fill = "Sex",
        x = "Education")
 ```
 
