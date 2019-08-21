@@ -2,6 +2,8 @@ require(dplyr)
 data("spi", package="psych")
 spi <- spi %>% 
   renmame(exercise = exer) %>%
+  dplyr::select(age, sex, health, p1edu, p2edu, education, wellness,
+                exer, smoke, ER) %>%
   mutate(sex=factor(sex, levels=c(1,2), labels=c("male", "female")),
          wellness=factor(wellness, levels=c(1,2), labels=c("Low", "High")),
          exercise=factor(exercise, levels=c(1,2,3), labels=c("Rarely", "Sometimes", "Often")),
