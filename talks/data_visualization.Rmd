@@ -132,7 +132,7 @@ ggplot(sat.act.sum, aes(x=education, y=ACT)) +
                       ymax=ACT+se), 
                   width=.2, position=position_dodge(.9))
 ```
-Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Bar Graph).
+Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Bar Graphs).
 
 # Aesthetics (aes)
 Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms
