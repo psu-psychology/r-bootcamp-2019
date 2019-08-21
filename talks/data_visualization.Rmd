@@ -30,6 +30,9 @@ The ggplot() function sets the foundation for building any kind of plot. We need
 ## psych::sat.act dataset
 Here, we can see that there's one column per variable and one row per subject. This is how we want the data to be set up for plotting in ggplot(). This way, we can easily specify the variables we are interested in, and we know that we have a unique value for each subject. Here's an example with the age and ACT variables.
 ```{r}
+# Load data and convert sex and education to factors
+source("R/load_sat_act.R")
+
 # Print the first five rows in the dataset
 head(sat.act, n=5)
 
@@ -46,7 +49,7 @@ ggplot(sat.act, aes(ACT)) +
   geom_histogram(bins = 20) # you can change the bin value to best fit your data
 
 # Looking at histograms for all variables ggplot option
-ggplot(sat.act %>% dplyr::select(-gender, -education) %>% # removing dichotomous variables
+ggplot(sat.act %>% dplyr::select(-sex, -education) %>% # removing dichotomous variables
          gather(), aes(value)) + # grouping for visualization
     geom_histogram(bins = 20) + 
     facet_wrap(~key, scales = "free_x") # free_x allows for differing x-axes 
@@ -155,10 +158,10 @@ Both change the color, but different geoms use one or the other or both
 
 This can be categorical:
 ```{r color-dichot}
-ggplot(sat.act, aes(x = SATV, y = SATQ, color = gender)) + 
+ggplot(sat.act, aes(x = SATV, y = SATQ, color = sex)) + 
   geom_point()
 
-ggplot(sat.act, aes(x = SATV, fill = gender)) + 
+ggplot(sat.act, aes(x = SATV, fill = sex)) + 
   geom_density(alpha = .5)
 ```
 
@@ -178,8 +181,8 @@ ggplot(sat.act, aes(x = SATV, y = SATQ, size = age)) +
 
 ## shape
 ```{r shape}
-# Error: Continuous value supplied to discrete scale - not sure what is happening here - Need to go in and factor gender
-#ggplot(sat.act, aes(x = SATV, y = SATQ, shape = gender)) + 
+# Error: Continuous value supplied to discrete scale - not sure what is happening here - Need to go in and factor sex
+#ggplot(sat.act, aes(x = SATV, y = SATQ, shape = sex)) + 
   #geom_point() +
   #scale_shape_manual(values = c(17, 19))
 ```
@@ -197,30 +200,30 @@ There are other aesthetic mappings for specific use cases, but these are the mos
 ## Dichotomous by dichotomous
 Bar graph or box and whisker plots
 ```{r interaction-1}
-ggplot(sat.act, aes(x=education, y=SATV, fill = gender)) +
+ggplot(sat.act, aes(x=education, y=SATV, fill = sex)) +
   geom_bar(stat = "summary", fun.y = "mean", position = "dodge") +
-  labs(fill = "Gender",
+  labs(fill = "sex",
        x = "Education",
        y = "Mean SATV")
 
-ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = gender)) +
+ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = sex)) +
   geom_boxplot() + 
   geom_jitter(position=position_jitterdodge(), alpha = .2) + 
-  labs(fill = "Gender",
+  labs(fill = "sex",
        x = "Education")
 ```
 
-Does the effect of gender on SATV scores differ by education level? Maybe for people without a high school education (0).
+Does the effect of sex on SATV scores differ by education level? Maybe for people without a high school education (0).
 
 ## Dichotomous by continuous
 Scatter plot with best fit lines
 ```{r interaction-2}
-ggplot(sat.act, aes(x = SATV, y = SATQ, color = gender)) + 
+ggplot(sat.act, aes(x = SATV, y = SATQ, color = sex)) + 
   geom_point() +
   geom_smooth(method = "lm", se = F)
 ```
 
-Does the effect of SATV on SATQ differ by gender? Not a large visual difference between the best fit lines for each gender.  
+Does the effect of SATV on SATQ differ by sex? Not a large visual difference between the best fit lines for each sex.  
 
 ## Continuous by continuous
 Scatter plot with lines for specified values of the continuous moderator (+/- 1 SD by default)  
@@ -242,7 +245,7 @@ Is there an interaction between SATQ and SATV in predicting ACT? Looks like it! 
 ## Three way interaction
 Use faceting
 ```{r interaction-4}
-plot <- ggplot(sat.act, aes(x=SATQ, y=SATV, color = gender)) +
+plot <- ggplot(sat.act, aes(x=SATQ, y=SATV, color = sex)) +
   geom_point(alpha = .6) +
   stat_smooth(method = lm, se = FALSE, size = 1.2) +
   facet_wrap(vars(education))
@@ -253,8 +256,8 @@ plot
 Axis titles, labels and breaks, plot title, plot caption, font sizes, theme, gridlines, axis lines, facet spacing, legend positioning, etc... All the fiddly details.
 ```{r finish}
 plot +
-  labs(color = "Gender",
-       title = "Relationship between SATQ and SATV by gender and education",
+  labs(color = "sex",
+       title = "Relationship between SATQ and SATV by sex and education",
        subtitle = "Data from SAPA project",
        caption = "N = 687") + 
   scale_y_continuous(breaks = seq(200, 800, by = 100)) +
