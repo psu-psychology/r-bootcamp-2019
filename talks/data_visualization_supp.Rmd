@@ -83,3 +83,13 @@ ggplot(sat.act, aes(education_factor, ACT, fill=gender_factor)) +
   scale_y_continuous(expand=c(0,0), limits=c(0,36)) +
   theme_classic()
 ```
+
+# Interactions
+```{r}
+ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = sex)) +
+  geom_boxplot() + 
+  geom_jitter(position=position_jitterdodge(), alpha = .2) + 
+  labs(fill = "sex",
+       x = "Education")
+```
+
