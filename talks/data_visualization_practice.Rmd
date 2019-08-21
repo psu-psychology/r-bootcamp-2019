@@ -46,7 +46,7 @@ source("R/load_spi.R")
 
 ```
 
-4. Add a dichotomous variable to color your scatterplot such as sex or exercise.
+4. Add a categorical variable to your scatterplot such as sex or exercise using color and/or shape as the asthetic. Try playing with the alpha level of the points. 
 ```{r}
 
 # Write your code here!
@@ -68,10 +68,47 @@ source("R/load_spi.R")
 ```
 
 
-7. Use a bar graph to examine how wellness group is related to parent education.
+7. Use a bar graph to examine a count of ER visits.
 ```{r}
 
 # Write your code here!
 
 ```
+
+
+8. Use a bar graph to examine mean health by ER visits. You can use na.rm = TRUE inside geom_bar() to remove missing data.
+```{r}
+
+# Write your code here!
+
+```
+
+9. Create a bar graph examining health by ER visits with error bars using Rmisc and summarySE().
+```{r}
+
+# Write your code here!
+
+```
+
+10. Use a bar graph to examine a three way interaction between health, ER and sex. Hint: Use a color to define sex.
+```{r}
+
+# Write your code here!
+
+```
+
+11. Say you were interested in relations between health, wellness and sex. How would you visualize this relation?
+```{r}
+
+# Write your code here!
+
+```
+
+12. Try exporting one of your favorite plots you made!
+```{r}
+
+# Write your code here!
+
+```
+
 
