@@ -201,7 +201,7 @@ Bar graph
 ```{r interaction-1}
 ggplot(sat.act, aes(x=education, y=SATV, fill = sex)) +
   geom_bar(stat = "summary", fun.y = "mean", position = "dodge") +
-  labs(fill = "sex",
+  labs(fill = "Sex",
        x = "Education",
        y = "Mean SATV")
 ```
@@ -250,7 +250,7 @@ plot
 Axis titles, labels and breaks, plot title, plot caption, font sizes, theme, gridlines, axis lines, facet spacing, legend positioning, etc... All the fiddly details.
 ```{r finish}
 plot +
-  labs(color = "sex",
+  labs(color = "Sex",
        title = "Relationship between SATQ and SATV by sex and education",
        subtitle = "Data from SAPA project",
        caption = "N = 687") + 
