@@ -1,0 +1,21 @@
+---
+title: 'Basic Data Visualization in R: Hands on Practice'
+author: "Holly, Rebecca & Alicia Vallorani"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    code_foldering: show
+    mathjax: default
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# handy package manager that installs and loads packages used in this document
+if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacman") } 
+pacman::p_load(tidyverse, psych, GGally, Rmisc, interactions) # install (if needed) and load packages
+```
