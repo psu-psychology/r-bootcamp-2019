@@ -464,10 +464,9 @@ We can also probe the 3-way interaction, provided we choose specific values for 
 describe(daily_long$stress_trait_c)
 
 #probing 3-way interaction
-detach("package:lmerTest", unload = TRUE)
-simpleslopes_model2a <- sim_slopes(model=model2a_fit, pred=stress_state, modx=bfi_n_c,
-                                  mod2=stress_trait_c,mod2.values = c(-0.47,+0.47))
-plot(simpleslopes_model2a)
+# simpleslopes_model2a <- sim_slopes(model=model2a_fit, pred=stress_state, modx=bfi_n_c,
+#                                   mod2=stress_trait_c,mod2.values = c(-0.47,+0.47))
+# plot(simpleslopes_model2a)
 #ran, but did not knit
 ```
 

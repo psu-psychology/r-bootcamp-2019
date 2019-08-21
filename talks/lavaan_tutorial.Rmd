@@ -26,8 +26,7 @@ pre { font-size: 20px; }
 
 ```{r setup, include=FALSE}
 if (!require(pacman)) { install.packages("pacman"); library(pacman) }
-p_load(knitr, ppcor, tidyverse, lavaan, modelr, mlbench, ggcorrplot,
-       lattice, lm.beta, semPlot, DiagrammeR, cowplot)
+p_load(knitr, tidyverse, lavaan, mlbench, ggcorrplot, semPlot, cowplot)
 
 knitr::opts_chunk$set(echo = TRUE) #print code by default
 options(digits=3) 

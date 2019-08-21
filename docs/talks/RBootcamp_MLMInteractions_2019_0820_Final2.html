@@ -1698,7 +1698,7 @@ ggplot(data=daily_long[which(daily_long$id &lt;= 125),], aes(x=stress_state,y=ne
 <div id="b.-setting-up-the-multilevel-model-1" class="section level2">
 <h2>B. Setting up the Multilevel Model</h2>
 <p>Now that we have defined the dynamic characteristic of interest - stress reactivity - we can operationalize it using the multilevel model.</p>
-<p>We make use of the <code>lme4</code> package for fitting mixed effects models, and some supplmentary packages: <code>lmerTest</code> provides tools for obtaining p-vlaues; <code>effects</code> provides tools for calculating and plotting model-based predictions; and <code>interactions</code> provides tools for plotting and probing interactions.</p>
+<p>We make use of the <code>lme4</code> package for fitting mixed effects models, and some supplmentary packages: <code>lmerTest</code> provides tools for obtaining p-values; <code>effects</code> provides tools for calculating and plotting model-based predictions; and <code>interactions</code> provides tools for plotting and probing interactions.</p>
 <p>The <code>lmer()</code> function fits the MLMs The <code>data</code> argument specifies the data sources The <code>na.action</code> argument specifies what to do with missing data</p>
 <p>To start, we often fit an <em>unconditional means model</em> that provides us information about how much of the total variance in the outcome varaible is within-person variance and how much is between-person variance.</p>
 <p>Fitting the unconditional means model.</p>
