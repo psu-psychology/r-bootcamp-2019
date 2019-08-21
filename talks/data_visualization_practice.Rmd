@@ -19,3 +19,59 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacman") } 
 pacman::p_load(tidyverse, psych, GGally, Rmisc, interactions) # install (if needed) and load packages
 ```
+
+# Hands on practice: data analyses
+For this hands on practice, load the `spi` data set from the `psych` package.
+
+1. Check the help file, structure, and first few observations of the data and the structure of the data.
+```{r}
+# Load data and convert sex and education to factors
+source("R/load_spi.R")
+
+# Write your code here!
+
+```
+
+2. Examine the distribution of your continuous variables.
+```{r}
+
+# Write your code here!
+
+```
+
+3. Create a scatter plot that examines the relation between age and health.
+```{r}
+
+# Write your code here!
+
+```
+
+4. Add a dichotomous variable to color your scatterplot such as sex or exercise.
+```{r}
+
+# Write your code here!
+
+```
+
+5. Add a regression line to your scatterplot
+```{r}
+
+# Write your code here
+
+```
+
+6. Try using ggpairs to examine multiple relations between your variables simultaneously. You can examine the entire dataset or select particular variables to include using dplyr::select() in the pipe.
+```{r}
+
+# Write your code here!
+
+```
+
+
+7. Use a bar graph to examine how wellness group is related to parent education.
+```{r}
+
+# Write your code here!
+
+```
+
