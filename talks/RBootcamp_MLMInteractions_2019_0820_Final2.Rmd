@@ -1,6 +1,11 @@
 ---
 title: "Introduction to Multilevel Model and Interactions"
-output: html_document
+output:
+  html_document:
+    toc:  TRUE
+    toc_depth: 2
+    toc_float: TRUE
+    number_section: FALSE
 editor_options: 
   chunk_output_type: console
 ---
@@ -21,14 +26,17 @@ The overall set-up of the models follows Bolger & Laurenceau (2013) Chapters 4 a
 #### Prelim - Loading libraries used in this script.
 
 ```{r, message=FALSE, warning=FALSE}
-library(backports)     # to revive the isFALSE() function for sim_slopes()
-library(effects)       # for probing interactions
-library(ggplot2)       # for data visualization
-library(interactions)  # for probing/plotting interactions
-library(lme4)          # for multilevel models
-library(lmerTest)      # for p-values
-library(psych)         # for describing the data
-library(plyr)          # for data manipulation
+if (!require(pacman)) { install.packages("pacman"); library(pacman) }
+p_load(
+  backports, # to revive the isFALSE() function for sim_slopes()
+  effects, # for probing interactions
+  ggplot2, # for data visualization
+  interactions, # for probing/plotting interactions
+  lme4, # for multilevel models
+  lmerTest, # for p-values
+  psych, # for describing the data
+  plyr # for data manipulation
+)
 ```
 
 #### Prelim - Reading in Repeated Measures Data
@@ -67,7 +75,7 @@ AMIB_daily <- read.csv(file=url(filepath),header=TRUE)
 AMIB_daily <- AMIB_daily[ ,c("id","day","negaff","pss")]
 ```
 
-##A. Preparation and description of variables for use in Multilevel Model
+## A. Preparation and description of variables for use in Multilevel Model
 
 In this example data are prepared through some recoding (idiosyncratic for this data set), and separation of time-varying predictor variables into between-person and within-person components (typical for all multilevel analysis) 
 
@@ -133,7 +141,7 @@ describe(daily_long)
 Great! Now the data are all prepared as needed.
 
 
-##B. Setting up the Multilevel Model     
+## B. Setting up the Multilevel Model     
 
 **Set-up for basic multilevel model with continuous outcome**
 
@@ -187,7 +195,7 @@ $$\mathbf{G} = \left[\begin{array}
 
 Together, the full set of parameters provide a parsimonious description of the data that allows for inference about within-person associations and between-person differeneces in those associations. 
 
-##B. Setting up the Multilevel Model
+## B. Setting up the Multilevel Model
 
 Now that we have defined the dynamic characteristic of interest - stress reactivity - we can operationalize it using the multilevel model.
 
@@ -235,7 +243,7 @@ ICC_between
 
 This means there is a good portion of within-person variance to model using time-varying predictor.
 
-##C. Using the Mutlilevel Model to Examine Between-Person Differences in Within-Person Associations     
+## C. Using the Mutlilevel Model to Examine Between-Person Differences in Within-Person Associations     
 
 OK - let's add the predictor, which was split into two components `stress_trait` (between-person component) and `stress_state` (within-person component), that latter gives us possibility to quantify each individual's *stress reactivity*. Note that we also include `day` as a time-varying predictor, but simply as a control variable to account for any systematic time trends in the data. 
 
@@ -353,7 +361,7 @@ daily_long$pred_m2 <- predict(model2_fit)
     * sd(stress_state): There was a substantial extent of between-person differences in the average within-person association between perceived stress and negative affect (`r round(summary(model2_fit)$varcor$id[2,2],2)`)
     * cov((Intercept),stress_state: The correlation between the random intercept and random slope was `r round(cov2cor(summary(model2_fit)$varcor$id)[2,1],2)`, which indicates that those who had higher intercept values for negative affect were also more likely to exhibit stress reactivity (more positive within-person associations between negative affect and perceived stress).
 
-##D. Plotting and Probing Interactions 
+## D. Plotting and Probing Interactions 
 
 **Probing and Plotting the Interaction**
 
@@ -466,7 +474,7 @@ From the output we see that the value of the within-person *stress reactivity* s
 
 As you try these techniques out with the AMIB data, please let us know if you find a set of variables that has the significant interactions that make for interesting results and theory. =:-] 
 
-##Conclusion
+## Conclusion
 
 This tutorial illustrated application of the basic multilevel model (where the outcome variable is assumed normally distributed - and how interactions are probed and plotted.  
 

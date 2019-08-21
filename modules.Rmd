@@ -27,6 +27,11 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
+## Introduction to Multilevel Model and Interactions
+
+- [Intro to MLM and interactions](talks/RBootcamp_MLMInteractions_2019_0820_Final2.html) (Nilam Ram and Mimi Brinberg) | [Rmd](talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd)
+ 
+
 ## Data wrangling
 
 <!-- - [tidyr and dplyr walkthrough](talks/dplyr_walkthrough_2018.html) (Michael Hallquist) | [Rmd](talks/dplyr_walkthrough_2018.Rmd) -->
