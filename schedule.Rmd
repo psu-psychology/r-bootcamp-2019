@@ -77,8 +77,8 @@ Continental breakfast, coffee and tea.
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
 | 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
 | 01:30 pm • R-eproducible Science (Rick Gilmore), [HTML slides](talks/r-reproducible-science.html)      |
-| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) |
+| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html) |
 | 02:45 pm • Break                                            |
-| 03:00 pm • Hands on practice                                |
+| 03:00 pm • Hands on practice, [HTML slides](talks/data_analyses_practice.html)                                |
 | 04:00 pm • End                                              |
 | 04:15 pm • Optional Happy Hour @ Whisker's                  |
