@@ -37,7 +37,7 @@ Continental breakfast, coffee and tea.
 
 | **Slow-R Track**, 210 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/985720879) |  | **Fast-R Track**, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
+| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg), [HTML slides](talks/RBootcamp_MLMInteractions_2019_0820_Final2.html) , [RMd source](talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd)  |
 | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
 ## Thu, Aug 22, 2019 

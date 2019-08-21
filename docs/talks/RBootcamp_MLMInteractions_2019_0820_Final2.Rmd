@@ -1,0 +1,474 @@
+---
+title: "Introduction to Multilevel Model and Interactions"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## Overview
+This tutorial covers how the multilevel model can be used to examine within-person associations and how those associations are moderted by between-person differences. Our example is developed using experience sampling data (repeated occasions nested within persons), but also applies to other kinds of nested data.   
+
+## Outline
+In this session we cover ...
+
+A. Preparation and description of variables for use in Multilevel Model     
+B. Setting up the Multilevel Model     
+C. Using the Mutlilevel Model to Examine Between-Person Differences in Within-Person Associations     
+D. Plotting and Probing Interactions     
+
+The overall set-up of the models follows Bolger & Laurenceau (2013) Chapters 4 and 5.  
+
+#### Prelim - Loading libraries used in this script.
+
+```{r, message=FALSE, warning=FALSE}
+library(backports)     # to revive the isFALSE() function for sim_slopes()
+library(effects)       # for probing interactions
+library(ggplot2)       # for data visualization
+library(interactions)  # for probing/plotting interactions
+library(lme4)          # for multilevel models
+library(lmerTest)      # for p-values
+library(psych)         # for describing the data
+library(plyr)          # for data manipulation
+```
+
+#### Prelim - Reading in Repeated Measures Data
+
+Our example makes use of the person-level and day-level (EMA-type) AMIB data files, publically available data from an experience sampling study. Information about the data can be found on the QuantDev website.  
+
+We make use of three variables:      
+
+Outcome: *daily negative affect* (**continuous**), the `negaff` variable in the day-level data file; 
+
+Time-varying Predictor: *daily stress*, a `stress` variable obtained through reverse coding of `pss` in the day-level data file;    
+
+Person-level Predictor/Moderator: trait *neuroticism*, the `bfi_n` variable in the person-level data  file. 
+
+Loading person-level file (*N* = 190) and subsetting to variables of interest
+```{r, message=FALSE}
+#set filepath for data file
+filepath <- "https://quantdev.ssri.psu.edu/sites/qdev/files/AMIBshare_persons_2019_0501.csv"
+
+#read in the .csv file using the url() function
+AMIB_persons <- read.csv(file=url(filepath),header=TRUE)
+
+#subsetting to variables of interest
+AMIB_persons <- AMIB_persons[ ,c("id","bfi_n")]
+```
+
+Loading day-level file (*T* = 8) and subsetting to variables of interest.
+```{r, message=FALSE}
+#set filepath for data file
+filepath <- "https://quantdev.ssri.psu.edu/sites/qdev/files/AMIBshare_daily_2019_0501.csv"
+
+#read in the .csv file using the url() function
+AMIB_daily <- read.csv(file=url(filepath),header=TRUE)
+
+#subsetting to variables of interest
+AMIB_daily <- AMIB_daily[ ,c("id","day","negaff","pss")]
+```
+
+##A. Preparation and description of variables for use in Multilevel Model
+
+In this example data are prepared through some recoding (idiosyncratic for this data set), and separation of time-varying predictor variables into between-person and within-person components (typical for all multilevel analysis) 
+
+**Data Recoding** 
+
+Reverse code `pss` into a new `stress` variable where higher values indicate higher perceived stress.  
+```{r, warning=FALSE, message = FALSE}
+#reverse coding the pss variable into a new stress variable
+AMIB_daily$stress <- 4 - AMIB_daily$pss
+
+#describing new variable
+describe(AMIB_daily$stress)
+
+#histogram
+ggplot(data=AMIB_daily, aes(x=stress)) +
+  geom_histogram(fill="white", color="black",bins=20) +
+  labs(x = "Stress (high = more stressed)")
+```
+
+**Data Preparation (between- and within- components)**
+
+We now split the time-varying predictor into "trait" (between-person differences) and "state" (within-person deviations) components. Specifically, the daily variable `stress` is split into two varaibles: `stress_trait` is the sample-mean centered between-person component, and `stress_state` is the person-centered within-person component. 
+
+Although not formally needed, we do this for all the time-varying variables (predictors, outcomes) for easier plotting later.
+
+Making trait variables.
+```{r, warning=FALSE, message = FALSE}
+#calculating intraindividual means
+#Alternative approach using dplyr
+    #AMIB_imeans <- AMIB_daily %>% 
+    #               group_by(id) %>% 
+    #               summarize(stress_trait=mean(stress, na.rm=TRUE))
+
+AMIB_imeans <- ddply(AMIB_daily, "id", summarize,
+                       stress_trait = mean(stress, na.rm=TRUE),
+                       negaff_trait = mean(negaff, na.rm=TRUE))
+describe(AMIB_imeans)
+
+#merging into person-level file
+AMIB_persons <- merge(AMIB_persons, AMIB_imeans, by="id")   
+
+#make centered versions of the person-level scores
+AMIB_persons$bfi_n_c <- scale(AMIB_persons$bfi_n,center=TRUE,scale=FALSE)
+AMIB_persons$stress_trait_c <- scale(AMIB_persons$stress_trait,center=TRUE,scale=FALSE)
+
+#describe person-level data
+describe(AMIB_persons)
+```
+
+Making state variables in long data (as deviations from uncentered trait variable).
+```{r}
+#merging person-level data into daily data
+daily_long <- merge(AMIB_daily,AMIB_persons,by="id")
+
+#calculating state variables
+daily_long$stress_state <- daily_long$stress - daily_long$stress_trait
+daily_long$negaff_state <- daily_long$negaff - daily_long$negaff_trait
+
+#describing data
+describe(daily_long)
+```
+
+Great! Now the data are all prepared as needed.
+
+
+##B. Setting up the Multilevel Model     
+
+**Set-up for basic multilevel model with continuous outcome**
+
+Outlining the substantive inquiry.
+
+We *define* **stress reactivty** (a person-level *dynamic characteristic*; Ram & Gerstorf, 2009) as the extent to which an individual's daily negative affect is related to daily stress. That is, *stress reactivity* is the *within-person association* between daily negative affect and daily stress. 
+Lets examine some of our prepared data to see what *stress reactivity* looks like. 
+
+Plotting within-person associations for a subset of individuals. 
+```{r, warning=FALSE, message = FALSE}
+#faceted plot
+ggplot(data=daily_long[which(daily_long$id <= 125),], aes(x=stress_state,y=negaff)) +
+  geom_point() +
+  stat_smooth(method="lm", fullrange=TRUE) +
+  xlab("Stress State") + ylab("Negative Affect (Continuous)") + 
+  facet_wrap( ~ id) +
+  theme(axis.title=element_text(size=16),
+        axis.text=element_text(size=14),
+        strip.text=element_text(size=14))
+```
+
+To constrain the regression line within the range of stress scores for each person (instead of extrapolating to the full range of stress scores), specify `fullrange=FALSE` in the `stat_smooth` layer above.
+
+From the panel of plots we get a sense that individuals' *negative affect* is higher on days where their *stress* is higher, but to a different extent for each person. These differences in *stress reactivity* are indicated by differences in the slope of the regression lines. 
+
+Our substantive interest is in describing individual differences in *stress reactivity* and determining if those differences are related to differences in *neuroticism*.
+
+
+The basic linear multilevel model is written as 
+
+$$y_{it} = \beta_{0i} + \beta_{1i}x_{it} + e_{it}$$
+where the time-varying outcome variable, $y_{it}$ (*negative affect*) is modeled as a function of a person-specific intercept, $\beta_{0i}$, a person-specific slope, $\beta_{1i}$, that captures the within-person association of interest (in our case *stress reactivity*), and residual error, $e_{it}$.
+The person-specific intercepts and slopes are modeled in turn as 
+
+$$\beta_{0i} = \gamma_{00} + \gamma_{01}z_{i} + u_{0i}$$
+$$\beta_{1i} = \gamma_{10} + \gamma_{11}z_{i} + u_{1i}$$
+
+where the *fixed effects* $\gamma_{00}$ and $\gamma_{01}$ describe the prototypical individual's intercept and slope;  $\gamma_{10}$ and $\gamma_{11}$ indicate how individual differences in the person-specific intercepts and slopes are related to a between-person differences variable, $z_{i}$; and the *random effects* $u_{0i}$ and $u_{1i}$ are residual unexplained differences in intercepts and slopes.
+
+Importantly, $$e_{it} \tilde{} N(0,\mathbf{R})$$, and 
+$$\mathbf{U}_{i} \tilde{} MVN(0,\mathbf{G})$$ 
+
+$$\mathbf{R} = \mathbf{I}\sigma^{2}_{e}$$, where
+where $I$ is the identity matrix (diagonal matrix of 1s) and $\sigma^{2}_{e}$ is the residual (within-person) variance.
+
+$$\mathbf{G} = \left[\begin{array}
+{rr}
+\sigma^{2}_{u0} & \sigma_{u0u1} \\
+\sigma_{u1u0} & \sigma^{2}_{u1}
+\end{array}\right]$$
+
+Together, the full set of parameters provide a parsimonious description of the data that allows for inference about within-person associations and between-person differeneces in those associations. 
+
+##B. Setting up the Multilevel Model
+
+Now that we have defined the dynamic characteristic of interest - stress reactivity - we can operationalize it using the multilevel model.
+
+We make use of the `lme4` package for fitting mixed effects models, and some supplmentary packages: `lmerTest` provides tools for obtaining p-vlaues; `effects` provides tools for calculating and plotting model-based predictions; and `interactions` provides tools for plotting and probing interactions.
+
+The `lmer()` function fits the MLMs
+The `data` argument specifies the data sources
+The `na.action` argument specifies what to do with missing data
+
+
+To start, we often fit an *unconditional means model* that provides us information about how much of the total variance in the outcome varaible is within-person variance and how much is between-person variance.
+
+Fitting the unconditional means model.
+```{r, warning=FALSE, message = FALSE}
+#unconditional means model
+model0_fit <- lmer(formula = negaff ~ 1 + (1|id), 
+              data=daily_long,
+              na.action=na.exclude)
+summary(model0_fit)
+```
+
+We extract the random effects with the VarCorr() function:
+```{r}
+VarCorr(model0_fit)
+```
+
+And then compute the intra-class correlation (ICC) as the ratio of the random intercept variance (between-person) to the total variance, defined as the sum of the random intercept variance and residual variance (between + within). Specifically,
+$$ICC_{between} = \frac{\sigma^{2}_{u0}}{\sigma^{2}_{u0} + \sigma^{2}_{e}}$$
+
+Calculating the ICC.
+
+Store the random effect variances, which will be the first column of the VarCorr object (see above).
+```{r}
+RandomEffects <- as.data.frame(VarCorr(model0_fit))
+RandomEffects
+```
+
+Next, compute the ICC. It is the ratio of the random intercept variance (between-person var) over the total variance (between + within var):
+```{r}
+ICC_between <- RandomEffects[1,4]/(RandomEffects[1,4]+RandomEffects[2,4]) 
+ICC_between
+```
+
+*From the unconditional means model, the ICC was calculated, which indicated that of the total variance in negative affect, `r round(ICC_between*100,2)`% is attributable to between-person variation whereas `r round(100-(ICC_between*100),2)`% is attributatable to within-person variation.*
+
+This means there is a good portion of within-person variance to model using time-varying predictor.
+
+##C. Using the Mutlilevel Model to Examine Between-Person Differences in Within-Person Associations     
+
+OK - let's add the predictor, which was split into two components `stress_trait` (between-person component) and `stress_state` (within-person component), that latter gives us possibility to quantify each individual's *stress reactivity*. Note that we also include `day` as a time-varying predictor, but simply as a control variable to account for any systematic time trends in the data. 
+
+```{r, warning=FALSE, message = FALSE}
+# fit model
+model1_fit <- lmer(formula = negaff ~ 1 + day + stress_trait_c + 
+                      stress_state + stress_state:stress_trait_c + 
+                      (1 + stress_state|id), 
+                    data=daily_long,
+                    na.action=na.exclude)
+summary(model1_fit)
+
+# save predicted scores
+daily_long$pred_m1 <- predict(model1_fit)
+```
+
+**Interpreting and Plotting the Results**
+
+The results indicate that there is an association between perceived stress and negative affect, both across persons (between-person association) and within persons (average within-person association). These are described by the Fized Effects parameters.   
+
+* **Fixed Effects:**
+    * (Intercept): The expected value of negative affect for the prototypical person on a prototypical day is `r round(summary(model1_fit)$coefficients[1,1],2)`
+    * day: negative affect decreased over the course of the study days - for every unit increase in day, negative affect decreased by `r round(model1_fit@beta[2],2)` (*p* = `r round(summary(model1_fit)$coefficients[2,5],2)`)
+    * stress_trait_c: Individuals with higher perceived stress tended to experience higher negative affect, `r round(model1_fit@beta[3],2)`, which is statistically significantly different from zero (*p* = `r round(summary(model1_fit)$coefficients[3,5],2)`).
+    * stress_state : On days when the prototypical individual's perceived stress was higher than usual, their negative affect also tended to be higher than usual, `r round(summary(model1_fit)$coefficients[4,1],2)`, which is statistically significantly different from zero (*p* = `r round(summary(model1_fit)$coefficients[4,5],2)`). 
+    * stress_trait_c:stress_state: differences in the within-person association between state stress and negative affect are not moderated by trait stress level  (`r round(summary(model1_fit)$coefficients[5,1],2)`, *p* = `r round(summary(model1_fit)$coefficients[5,5],2)`)
+    
+* **Random Effects:**
+    * sd((Intercept)): There are substantial between-person differences in individuals' expected value of negative affect (`r round(summary(model1_fit)$varcor$id[1,1],2)`)
+    * sd(stress_state): There are substantial between-person differences in the within-person association between perceived stress and negative affect, stress reactivity, (`r round(summary(model1_fit)$varcor$id[2,2],2)`)
+    * cov((Intercept),stress_state: The correlation between the random intercept and random slope was `r round(cov2cor(summary(model1_fit)$varcor$id)[2,1],2)`, which indicates that those who had higher intercepts for negative affect were also more likely to have greater (more positive) associations between negative affect and perceived stress.
+    
+We can also get confidence intervals for the fixed and random effects. Depending on model complexity, the `confint()` can sometimes take a while to run.
+```{r}
+# Get confidence intervals for both fixed and random effects
+confint(model1_fit)
+```
+
+The labels for the random effects are not entirely intuitive (e.g., `sig01`, `sig02`, `sig03`, `sigma`) - especially for models with several random effects. So, need to check carefully how to interpret the output.
+
+In the above output: 
+
+* sig01 = random effect CI for random intercept (given in SD units - need to square the values if you want the variances)
+* sig02 = correlation between the random intercept and random slope (for stress_state)
+* sig03 = random effect CI for random slope (stress_state; given in SD units - need to square the values if you want the variances)
+* sigma = residual error CI (given in SD units - need to square the values if you want the variances)
+
+In general, the output given from the `confint()` will give you the confidence intervals (given in SD units - will need to square these values if you want the variances) for the first random effect (e.g., the random intercept). Then it will give you the correlations between that random effect and all other random effects it is correlated with. The next row of CI values will correspond to the second random effect (e.g., the random slope for stress_state), with the following rows pertaining to all random effects it is correlated with (but not include any correlations already given - because for example, the correlation for the random intercept and random slope for stress_state was already given). The last row pertaining to random effects is always called `sigma`, and pertains to the residual error (given in SD units - will need to square these values if you want the variances).
+    
+    
+Next, we can plot between-person associations. 
+```{r}
+ggplot(data=AMIB_imeans, aes(x=stress_trait, y=negaff_trait, group=factor(id)), legend=FALSE) +
+  geom_point(colour="gray40") +
+  geom_smooth(aes(group=1), method=lm, se=FALSE, fullrange=FALSE, lty=1, size=2, color="blue") +
+  xlab("Trait Stress") + ylab("Trait Negative Affect") +
+  theme_classic() +
+  theme(axis.title=element_text(size=16),
+        axis.text=element_text(size=12),
+        plot.title=element_text(size=16, hjust=.5)) +
+  ggtitle("Between-Person Association Plot\nTrait Stress & Negative Affect")
+```
+
+Note that the plot is not actually using the model output - so it is just an approximation of the exact model (using geom_smooth embedded within ggplot). However, it is a very useful display.
+
+Plotting predicted within-person associations. 
+```{r}
+ggplot(data=daily_long, aes(x=stress_state, y=negaff_state, group=factor(id), colour="gray"), legend=FALSE) +
+  geom_smooth(method=lm, se=FALSE, fullrange=FALSE, lty=1, size=.5, color="gray40") +
+  geom_smooth(aes(group=1), method=lm, se=FALSE, fullrange=FALSE, lty=1, size=2, color="blue") +
+  xlab("Stress State") + ylab("Predicted State Negative Affect") +
+  theme_classic() +
+  theme(axis.title=element_text(size=18),
+        axis.text=element_text(size=14),
+        plot.title=element_text(size=18, hjust=.5)) +
+  ggtitle("Within-Person Association Plot\nPerceived Stress & Negative Affect")
+```
+
+Note that the plot is not actually using the model output - so it is just an approximation of the exact model (using geom_smooth with *state* scores embedded within ggplot). However, it is a very useful display.
+
+**Adding another Person-level Predictor**
+
+We now add trait neuroticism to the model, to see if and how between-person differences in neuroticism are related to *stress reactivity*. 
+
+Running the expanded model. 
+```{r, warning=FALSE, message = FALSE}
+# fit model
+model2_fit <- lmer(formula = negaff ~ 1 + day + stress_trait_c + 
+                      bfi_n_c + stress_trait_c:bfi_n_c +
+                      stress_state + stress_state:stress_trait_c + 
+                      stress_state:bfi_n_c + stress_state:stress_trait_c:bfi_n_c + 
+                      (1 + stress_state|id),
+                    data=daily_long,
+                    na.action=na.exclude)
+#Look at results
+summary(model2_fit)
+
+# save predicted scores
+daily_long$pred_m2 <- predict(model2_fit)
+```
+
+* **Fixed Effects:**
+    * (Intercept): The expected value of negative affect for the prototypical person on a prototypical day is `r round(summary(model2_fit)$coefficients[1,1],2)`
+    * day: For every unit increase in day, negative affect is expected to decrease by `r round(summary(model2_fit)$coefficients[2,1],2)` (*p* = `r round(summary(model2_fit)$coefficients[2,5],2)`)
+    * stress_trait_c: Individuals with higher perceived stress tended to experience higher negative affect, `r round(model2_fit@beta[3],2)`, which is statistically significantly different from zero (*p* = `r round(summary(model2_fit)$coefficients[3,5],2)`).
+    * bfi_n_c: On average, individuals with higher neuroticism also tended to experience higher negative affect (`r round(model2_fit@beta[4],2)`, *p* = `r round(summary(model2_fit)$coefficients[4,5],2)`)
+    * stress_state : On days when the prototypical individual's perceived stress was higher than usual, their negative affect also tended to be higher than usual, `r round(summary(model2_fit)$coefficients[5,1],2)`, which was statistically significantly different from zero (*p* = `r round(summary(model2_fit)$coefficients[5,5],2)`). 
+    * stress_trait_c:bfi_n_c: trait neuroticism did not moderate the between-person association between stress and negative affect (`r round(model2_fit@beta[6],2)`, *p* = `r round(summary(model2_fit)$coefficients[6,5],2)`)
+    * stress_trait_c:stress_state: trait stress does not moderate the within-person association between state stress and negative affect (`r round(summary(model2_fit)$coefficients[7,1],2)`, *p* = `r round(summary(model2_fit)$coefficients[7,5],2)`)
+    * bfi_n_c:stress_state: trait neuroticism does not moderate the within-person association between stress and negative affect (`r round(summary(model2_fit)$coefficients[8,1],2)`, *p* = `r round(summary(model2_fit)$coefficients[8,5],2)`)
+    * stress_trait_c:bfi_n_c:stress_state: neuroticism does not moderate the trait stress moderator  (`r round(summary(model2_fit)$coefficients[9,1],2)`, *p* = `r round(summary(model2_fit)$coefficients[9,5],2)`)
+    
+* **Random Effects:**
+    * sd((Intercept)): There was a substantial extent of between-person differences in the average value of negative affect (`r round(summary(model2_fit)$varcor$id[1,1],2)`)
+    * sd(stress_state): There was a substantial extent of between-person differences in the average within-person association between perceived stress and negative affect (`r round(summary(model2_fit)$varcor$id[2,2],2)`)
+    * cov((Intercept),stress_state: The correlation between the random intercept and random slope was `r round(cov2cor(summary(model2_fit)$varcor$id)[2,1],2)`, which indicates that those who had higher intercept values for negative affect were also more likely to exhibit stress reactivity (more positive within-person associations between negative affect and perceived stress).
+
+##D. Plotting and Probing Interactions 
+
+**Probing and Plotting the Interaction**
+
+The moderation is not significant. However, if it were, we would want to plot and probe the interaction term, specifically the `stress_state:bfi_n_c` term.  
+
+We can use the `effect` function.   
+We examine what the effect is as various levels of the predictors. Standard practice is to use +1 and -1 SD.
+```{r}
+#xlevels = is the list of values that we want to evaluate at.
+#obtaining the standard deviation of the between-person moderator
+describe(daily_long$bfi_n_c)
+
+#obtaining the standard deviation of the time-varying predictor
+describe(daily_long$stress_state)
+
+#calculate effect
+effects_model2 <- effect(term="bfi_n_c*stress_state", mod=model2_fit, 
+                         xlevels=list(bfi_n_c=c(-0.96, +0.96), stress_state=c(-0.49,+0.49)))
+summary(effects_model2)
+```
+Everything we need is in there!
+
+We can convert to a data frame and plot it!
+```{r}
+#convert to dataframe
+effectsdata <- as.data.frame(effects_model2)
+#plotting the effect evaluation (with standard error ribbon)
+ggplot(data=effectsdata, aes(x=stress_state, y=fit, group=bfi_n_c), legend=FALSE) + 
+  geom_point() +
+  geom_line() +
+  #geom_ribbon(aes(ymin=lower, ymax=upper), alpha=.3) +
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=.15) +
+  xlab("Stress State") + xlim(-2,2) +
+  ylab("Predicted Negative Affect") + ylim(1,7) +
+  ggtitle("Differences in Stress Reactivity across Neuroticism")
+```
+
+Note that the non-significant interaction appears as two practically parallel lines. 
+
+**Johnson-Neyman Technique**
+
+Let's go a bit further ... 
+
+We would like to identify the range of values of the moderator at which the within-person slope is significant. Formally, the *Johnson-Neyman* technique is used to probe significant interactions in order to determine for what values of the moderator the focal predictor is significantly related to the outcome - i.e., to identify the *region of significance*. This is quickly becoming standard practice in reporting about interactions in multilevel models.
+
+In our case, we are interested to know the range of *neuroticism* scores at which we would expect individuals to have significant *stress reactivity* (within-person association between daily stress and daily negative affect).
+
+We make use of the `johnson-neyman()` function in the `interactions` package. Note that the `backports` package may also be needed to get a deprecated `isFALSE()` function that this package uses.  
+
+Also, when using the `interactions` package we need to do a little data formatting (to make sure that all variables are vectors), and to run the model using lmer() without the lmerTest() overlay (to obtain a merMod object).
+
+Fixing data.
+```{r}
+#check for embedded matrices
+str(daily_long)
+
+#fixing a few variables that were matrices to be vectors
+daily_long$bfi_n_c <- as.vector(daily_long$bfi_n_c)
+daily_long$stress_trait_c <- as.vector(daily_long$stress_trait_c)
+```
+
+Specify and fit model as specific `lme4::lmer` to get `merMod` object (rather than a `lmerModLmerTest` object).
+```{r}
+# fit model
+model2a_fit <- lme4::lmer(formula = negaff ~ 1 + day + stress_trait_c + 
+                      bfi_n_c + stress_trait_c:bfi_n_c +
+                      stress_state + stress_state:stress_trait_c + 
+                      stress_state:bfi_n_c + stress_state:stress_trait_c:bfi_n_c + 
+                      (1 + stress_state|id),
+                    data=daily_long,
+                    na.action=na.exclude)
+
+# Look at results
+summary(model2a_fit)
+  
+# Get confidence intervals for both fixed and random effects
+#confint(model2a_fit)
+  
+# Save predicted scores
+daily_long$pred_m2a <- predict(model2a_fit)
+
+# Fit statistics  
+AIC(logLik(model2a_fit)) 
+BIC(logLik(model2a_fit))
+logLik(logLik(model2a_fit))
+```
+
+Plotting and probing the simple slopes (within-person association between `stress_state` and `negaff`) across the full range of the moderator (`bfi_n_c`). 
+```{r}
+#probing 2-way interaction
+johnson_neyman(model=model2a_fit, pred=stress_state, modx=bfi_n_c)
+```
+
+We see from the output and the plot that the within-person *stress reactivity* slopes are significant at all observed values of neuroticism - as we would expect given the non-significance of the interaction term. 
+
+
+We can also probe the 3-way interaction, provided we choose specific values for the 2nd moderator.
+```{r}
+#obtaining the standard deviation of the 2nd moderator 
+describe(daily_long$stress_trait_c)
+
+#probing 3-way interaction
+# simpleslopes_model2a <- sim_slopes(model=model2a_fit, pred=stress_state, modx=bfi_n_c,
+#                                   mod2=stress_trait_c,mod2.values = c(-0.47,+0.47))
+# plot(simpleslopes_model2a)
+#ran, but did not knit
+```
+
+From the output we see that the value of the within-person *stress reactivity* slopes (i.e., the simple slopes) are similar across all values of the moderators and have overlapping confidence intervals - as we would expect given the non-significance of the interaction term.
+
+As you try these techniques out with the AMIB data, please let us know if you find a set of variables that has the significant interactions that make for interesting results and theory. =:-] 
+
+##Conclusion
+
+This tutorial illustrated application of the basic multilevel model (where the outcome variable is assumed normally distributed - and how interactions are probed and plotted.  
+
+**Good luck! =:-]**
+
