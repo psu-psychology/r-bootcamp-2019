@@ -349,8 +349,8 @@ $(document).ready(function () {
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-08-21 04:50:57:</p>
-<p>We have 114 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The data are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)</p>
+<p>Here are some data about the registrants as of 2019-08-21 09:23:19:</p>
+<p>We have 115 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The data are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)</p>
 <pre class="r"><code># Make table
 pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg)
 knitr::kable(pos_dept)</code></pre>
@@ -403,7 +403,7 @@ knitr::kable(pos_dept)</code></pre>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">63</td>
-<td align="right">1</td>
+<td align="right">2</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
@@ -468,7 +468,7 @@ knitr::kable(pos_dept)</code></pre>
 <div id="course-materials" class="section level3">
 <h3>Course materials</h3>
 <p>Here is the <a href="https://github.com/psu-psychology/r-bootcamp-2019/">GitHub repo</a> where the course files are shared.</p>
-<p>To download all course materials, you can clone the entire Github repository using the command <code>git clone https://github.com/psu-psychology/r-bootcamp-2019.git</code>. You can also use Github Desktop to clone the repository using a more user-friendly interface: <a href="https://desktop.github.com" class="uri">https://desktop.github.com</a> If Git is unfamiliar to you, you can obtain a zip archive of the current version of all files here: <a href="https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip" class="uri">https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip</a></p>
+<p>We recommend creating a new project inside Rstudio to link with the Github site. This will allow you to ‘pull’ the latest changes to the repository, ensuring that you have the most current materials. Please follow the <a href="before-the-bootcamp.html#obtain-the-materials-for-bootcamp">instructions here</a>.</p>
 </div>
 </div>
 <div id="acknowledgments" class="section level2">
