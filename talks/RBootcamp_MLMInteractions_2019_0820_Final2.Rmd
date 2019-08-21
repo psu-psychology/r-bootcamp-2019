@@ -199,7 +199,7 @@ Together, the full set of parameters provide a parsimonious description of the d
 
 Now that we have defined the dynamic characteristic of interest - stress reactivity - we can operationalize it using the multilevel model.
 
-We make use of the `lme4` package for fitting mixed effects models, and some supplmentary packages: `lmerTest` provides tools for obtaining p-vlaues; `effects` provides tools for calculating and plotting model-based predictions; and `interactions` provides tools for plotting and probing interactions.
+We make use of the `lme4` package for fitting mixed effects models, and some supplmentary packages: `lmerTest` provides tools for obtaining p-values; `effects` provides tools for calculating and plotting model-based predictions; and `interactions` provides tools for plotting and probing interactions.
 
 The `lmer()` function fits the MLMs
 The `data` argument specifies the data sources

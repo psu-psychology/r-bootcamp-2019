@@ -1522,14 +1522,17 @@ D. Plotting and Probing Interactions</p>
 <p>The overall set-up of the models follows Bolger &amp; Laurenceau (2013) Chapters 4 and 5.</p>
 <div id="prelim---loading-libraries-used-in-this-script." class="section level4">
 <h4>Prelim - Loading libraries used in this script.</h4>
-<pre class="r"><code>library(backports)     # to revive the isFALSE() function for sim_slopes()
-library(effects)       # for probing interactions
-library(ggplot2)       # for data visualization
-library(interactions)  # for probing/plotting interactions
-library(lme4)          # for multilevel models
-library(lmerTest)      # for p-values
-library(psych)         # for describing the data
-library(plyr)          # for data manipulation</code></pre>
+<pre class="r"><code>if (!require(pacman)) { install.packages(&quot;pacman&quot;); library(pacman) }
+p_load(
+  backports, # to revive the isFALSE() function for sim_slopes()
+  effects, # for probing interactions
+  ggplot2, # for data visualization
+  interactions, # for probing/plotting interactions
+  lme4, # for multilevel models
+  lmerTest, # for p-values
+  psych, # for describing the data
+  plyr # for data manipulation
+)</code></pre>
 </div>
 <div id="prelim---reading-in-repeated-measures-data" class="section level4">
 <h4>Prelim - Reading in Repeated Measures Data</h4>

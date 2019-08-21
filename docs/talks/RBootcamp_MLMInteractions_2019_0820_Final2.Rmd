@@ -26,14 +26,17 @@ The overall set-up of the models follows Bolger & Laurenceau (2013) Chapters 4 a
 #### Prelim - Loading libraries used in this script.
 
 ```{r, message=FALSE, warning=FALSE}
-library(backports)     # to revive the isFALSE() function for sim_slopes()
-library(effects)       # for probing interactions
-library(ggplot2)       # for data visualization
-library(interactions)  # for probing/plotting interactions
-library(lme4)          # for multilevel models
-library(lmerTest)      # for p-values
-library(psych)         # for describing the data
-library(plyr)          # for data manipulation
+if (!require(pacman)) { install.packages("pacman"); library(pacman) }
+p_load(
+  backports, # to revive the isFALSE() function for sim_slopes()
+  effects, # for probing interactions
+  ggplot2, # for data visualization
+  interactions, # for probing/plotting interactions
+  lme4, # for multilevel models
+  lmerTest, # for p-values
+  psych, # for describing the data
+  plyr # for data manipulation
+)
 ```
 
 #### Prelim - Reading in Repeated Measures Data
@@ -196,7 +199,7 @@ Together, the full set of parameters provide a parsimonious description of the d
 
 Now that we have defined the dynamic characteristic of interest - stress reactivity - we can operationalize it using the multilevel model.
 
-We make use of the `lme4` package for fitting mixed effects models, and some supplmentary packages: `lmerTest` provides tools for obtaining p-vlaues; `effects` provides tools for calculating and plotting model-based predictions; and `interactions` provides tools for plotting and probing interactions.
+We make use of the `lme4` package for fitting mixed effects models, and some supplmentary packages: `lmerTest` provides tools for obtaining p-values; `effects` provides tools for calculating and plotting model-based predictions; and `interactions` provides tools for plotting and probing interactions.
 
 The `lmer()` function fits the MLMs
 The `data` argument specifies the data sources
@@ -461,9 +464,10 @@ We can also probe the 3-way interaction, provided we choose specific values for 
 describe(daily_long$stress_trait_c)
 
 #probing 3-way interaction
-# simpleslopes_model2a <- sim_slopes(model=model2a_fit, pred=stress_state, modx=bfi_n_c,
-#                                   mod2=stress_trait_c,mod2.values = c(-0.47,+0.47))
-# plot(simpleslopes_model2a)
+detach("package:lmerTest", unload = TRUE)
+simpleslopes_model2a <- sim_slopes(model=model2a_fit, pred=stress_state, modx=bfi_n_c,
+                                  mod2=stress_trait_c,mod2.values = c(-0.47,+0.47))
+plot(simpleslopes_model2a)
 #ran, but did not knit
 ```
 
