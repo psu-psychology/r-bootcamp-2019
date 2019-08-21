@@ -90,7 +90,7 @@ source("R/load_spi.R")
 
 ```
 
-10. Use a bar graph to examine a three way interaction between health, ER and sex. Hint: Use a color to define sex.
+10. Use a bar graph to examine a three way interaction between health, ER and sex. Hint: Use color to define sex.
 ```{r}
 
 # Write your code here!

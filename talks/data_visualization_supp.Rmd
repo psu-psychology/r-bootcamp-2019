@@ -17,7 +17,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 # handy package manager that installs and loads packages used in this document
 if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacman") } 
-pacman::p_load(tidyverse, psych, interactions) # install (if needed) and load packages
+pacman::p_load(tidyverse, psych, interactions, vcd) # install (if needed) and load packages
 
 # Load data and convert sex and education to factors
 source("R/load_sat_act.R")
@@ -96,3 +96,7 @@ ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = sex)) +
        x = "Education")
 ```
 
+# Visualizing Chi-Squared.
+```{r fig.height=7, fig.width=7}
+vcd::mosaic(~ sex+education, data = sat.act, shade = TRUE, legend = TRUE)
+```
