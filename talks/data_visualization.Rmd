@@ -268,7 +268,6 @@ plot +
   theme(legend.title = element_blank())
 ```
 
-
 # Exporting plots
 `ggsave` easily exports plots in a variety of file formats, to your specified dimensions and resolution.    
 You can export a saved plot object, or if no plot is specified, it will export the last plot you produced.  
