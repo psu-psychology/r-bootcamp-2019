@@ -420,139 +420,39 @@ pairs(emtrends(model = fit_sat, ~agef, var="SATV"))
 There is a lot more on probing interations here: <https://cran.r-project.org/web/packages/emmeans/vignettes/interactions.html>.
 
 # ANOVA
-The overall goal is to give you a very quick introduction to conducting one-way ANOVA and two-way ANOVA in R.
+Further, sometimes we want to test the relationship between categorical variables and numeric variables. One way to do this is ANOVA. Analysis of variance (ANOVA) provides a statistical test of whether two or more population means are equal. ANOVA is done using the `aov_ez` function.
 
-Analysis of variance (ANOVA) provides a statistical test of whether two or more population means are equal. It is based on the law of total variance, where the observed variance in particular variable is partitioned into components attributable to differnt sources of variation. When the population means are equal, the differences among the group means reflect the operation of experimental error alone (within-groups deviation). When the population means are not equal, the differences among the group means will reflect the operation of both experimental error (within-groups deviation) and treatment effects (between-group deviation). In ANOVA, we produce the ratio of: 
-
-$$\frac{S^2_{treatment} + S^2_{error}}{S^2_{error}}$$
-
-Variance = (sum of square deviation from the mean)/(degrees of freedom)=SS/df
-Sum of Squares: 
-$$SS_{Total}= SS_{between}+SS_{within}$$
-$$\sum(Y_{i.j}-\bar{Y_T})= \sum(\bar(Y_{ai}-\bar{Y_T})+\sum(Y_{i.j}-\bar{Y_{ai}})$$
-Degrees of freedom:
-$$df_{Total}= df_{between}+df_{within}$$
+Suppose we want to see if the ACT scores differ with education levels and gender.
 
 ***
-### For a single factor
-
-The one-way ANOVA is an extension of independent two-sample t-test for comparing means in a situation where there are two groups or more than two groups. In one-way ANOVA, the data is organized into several groups base on one single grouping variable (also called factor variable).
-
-#### One-way ANOVA Assumptions: 
-    - Independence of observations
-    - Normality (normal distributions of the residuals)
-    - Homoscendasticity (equal variances for all groups)
-
-1. Normality
-``` {r test-assumption-2}
-df<-ToothGrowth
-df$dose <- factor(df$dose, 
-                  levels = c(0.5, 1, 2),
-                  labels = c("D0.5", "D1", "D2"))
-kruskal.test(len ~ supp, data = df)
-```
-
-From the output above we can see that the p-value is not less than the significance level of 0.05. 
-
-2. Homogeneity of variances
-``` {r test-assumption-3}
-leveneTest(len ~ supp, data = df)
-```
-
-From the output above we can see that the p-value is not less than the significance level of 0.05. This means that there is no evidence to suggest that the variance across groups is statistically significantly different. Therefore, we can assume the homogeneity of variances in the different treatment groups.
-
-``` {r one-way-ANOVA-demonstration-1}
-table(df$supp) # there are three levels
-group_by(df, supp) %>%
-  summarise(
-    count = n(),
-    mean = mean(len, na.rm = TRUE),
-    sd = sd(len, na.rm = TRUE)
-  )
-```
-
-``` {r one-way-ANOVA-demonstration-2}
-# Compute the analysis of variance
-res.aov <- aov(len ~ supp, data = df)
-# Summary of the analysis
-summary(res.aov)
-```
-As the p-value is more than the significance level 0.05, we can conclude that there are no significant differences between the groups.
-
-#### Box plots
-Plot weight by group and color by group
-``` {r one-way-ANOVA-visualization-1}
-ggplot(df, aes(x=supp, y=len)) + 
-  geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) +
-  geom_jitter(shape=16, position=position_jitter(0.2))
-
-```
-
-#### Check the homogeneity of variance assumption
-``` {r one-way-ANOVA-visualization-2}
-plot(res.aov, 1)
-```
-In the plot below, there is no evident relationships between residuals and fitted values (the mean of each groups), which is good. Points 23, 26 are detected as outliers, which can severely affect normality and homogeneity of variance. It can be useful to remove outliers to meet the test assumptions.
-
-#### Check the normality assumption
-``` {r one-way-ANOVA-visualization-3}
-plot(res.aov, 2)
-```
-QQ-plot is used to check the assumption that the residuals are normally distributed. It should approximately follow a straight line.
-
-#### Multiple pairwise-comparison between the means of groups
-In one-way ANOVA test, a significant p-value indicates that some of the group means are different, but we don’t know which pairs of groups are different. It’s possible to perform multiple pairwise-comparison, to determine if the mean difference between specific pairs of group are statistically significant. 
-Example: Tukey HSD (Tukey Honest Significant Differences, R function: TukeyHSD()) 
-
-``` {r one-way-ANOVA-post-hoc}
-TukeyHSD(res.aov)
-```
-diff: difference between means of the two groups
-lwr, upr: the lower and the upper end point of the confidence interval at 95% (default)
-p adj: p-value after adjustment for the multiple comparisons.
-
-***
-### For two factors
-
-Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. The number of level may vary in each factor.
-
-#### Two-way ANOVA test Assumptions:
-1. There is no difference in the means of factor A
-2. There is no difference in the means of factor B
-3. There is no interaction between factors A and B
-4. Normality (normal distributions of the residuals )
-5. Homoscendasticity (equal variances for all groups)
-The alternative hypothesis for cases 1 and 2 is: the means are not equal.
-The alternative hypothesis for case 3 is: there is an interaction between A and B.
+### Independent measure ANOVA
+Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. First, let's see the count, mean and sd of each level.
 
 ``` {r two-way-ANOVA-demonstration-1}
-table(df$supp, df$dose)
-group_by(df, supp, dose) %>%
+group_by(sat_act,education, gender) %>%
   summarise(
     count = n(),
-    mean = mean(len, na.rm = TRUE),
-    sd = sd(len, na.rm = TRUE)
+    mean = mean(ACT, na.rm = TRUE),
+    sd = sd(ACT, na.rm = TRUE)
   )
 ```
-In two-way ANOVA, we assume the sample sizes within cells are equal. If not, the ANOVA test should be handled differently (Type-III sums of squares).
-
-#### We want to know if tooth length depends on supp and dose.
 ``` {r two-way-ANOVA-demonstration-2}
-res.aov2 <- aov(len ~ supp + dose, data = df)
-summary(res.aov2)
+sat_act$id<-1:nrow(sat_act)
+# Compute the analysis of variance
+res.aov <- aov_ez("id","ACT",sat_act, between=c("education","gender"))
+# Summary of the analysis
+print(res.aov)
 ```
-From the ANOVA table we can conclude that both supp and dose are statistically significant, highlighted with *. Dose is the most significant factor variable. These results would lead us to believe that changing delivery methods (supp) or the dose of vitamin C, will impact significantly the mean tooth length.
+We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is the interaction effect between education and gender.
 
-#### Note the above fitted model is called additive model. It makes an assumption that the two factor variables are independent. If you think that these two variables might interact to create an synergistic effect, replace the plus symbol (+) by an asterisk (*), as follow.
-``` {r two-way-ANOVA-demonstration-3}
-res.aov3 <- aov(len ~ supp * dose, data = df)
-summary(res.aov3)
+If we want to compare each level with the other, we can computed those with pairwise comparisons using `emmeans`.
+``` {r two-way-ANOVA-post-hoc}
+m1 <- emmeans(res.aov, ~ education_fac*gender_fac)
+summary(as.glht(pairs(m1)))
 ```
-It can be seen that the two main effects (supp and dose) are statistically significant, as well as their interaction.
 
 #### Line plots with multiple groups
-Plot tooth length ("len") by groups ("dose")
-Color box plot by a second group: "supp"
+Visualization: Color line plot by a second group: "gender"
 ``` {r two-way-ANOVA-visualization-1}
 data_summary <- function(data, varname, groupnames){
   require(plyr)
@@ -565,25 +465,41 @@ data_summary <- function(data, varname, groupnames){
   data_sum <- rename(data_sum, c("mean" = varname))
  return(data_sum)
 }
-df3 <- data_summary(df, varname="len", 
-                    groupnames=c("supp", "dose"))
-ggplot(df3, aes(x=dose, y=len, group=supp, color=supp)) + 
-    geom_errorbar(aes(ymin=len-sd, ymax=len+sd), width=.1, 
-    position=position_dodge(0.05)) +
-    geom_line() + geom_point()+
+df3 <- data_summary(sat_act, varname="ACT", 
+                    groupnames=c("education_fac", "gender_fac"))
+df3$education_fac <- factor(df3$education_fac,levels=c("none", "some_hs","high_school", "some_college", "college","graduate"))
+ggplot(df3, aes(x=education_fac, y=ACT, group=gender_fac, color=gender_fac)) + 
+    geom_errorbar(aes(ymin=ACT-sd, ymax=ACT+sd), width=.1, 
+                  position=position_dodge(0.05)) +
+   geom_line() + 
+   geom_point()+
    scale_color_brewer(palette="Paired")+theme_minimal()
 ```
+***
+### Repeated measure ANOVA
+It is common in data analysis. For example, participants take more than one tasks or conditions. In longitudinal study, data is collected from each participants more than once. Assume there is different time point in this dataset. Let's check whether ACT scores vary by time point and education.
+``` {r two-way-ANOVA-demonstration-4}
+sat_act <- sat.act %>% 
+  mutate(education = rep(sample(1:5, 140, replace = TRUE), each=5),
+         id = rep(1:140, each = 5),
+         time = rep(1:5, 140)
+         )
 
-#### Multiple pairwise-comparison between the means of groups
-It is to determine if the mean difference between specific pairs of group are statistically significant.
-``` {r two-way-ANOVA-post-hoc}
-TukeyHSD(res.aov3, which = "dose")
+res.aov2<-aov_ez(
+  id = "id",
+  dv = "ACT",
+  data = sat_act,
+  between = c("education"),
+  within = c("time")
+)
+summary(res.aov2)
 ```
 
 ### Alternative: 
 
 t-test: comparing means between two groups in a sample (t.test function)
-Linear regression: comparing one or more factors in a sample (lm or lmer function)
+Linear regression: comparing one or more factors in a sample (lm, mlm,or lmer function)
+
 
 # Hands on practice: Data Analyses
 Download the [practice RMarkdown file](https://github.com/psu-psychology/r-bootcamp-2019/raw/master/talks/data_analyses_practice.Rmd)
