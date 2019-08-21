@@ -35,7 +35,7 @@ Continental breakfast, coffee and tea.
 | 09:15 am • Why We R Here                              |
 | 09:45 am • Break                                      |
 
-| **Slow-R Track**, 210 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/985720879) |  | **Fast-R Track**, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
+| **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/985720879) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
 | 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg), [HTML slides](talks/RBootcamp_MLMInteractions_2019_0820_Final2.html) , [RMd source](talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd)  |
 | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
@@ -48,7 +48,7 @@ Continental breakfast, coffee and tea.
 
 ### 9:00 am - 12:15 pm, 210 & 211 Keller 
 
-| **Slow-R Track**, 210 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
+| **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
 | 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
 | 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |

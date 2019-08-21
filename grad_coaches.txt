@@ -1,6 +1,0 @@
-Dan Albohn, d.albohn@gmail.com, MLM > SEM, lmer and lavaan
-Kayla Brown, kbrown0429@gmail.com, MLM > SEM
-Rebecca Janis, ruj134@psu.edu, MLM & SEM
-Yiming Qian, yxq5055@psu.edu, MLM
-Alicia Vallorani, amvalloranipsu@gmail.com, data vis
-Holly Zaharchuk, hzaharchuk@psu.edu, MLM with lme4
