@@ -137,12 +137,14 @@ ggplot(sat.act.sum, aes(x=education, y=ACT)) +
 ```
 Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Bar Graphs).
 
-# Aesthetics (aes)
-Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms
+# Setting a theme
+You can set a theme at any point and from that point on all graphs will use the theme supplied.
 ```{r}
 theme_set(theme_minimal()) # sets the theme for all graphs
 ```
 
+# Aesthetics (aes)
+Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms
 
 **What goes inside `aes()` and what goes outside?**  
 If you are mapping the aesthetic to a variable in your data, it goes inside `aes()` (e.g. having the points' color vary based on a variable in the data).  
