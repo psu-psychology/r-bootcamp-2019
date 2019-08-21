@@ -18,6 +18,9 @@ knitr::opts_chunk$set(echo = TRUE)
 # handy package manager that installs and loads packages used in this document
 if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacman") } 
 pacman::p_load(tidyverse, psych, interactions) # install (if needed) and load packages
+
+# Load data and convert sex and education to factors
+source("R/load_sat_act.R")
 ```
 
 # Scatterplots
