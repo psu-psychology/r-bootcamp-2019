@@ -153,7 +153,7 @@ If you want the aesthetic mapping to apply to all the geoms, put it inside ggplo
 
 **What aesthetics are there?**  
 
-## color/fill 
+## Color/fill 
 Both change the color, but different geoms use one or the other or both
 
 This can be categorical:
@@ -172,22 +172,21 @@ ggplot(sat.act, aes(x = SATV, y = SATQ, color = age)) +
   scale_color_continuous(low = "lightblue", high = "darkblue")
 ```
 
-## size
+## Size
 ```{r size}
 ggplot(sat.act, aes(x = SATV, y = SATQ, size = age)) + 
   geom_point() +
   scale_size_continuous(range = c(.5,3))
 ```
 
-## shape
+## Shape
 ```{r shape}
-# Error: Continuous value supplied to discrete scale - not sure what is happening here - Need to go in and factor sex
-#ggplot(sat.act, aes(x = SATV, y = SATQ, shape = sex)) + 
-  #geom_point() +
-  #scale_shape_manual(values = c(17, 19))
+ggplot(sat.act, aes(x = SATV, y = SATQ, shape = sex)) + 
+  geom_point() +
+  scale_shape_manual(values = c(17, 19))
 ```
 
-## alpha (transparency)
+## Alpha (transparency)
 This is often used to prevent overplotting
 ```{r alpha}
 ggplot(sat.act, aes(x = SATV, y = SATQ)) + 
@@ -198,22 +197,17 @@ There are other aesthetic mappings for specific use cases, but these are the mos
 
 # Interactions
 ## Dichotomous by dichotomous
-Bar graph or box and whisker plots
+Bar graph
 ```{r interaction-1}
 ggplot(sat.act, aes(x=education, y=SATV, fill = sex)) +
   geom_bar(stat = "summary", fun.y = "mean", position = "dodge") +
   labs(fill = "sex",
        x = "Education",
        y = "Mean SATV")
-
-ggplot(sat.act, aes(x=as.factor(education), y=SATV, fill = sex)) +
-  geom_boxplot() + 
-  geom_jitter(position=position_jitterdodge(), alpha = .2) + 
-  labs(fill = "sex",
-       x = "Education")
 ```
 
-Does the effect of sex on SATV scores differ by education level? Maybe for people without a high school education (0).
+Does the effect of sex on SATV scores differ by education level? Maybe for people without a high school education (0). 
+Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Interactions).
 
 ## Dichotomous by continuous
 Scatter plot with best fit lines
@@ -272,7 +266,6 @@ plot +
   theme(legend.title = element_blank())
 ```
 
-(If I knew what all the education levels corresponded to, I would label those too)
 
 # Exporting plots
 `ggsave` easily exports plots in a variety of file formats, to your specified dimensions and resolution.    
