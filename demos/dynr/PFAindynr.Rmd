@@ -1,0 +1,119 @@
+---
+title: |
+  | Process factor analysis model with vector autoregressive relations between 2 latent factors
+author: "Sy-Miin Chow"
+date: "August 22, 2019"
+output:
+  html_document:
+    df_print: kable
+    highlight: tango
+    number_sections: yes
+    toc: yes
+  pdf_document:
+    toc: yes
+editor_options:
+  chunk_output_type: console
+---
+
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+```
+
+```{r, echo = TRUE}
+rm(list=ls())
+# Load packages
+require(dynr)
+```
+
+## A demo for how to specify dynr recipes for a process factor analysis model 
+
+```{r, echo = TRUE}
+#Prepare dynr recipes
+#Define the dynamic model
+ dynamics <- prep.matrixDynamics(
+ 	values.dyn=matrix(c(.5, 0.1, .3, .5), ncol=2,byrow=TRUE),
+ 	params.dyn=matrix(c('phi11', 'phi12', 'phi21', 'phi22'), ncol=2,byrow=TRUE), 
+ 	isContinuousTime=FALSE)
+ 
+meas <- prep.measurement(
+    values.load=matrix(c(1,0,
+                         2,0,
+                         1,0,
+                         0,1,
+                         0,2,
+                         0,1),ncol=2,byrow=TRUE), #Starting values Lambda
+    params.load=matrix(c('fixed','fixed',
+                         'lambda21','fixed',
+                         'lambda31','fixed',
+                         'fixed','fixed',
+                         'fixed','lambda52',
+                         'fixed','lambda62'),
+                       ncol=2,byrow=TRUE), #Labels for fixed and freed parameters 
+    values.int = matrix(rep(0.1,6),ncol=1),
+    params.int = matrix(paste0('int',1:6),ncol=1), 
+    state.names=c("eta1","eta2"), #Labels for latent variables in eta(t)
+    obs.names=paste0('V',1:6) #Labels for observed variables in y(t)
+  )
+
+#Note that in dynr, prep.initial sets the structure of E(eta(1|0)) and Cov(eta(1|0))
+#Here, initial condition covariance matrix is fixed to a diagonal matrix of 2s. 
+#Could also be freely estimated with #multiple-subject data.
+#Iinitial means are fixed to a vector of zeros.
+  initial <- prep.initial(
+    values.inistate=c(0, 0),
+    params.inistate=c('fixed', 'fixed'),
+    values.inicov=matrix(c(2,0,0,2),ncol=2),
+    params.inicov=matrix(c('fixed','fixed','fixed','fixed'),ncol=2)) 
+
+  
+  #Process and measurement noise covariance matrices
+    mdcov <- prep.noise(
+    values.latent=matrix(c(2,.5,
+                           .5,6),ncol=2,byrow=TRUE), 
+    params.latent=matrix(c('psi_11','psi_12',
+                           'psi_12','psi_22'),ncol=2,byrow=TRUE), 
+    values.observed=diag(rep(.5,6),6), 
+    params.observed=diag(paste0('var_e',1:6),6)
+    )
+
+```
+
+## Read in data and set up data structure in dynr
+```{r, echo = TRUE}
+ch5 = read.table('./Data/ch5_data.csv',header=TRUE,sep=",")
+ch5$ID = rep(1,dim(ch5)[1]) #Add subject ID to the data set
+# Data
+ch52 <- dynr.data(ch5, id="ID", time="Time", observed=paste0("V",1:6))
+
+```
+## Cook it!
+```{r, echo = TRUE}
+#Put recipes and data together to prepare the full model
+  model <- dynr.model(dynamics=dynamics, measurement=meas,
+                      noise=mdcov, initial=initial, data=ch52,
+                      outfile="PFA3.c")
+
+#Use the `$' sign to set upper and lower boundaries for the parameters
+#For parameters that are subjected to user-specified (e.g., via
+#"prep.tfun) transformations or system transformations (e.g., variance-
+#covariance parameters in the process and measurement error cov matrices),
+#it may be easier to use the `@' sign to set upper and lower boundaries
+#on the unconstrained (untransformed) scales - e.g., for the log of a variance
+#parameter as opposed to the variance.
+
+  model@ub[!model$param.names %in% c('psi_11','psi_12','psi_22')] = 
+    c(rep(2,3), rep(5,4), rep(log(10),6))
+  model@lb[!model$param.names %in% c('psi_11','psi_12','psi_22')] = 
+    c(rep(-2,3), rep(-5,4), rep(log(1e-10),6))
+  
+```
+
+```{r, echo = TRUE, results="hide"}
+  res <- dynr.cook(model)
+```
+```{r, echo = TRUE}
+  coef(res)
+  summary(res)
+```  

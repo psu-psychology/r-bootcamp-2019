@@ -44,6 +44,15 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
+# Dynamical systems analysis using dynr
+
+- Lecture: [Dynamical modeling using dynr](talks/chow_dynr_slides.pdf) (Sy-Miin Chow) | [Zip of all files](data/dynr_demo.zip)
+- [Growth curve modeling demo](demos/dynr/GCM_demo.html) | [Rmd](demos/dynr/GCM_demo.Rmd)
+- [Process factor analysis demo](demos/dynr/PFAindynr.html) | [Rmd](demos/dynr/PFAindynr.Rmd)
+- [Vector autoregressive model demo](demos/dynr/VAR_demo.html) | [Rmd](demos/dynr/VAR_demo.Rmd)
+
+***
+
 # R-eproducible Science
 
 - [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd).
