@@ -19,7 +19,6 @@
 library(shiny)
 library(shinyjs)
 library(ShinyPsych)
-library(gmailr)
 
 # Section A: assign external values ============================================
 
@@ -27,14 +26,14 @@ library(gmailr)
 outputDir <- "./post-survey-data/"
 
 # Vector with page ids used to later access objects
-idsVec <- c("Instructions", "Survey", "Survey_two", "Goodbye")
+idsVec <- c("Instructions", "Survey_one", "Survey_two", "Goodbye")
 
 # create page lists for the instructions and the last page
 instructions.list <- createPageList(fileName = "Instructions.txt",
                                     globId = "Instructions",
                                     defaulttxt = FALSE)
-survey.list <- createPageList(fileName = "Survey.txt",
-                              globId = "Survey",
+survey.list <- createPageList(fileName = "Survey_one.txt",
+                              globId = "Survey_one",
                               defaulttxt = FALSE)
 survey_two.list <- createPageList(fileName = "Survey_two.txt",
                               globId = "Survey_two",
@@ -48,7 +47,7 @@ goodbye.list <- createPageList(fileName = "Goodbye.txt",
 ui <- fixedPage(
   
   # App title
-  title = "2018 R Bootcamp Survey",
+  title = "2019 R Bootcamp Survey",
   uiOutput("MainAction"),
   
   # For Shinyjs functions
@@ -72,7 +71,7 @@ server <- function(input, output, session) {
   CurrentValues <- createCtrlList(firstPage = "instructions", # id of the first page
                                   globIds = idsVec,           # ids of pages for createPage
                                   complCode = TRUE,           # create a completion code
-                                  complName = "2018_R_Bootcamp_Survey")    # first element of completion code
+                                  complName = "2019_R_Bootcamp_Survey")    # first element of completion code
   
   # Section D: Page Layouts ====================================================
   
@@ -94,13 +93,13 @@ server <- function(input, output, session) {
       )}
     
     # display survey page
-    if (CurrentValues$page == "survey") {
+    if (CurrentValues$page == "survey_one") {
       
       return(
         # create html logic of instructions page
         createPage(pageList = survey.list,
-                   pageNumber = CurrentValues$Survey.num,
-                   globId = "Survey", ctrlVals = CurrentValues)
+                   pageNumber = CurrentValues$Survey_one.num,
+                   globId = "Survey_one", ctrlVals = CurrentValues)
       )}
     
     
@@ -129,14 +128,14 @@ server <- function(input, output, session) {
   
   
   observeEvent(input[["Instructions_next"]],{
-    nextPage(pageId = "instructions", ctrlVals = CurrentValues, nextPageId = "survey",
+    nextPage(pageId = "instructions", ctrlVals = CurrentValues, nextPageId = "survey_one",
              pageList = instructions.list, globId = "Instructions")
   })
   
-  observeEvent(input[["Survey_next"]],{
-    nextPage(pageId = "survey", ctrlVals = CurrentValues,
+  observeEvent(input[["Survey_one_next"]],{
+    nextPage(pageId = "survey_one", ctrlVals = CurrentValues,
              nextPageId = "survey_two", pageList = survey.list,
-             globId = "Survey")
+             globId = "Survey_one")
   })
   
   
@@ -149,8 +148,8 @@ server <- function(input, output, session) {
                   pageList = instructions.list, globId = "Instructions",
                   inputList = input)
 
-    onInputEnable(pageId = "survey", ctrlVals = CurrentValues,
-                  pageList = survey.list, globId = "Survey",
+    onInputEnable(pageId = "survey_one", ctrlVals = CurrentValues,
+                  pageList = survey.list, globId = "Survey_one",
                   inputList = input, charNum = 4)
 
     onInputEnable(pageId = "survey_two", ctrlVals = CurrentValues,
@@ -172,75 +171,16 @@ server <- function(input, output, session) {
       data.list <- list(  "title" = input$Survey_title,
                           "area" = input$Survey_area,
                           "tracks" = input$Survey_tracks,
-                          "slowr1_intro" = input$Survey_slowr1_intro,
-                          "slowr1_diff" = input$Survey_slowr1_diff,
-                          "slowr2_index" = input$Survey_slowr2_index,
-                          "slowr2_diff" = input$Survey_slowr2_diff,
-                          "slowr3_funcs" = input$Survey_slowr3_funcs,
-                          "slowr3_diff" = input$Survey_slowr3_diff,
-                          "fastr1_ef" = input$Survey_fastr1_ef,
-                          "fastr1_diff" = input$Survey_fastr1_diff,
-                          "fastr2_sem" = input$Survey_fastr2_sem,
-                          "fastr2_diff" = input$Survey_fastr2_diff,
-                          "fastr3_pc" = input$Survey_fastr3_pc,
-                          "fastr3_diff" = input$Survey_fastr3_diff,
-                          "rer_rate" = input$Survey_rer_rate,
-                          "rer_diff" = input$Survey_rer_diff,
+                          "slowr1_intro" = input$Survey_one_slowr1_intro,
+                          "slowr1_diff" = input$Survey_one_slowr1_diff,
+                          ## Add others here
                           
-                          "day2_1_dwrangling" = input$Survey_day2_1_dwrangling,
-                          "day21_diff_" = input$Survey_day2_1_diff,
-                          "day2_2_vis" = input$Survey_day2_2_vis,
-                          "day2_2_diff" = input$Survey_day2_2_diff,
-                          "day2_3_core" = input$Survey_day2_3_core,
-                          "day2_3_diff" = input$Survey_day2_3_diff,
-                          "day2_4_analyses" = input$Survey_day2_4_analyses,
-                          "day2_4_diff" = input$Survey_day2_4_diff,
                           "other_topics" = input$Survey_two_other_topics,
                           "other_feedback" = input$Survey_two_other_feedback
                           )
       
       # save Data
-      mail_data <- function (data, location, partId, checkNull = TRUE, addNameList = NULL, 
-                            suffix = "_s", outputDir = NULL, droptoken = "droptoken.rds", 
-                            asrds = FALSE, separator = ",", mailSender = NULL, mailReceiver = NULL, 
-                            mailSubject = "ShinyPsych Data", mailBody = "Data attached...") 
-      {
-        if (checkNull) {
-          data.new <- lapply(data, ShinyPsych:::.convertNull)
-        }
-        data.df <- as.data.frame(data.new)
-        if (!is.null(addNameList)) {
-          names(data.df) <- addNameList
-        }
-        if (missing(partId)) {
-          parId <- paste0(sample(c(1:9, letters), 9), collapse = "")
-        }
-        
-        DatafileName <- paste0(partId, as.integer(Sys.time()), digest::digest(data.df),
-                               suffix, ".csv")
-        from <- mailSender
-        to <- mailReceiver
-        subject <- mailSubject
-        DatafilePath <- file.path(tempdir(), DatafileName)
-        write.csv(data.df, DatafilePath, row.names = FALSE, quote = TRUE)
-        # attachmentObject <- sendmailR::mime_part(x = DatafilePath, 
-        #                                          name = DatafileName)
-        # body <- list(mailBody, attachmentObject)
-        # sendmailR::sendmail(from, to, subject, body, control = list(smtpServer = "ASPMX.L.GOOGLE.COM"))
-        msg = gm_mime() %>%
-          gm_from(from) %>%
-          gm_to(to) %>%
-          gm_subject(mailSubject) %>% 
-          gm_text_body(mailBody) %>% 
-          gm_attach_file(., DatafilePath) %>% 
-          send_message()
-      }
-      
-      # saveData(data.list, location = "local", outputDir = outputDir,
-      #          partId = data.list$id, suffix = "_s")
-      mail_data(data.list, location = "mail", mailSender = "data4collection@gmail.com",
-               mailReceiver = "data4collection@gmail.com",
-               mailSubject = "R Bootcamp 2019 Data",
+      saveData(data.list, location = "local", outputDir = outputDir,
                partId = data.list$id, suffix = "_s")
       
       CurrentValues$page <- "goodbye"

@@ -178,11 +178,11 @@ coef(ply) #show the contrast coefficients
 ```
 
 
-## Multivariate regeression models
+## Multivariate regression models
 Finally, we can examine effects in multivariate regression models (i.e., multiple DVs). Here, we can examine the both the verbal and math scores and if they are associated with age, gender (sex), education, or ACT scores. 
 ```{r}
 org.int <- lm(cbind(SATV, SATQ) ~ age + gender + education + ACT, data = sat.act)
 summary(org.int)
 ```
 
-
+# ANOVA
