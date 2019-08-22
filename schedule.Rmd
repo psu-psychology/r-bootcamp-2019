@@ -51,7 +51,7 @@ Continental breakfast, coffee and tea.
 | **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
 | 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist), [HTML slides](talks/lavaan_tutorial.html)               |
-| 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan`, [HTML exercises](talks/lavaan_exercise.html), [HTML answer key](talks/lavaan_exercise_key.html) |
+| 09:45 - 10:30 am • Hands on practice, [HTML exercises(talks/slow-r-notebook.Rmd)| | 10:00 am - 10:30 am • Hands on with `lavaan`, [HTML exercises](talks/lavaan_exercise.html), [HTML answer key](talks/lavaan_exercise_key.html) |
 | 10:30 - 10:45 am • Break                  | | 10:30 - 10:45 am • Break                 |
 | 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
 | 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
@@ -70,15 +70,15 @@ Continental breakfast, coffee and tea.
 | 09:00 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
 | 09:45 am • Data wrangling hands-on                          |
 | 10:30 am • Break                                            |
-| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html) |
-| 11:30 am • Data visualization hands-on, , [HTML exercises](talks/data_visualization_practice.html)                      |
+| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html), [Rmd source](talks/data_visualization.Rmd) |
+| 11:30 am • Data visualization hands-on, , [HTML exercises](talks/data_visualization_practice.html), [Rmd source](talks/data_visualization_practice.Rmd)                      |
 | 12:00 pm • Lunch in Moore Building Lobby                    |
 |                                                             |
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
 | 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
-| 01:30 pm • R-eproducible Science (Rick Gilmore), [HTML slides](talks/r-reproducible-science.html)      |
-| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html) |
+| 01:30 pm • R-eproducible Science (Rick Gilmore), [HTML slides](talks/r-reproducible-science.html), [Rmd source](talks/r-reproducible-science.Rmd)      |
+| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html), [Rmd source](talks/data_analyses.Rmd) |
 | 02:45 pm • Break                                            |
-| 03:00 pm • Hands on practice, [HTML slides](talks/data_analyses_practice.html)                                |
+| 03:00 pm • Hands on practice, [HTML slides](talks/data_analyses_practice.html), [Rmd source](talks/data_analyses_practice.Rmd)                                |
 | 04:00 pm • End                                              |
 | 04:15 pm • Optional Happy Hour @ Whisker's                  |
