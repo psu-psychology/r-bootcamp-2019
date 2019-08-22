@@ -429,6 +429,79 @@ div.tocify {
 </ol>
 <p><img src="img/rstudio-login.jpg"/></p>
 <p>You are now ready to use RStudio Server Pro!</p>
+<ol start="6" style="list-style-type: decimal">
+<li>(Optional) If you are really enthusiastic, try “sourcing” the following code:</li>
+</ol>
+<pre><code># manage_packages.R
+# helper functions to make installing and loading packages easier
+
+bootcamp_pkgs &lt;- c(&quot;afex&quot;,
+                   &quot;apaTables&quot;,
+                   &quot;backports&quot;,
+                   &quot;car&quot;,
+                   &quot;dataMaid&quot;,
+                   &quot;effects&quot;,
+                   &quot;emmeans&quot;,
+                   &quot;ez&quot;,
+                   &quot;ggfortify&quot;,
+                   &quot;ggmosaic&quot;,
+                   &quot;googlesheets&quot;,
+                   &quot;googledrive&quot;,
+                   &quot;Hmisc&quot;,
+                   &quot;interactions&quot;,
+                   &quot;knitr&quot;,
+                   &quot;lavaan&quot;,
+                   &quot;lme4&quot;,
+                   &quot;lmerTest&quot;,
+                   &quot;jtools&quot;,
+                   &quot;plyr&quot;,
+                   &quot;psych&quot;,
+                   &quot;rcompanion&quot;,
+                   &quot;Rtools&quot;,
+                   &quot;skimr&quot;,
+                   &quot;swirl&quot;,
+                   &quot;tidyverse&quot;,
+                   &quot;tufte&quot;,
+                   &quot;vcd&quot;)
+
+install_bootcamp_pkgs &lt;- function(pkgs = bootcamp_pkgs, 
+                                  install_message = TRUE,
+                                  force_reinstall = FALSE) {
+  install_pkgs(bootcamp_pkgs, install_message, force_reinstall)
+}
+
+test_bootcamp_pkg_install &lt;- function() {
+  if (!is.null(install_pkgs(c(&quot;ggplot2&quot;, &quot;dplyr&quot;)))) {
+    message(&quot;Test fails.&quot;)
+  } else {
+    message(&quot;Test passes.&quot;)
+  }
+}
+
+install_pkg &lt;- function(pkg, install_message = FALSE, force_reinstall = FALSE) {
+  if (force_reinstall) {
+    if (install_message) {
+      message(paste0(&quot;Reinstalling package: &#39;&quot;, pkg, &quot;&#39;\n&quot;))
+    }
+    install.packages(pkg, quiet = TRUE, verbose = FALSE)
+  } else {
+    if(require(pkg, character.only = TRUE, quietly = TRUE)) {
+      if (install_message) {
+        message(paste0(&quot;Package &#39;&quot;, pkg, &quot;&#39;: already installed.\n&quot;))
+      }
+    } else {
+      if (install_message) {
+        message(paste0(&quot;Installing package: &#39;&quot;, pkg, &quot;&#39;\n&quot;))
+      }
+      install.packages(pkg, quiet = TRUE, verbose = FALSE)
+    }
+  }
+}
+
+install_pkgs &lt;- function(pkgs, install_message = FALSE, force_reinstall = FALSE) {
+  unlist(lapply(pkgs, install_pkg, install_message, force_reinstall))
+}</code></pre>
+<p>Then, run <code>install_bootcamp_pkgs()</code> from the console. This will make sure you have all of the packages needed for the bootcamp installed on your RStudio Server Pro account. Many of theme have already been installed already. <strong>NOTE</strong>This could take some time because there are some packages that have to be recompiled (rebuild from their original source code) to run on the RStudio Server Pro’s Linux operating system.</p>
 </div>
 <div id="set-up-a-personal-computer-to-access-the-penn-state-network" class="section level2">
 <h2>Set-up a personal computer to access the Penn State network</h2>
