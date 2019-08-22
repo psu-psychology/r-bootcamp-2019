@@ -29,21 +29,23 @@ For this hands on practice, load the `spi` data set from the `psych` package.
 
 ```
 
-2. Change the integer categorical or factor variables by cross-referencing
+2. Change the integer categorical to **new** factor variables by cross-referencing
 the help page and filling in the pipeline below (note when knitting this
 document, you may want to change `eval` to `TRUE` once you complete this
-exercise). Use either `ifelse()`, `case_when()`, or `factor()` then make
+exercise).
+
+Use either `ifelse()`, `case_when()`, or `factor()` then make
 sure that your code appropriately changed each variable with `str()` or
 `class()`
 
 ```{r eval = FALSE}
 spi <- spi %>%
   mutate(.,
-    sex = factor(),
-    health = factor(),
-    education = factor(),
-    smoke = factor(),
-    exer = factor()
+    sex_f = factor(),
+    health_f = factor(),
+    education_f = factor(),
+    smoke_f = factor(),
+    exer_f = factor()
   )
 
 # Write your code here!
@@ -95,5 +97,38 @@ three numeric values of your choosing
 ```
 
 ## Linear Models
+**Note**: For the following questions, make sure to not use any of categorical variables you created
+above (`lm()` requires integer variables for the `y` variable)
+
+1. Let's look at the association between education and health. In other words, does education predict health?
+```{r}
+# Write code here
+
+```
+
+2. Now lets see if there may be an interaction between two variables that predicts health. Let's see if education and smoking interact to predict health
+```{r}
+# Write code here
+
+```
+
+3. Extending the lesson now lets add a control variable. Let's see if the interaction between wellness and education predicts helath contorling for age.
+```{r}
+# Write code here
+
+```
+
+4. Now lets get the results into a tidy table
+4a. First a table of all parameters
+```{r}
+# Write code here
+
+```
+
+4b. Now a table of the golbal parameters
+```{r}
+# Write code here
+
+```
 
 ## ANOVAs
