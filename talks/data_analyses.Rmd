@@ -24,7 +24,7 @@ First load the required packages for this walk through.
 
 ```{r packages, message = FALSE}
 pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
-              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables",
+              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables", "dplyr","plyr",
               "ggfortify")
 purrr::walk(pkg_list, require, quietly = TRUE, character.only = TRUE)
 ```
@@ -424,68 +424,36 @@ Further, sometimes we want to test the relationship between categorical variable
 
 Suppose we want to see if the ACT scores differ with education levels and gender.
 
-***
 ### Independent measure ANOVA
-Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. First, let's see the count, mean and sd of each level.
-
+Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. First, let's see the summary of each condition.
 ``` {r two-way-ANOVA-demonstration-1}
-group_by(sat.act,education, gender) %>%
-  summarise(
-    count = n(),
-    mean = mean(ACT, na.rm = TRUE),
-    sd = sd(ACT, na.rm = TRUE)
-  )
+describeBy(sat.act$ACT,list(sat.act$education,sat.act$gender), mat=TRUE,digits=2) 
 ```
 
 
 ``` {r two-way-ANOVA-demonstration-2}
 sat.act$id<-1:nrow(sat.act)
+sat.act$education<-factor(sat.act$education)
 # Compute the analysis of variance
 res.aov <- aov_ez("id","ACT",sat.act, between=c("education","gender"))
 # Summary of the analysis
 print(res.aov)
 ```
-We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is the interaction effect between education and gender.
+We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is no sognificant interaction effect between education and gender.
 
-If we want to compare each level with the other, we can compute those with pairwise comparisons using `emmeans`.
+### Pairwise comparison among education levels
+ACT scores generally increase with education. If we want to compare each level in education factor with the other, we can compute those with pairwise comparisons using `emmeans`.
 ``` {r two-way-ANOVA-post-hoc}
-m1 <- emmeans(res.aov, ~ education*gender)
-summary(as.glht(pairs(m1)))
+sat.emm.aov <- emmeans(res.aov, "education")
+sat_pairs_aov <- pairs(sat.emm.aov)
+print(sat_pairs_aov)
 ```
 
-#### Line plots with multiple groups
-
-<!-- TODO(Yiming?): This still needs to be debugged. -->
-
-Visualization: Color line plot by a second group: "gender"
-``` {r two-way-ANOVA-visualization-1}
-data_summary <- function(data, varname, groupnames){
-  require(plyr)
-  summary_func <- function(x, col){
-    c(mean = mean(x[[col]], na.rm=TRUE),
-      sd = sd(x[[col]], na.rm=TRUE))
-  }
-  data_sum <- ddply(data, groupnames, .fun=summary_func,
-                  varname)
-  data_sum <- rename(data_sum, c("mean" = varname))
- return(data_sum)
-}
-df3 <- data_summary(sat.act, varname="ACT", 
-                    groupnames=c("education_fac", "gender_fac"))
-df3$education_fac <- factor(df3$education_fac,levels=c("none", "some_hs","high_school", "some_college", "college","graduate"))
-ggplot(df3, aes(x=education_fac, y=ACT, group=gender_fac, color=gender_fac)) + 
-    geom_errorbar(aes(ymin=ACT-sd, ymax=ACT+sd), width=.1, 
-                  position=position_dodge(0.05)) +
-   geom_line() + 
-   geom_point()+
-   scale_color_brewer(palette="Paired")+theme_minimal()
-```
-***
 ### Repeated measures ANOVA
-It is common in data analysis. For example, participants take more than one tasks or conditions. In longitudinal study, data is collected from each participants more than once. Assume there is different time point in this dataset. Let's check whether ACT scores vary by time point and education.
+Repeated measures ANOVA is commonly used in data analysis. For example, participants take more than one tasks or conditions. In longitudinal study, data is collected from each participants more than once. Assume there are different time points in this dataset. After introduce the time point variable into the data, let's check whether ACT scores vary by time point and education.
 ``` {r two-way-ANOVA-demonstration-4}
 sat.act <- sat.act %>% 
-  mutate(education = rep(sample(1:5, 140, replace = TRUE), each=5),
+  mutate(education = factor(rep(sample(1:5, 140, replace = TRUE), each=5)),
          id = rep(1:140, each = 5),
          time = rep(1:5, 140)
          )
@@ -499,9 +467,12 @@ res.aov2<-aov_ez(
 )
 summary(res.aov2)
 ```
+The result shows ACT scores are positively related with education, while no significant relationship between ACT scores and the time points is found.
+
+### Visualizing ANOVA
+Aside from simply printing a table, we can visualize the mean and sd of each conditions with a line plot. See the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#ANOVA) for an example.
 
 ### Alternative: 
-
 t-test: comparing means between two groups in a sample (t.test function)
 Linear regression: comparing one or more factors in a sample (lm, mlm,or lmer function)
 
