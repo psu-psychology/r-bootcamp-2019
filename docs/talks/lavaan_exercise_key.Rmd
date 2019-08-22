@@ -1,0 +1,218 @@
+---
+title: "R Bootcamp Lavaan Exercise"
+author: "You!"
+date: "8/21/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+if (!require(pacman)) { install.packages("pacman"); library(pacman) }
+p_load(knitr, tidyverse, lavaan, ggcorrplot, semPlot, psych)
+
+knitr::opts_chunk$set(echo = TRUE)
+options(digits=3) 
+data("sat.act", package="psych")
+sat.act <- sat.act %>% dplyr::rename(sex=gender) %>% 
+  mutate(sex=factor(sex, levels=c(1,2), labels=c("male", "female")))
+data("iqitems", package="psych")
+```
+
+# Overview
+
+The goal of this exercise is for you to become more familiar with fitting basic structural equation models using the `lavaan` R package. We will start first with a very simple dataset consisting of SAT and ACT scores collected in 700 individuals. To learn additional details, see: `?psych::sat.act`.
+
+Here is a quick description of the data:
+
+```{r, echo=FALSE}
+describe(sat.act) %>% select(-vars, -trimmed, -mad, -se, -range)
+```
+
+As you can see, there are SAT verbal scores (SATV), quantitative scores (SATQ), and overall ACT scores for 700 people (a bit of missingness on SATQ).
+
+# Test a single-factor of achievement
+
+What if we believe that scores on the three achievement tests reflect something like an overall measure of academic aptitude/achievement? How would you fit a one-factor CFA to these data?
+
+```{r}
+#one-factor CFA here
+mstring <- 'aptitude =~ ACT + SATV + SATQ'
+mone <- sem(mstring, data=sat.act)
+summary(mone)
+```
+
+## Standardized estimates
+
+```{r}
+#How can you print out the standardized factor loadings here?
+standardizedsolution(mone)
+```
+
+## Fit diagnosis
+
+How well does the model fit according to global indices including CFA, SRMR, RMSEA, and $\chi^2$? If you know SEM: is the model overidentified, underidentified, or just-identified? How does this qualify your interpretation of fit?
+
+```{r}
+#Print out and evaluate global model fit
+fitmeasures(mone)
+```
+
+# Predictors of achivement
+
+Assuming that SAT and ACT scores were recorded first (i.e., SAT and ACT came before post-secondary education), does higher academic achievement (our latent factor) predict higher ultimate educational level?
+
+```{r}
+mstring <- 'aptitude =~ ACT + SATV + SATQ
+education ~ aptitude'
+mtwo <- sem(mstring, data=sat.act)
+summary(mtwo)
+```
+
+## Additional questions
+
+Do the lavaan model warnings worry you?
+
+How strong is the association (think correlation or standardized regression coefficient)?
+
+What about missing data? How is it being handled, and could you do better?
+
+```{r}
+#modifications and details here
+```
+
+## Sex differences in achievement
+
+Are there significant mean differences in achievement scores between men and women? If so, interpret the direction of the effect.
+
+```{r}
+#recode to make the direction and name clearer in the output
+sat.act$female <- as.numeric(sat.act$sex=="female")
+mstring <- 'aptitude =~ ACT + SATV + SATQ
+aptitude ~ female'
+mtwo <- sem(mstring, data=sat.act)
+summary(mtwo)
+```
+
+## Bonus question: moderation by sex
+
+If you like, examine whether the association between achievement scores and ultimate educational attainment differs between men and women. Note that this is best done as a multiple-groups SEM using the `group=` argument in `lavaan` (specifically, when calling the `sem` function). Also note that you may wish to control which parameters are free to differ between sexes and which must be equal using `group.equal`. See `?lavOptions` for details. Also examine the modification indices to see if model fit could be improved.
+
+```{r}
+mstring <- 'aptitude =~ ACT + SATV + SATQ
+education ~ c(mb, fb)*aptitude'
+mtwo <- sem(mstring, data=sat.act, group="female", group.equal=c("loadings"))
+summary(mtwo)
+```
+
+# A more complex model
+
+Next, let's look at a more detailed dataset that allows for more complex modeling of latent structure. We'll just be dealing with measurement models here -- that is, variants of CFA. This is the `iqitems` dataset from the `psych` package, which has questions from different subscales of an IQ test.
+
+```{r}
+describe(iqitems) %>% select(-vars, -trimmed, -mad, -se, -range)
+```
+
+Note that the names of the items denote the respective IQ subscale from which they came. Thus, we are interested in whether we can first corroborate that there are four components of intelligence: mental rotation, matrix reasoning, letter sequences, and basic verbal reasoning. There are four items from each domain.
+
+
+```{r}
+ggcorrplot(lavCor(iqitems))
+```
+
+## Fit the a priori four-factor CFA
+
+First, fit the four-factor model based on the expected constructs, printing out the standardized loading in the `summary`.
+
+```{r}
+mstring <- '
+reasoning =~ reason.4 + reason.16 + reason.17 + reason.19
+letter =~ letter.7 + letter.33 + letter.34 + letter.58
+matrix =~ matrix.45 + matrix.46 + matrix.47 + matrix.55
+rotate =~ rotate.3 + rotate.4 + rotate.6 + rotate.8
+'
+mfour <- sem(mstring, data=iqitems, estimator="mlr")
+summary(mfour, standardized=TRUE, fit.measures=TRUE)
+```
+
+### Diagnosing problems
+
+Does the warning provided by lavaan give you reason for concern? If so, what's the diagnosis? (Hint: use a variant of `inspect` aka `lavInspect`.)
+
+```{r}
+inspect(mfour, "cor.lv") 
+```
+
+### How well does the model fit?
+
+How would you interpret the quality of global fit based on fit indices?
+
+## Fit a simpler model
+
+Based on the pattern of observed correlations and the results of the initial four-factor model, conceptualize and fit a simpler model with fewer factors.
+
+```{r}
+mstring <- '
+reasoning =~ reason.4 + reason.16 + reason.17 + reason.19 + 
+  letter.7 + letter.33 + letter.34 + letter.58
+matrix =~ matrix.45 + matrix.46 + matrix.47 + matrix.55
+rotate =~ rotate.3 + rotate.4 + rotate.6 + rotate.8
+'
+mthree <- sem(mstring, data=iqitems, estimator="mlr")
+summary(mthree, standardized=TRUE, fit.measures=TRUE)
+```
+
+Does this model yield a better fit? Hint: you can use the `anova()` function to compare alternative factor models using a likelihood ratio test.
+
+```{r}
+anova(mfour, mthree)
+```
+
+## Finding an even better model
+
+### Residuals
+
+Look at the residual correlations of the model. What correlations are being poorly estimated? Does this inform your 
+assessment of how to improve the model?
+
+```{r}
+resid(mthree, "cor")
+ggcorrplot(resid(mthree, "cor")$cov, type="lower")
+```
+
+Rotate 3 and 4 have a very high residual correlation!
+
+### Modification indices
+
+Do the modification indices suggest any plausible parameters that are omitted from the model? Alternatively, do the modification indices suggest problems with particular items?
+
+```{r}
+modificationindices(mthree, minimum.value=20)
+```
+
+Can you improve the model further? Consider:
+
+- dropping items that aren't loading well on any factor
+- shifting items to another factor if they don't load where we expected
+- aggregating items that seem highly and uniquely overlapping
+
+```{r}
+
+```
+
+## Bonus question: fit a hierarchical factor model
+
+In principle, there may be a general factor of intelligence that explains the correlations among the subscales here. Fit a hierarchical factor model in which 'g' is a superordinate factor that explains the lower-order factors. Does this model fit significantly worse than a model in which all lower-order factors simply correlate, but there is no 'g'?
+
+```{r}
+mstring <- '
+reasoning =~ reason.4 + reason.16 + reason.17 + reason.19
+letter =~ letter.7 + letter.33 + letter.34 + letter.58
+matrix =~ matrix.45 + matrix.46 + matrix.47 + matrix.55
+rotate =~ rotate.3 + rotate.4 + rotate.6 + rotate.8
+g =~ reasoning + letter + matrix + rotate
+'
+mhier <- sem(mstring, data=iqitems, estimator="mlr")
+summary(mhier, standardized=TRUE, fit.measures=TRUE)
+anova(mfour, mhier)
+```
+
+(Noting that the four-factor model is bad.) BIC is indifferent between the alternatives, the LRT says model fit is significantly worse for hierarchical (but we have a lot of data, so a lot of power to reject the null). AIC is 11 points lower for the four-factor model. Altogether, this is equivocal support for a four-factor model. We could debate which one is 'better,' but there is not a clear winner.

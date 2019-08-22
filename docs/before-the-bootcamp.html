@@ -473,10 +473,26 @@ div.tocify {
 <div id="obtain-the-materials-for-bootcamp" class="section level2">
 <h2>Obtain the materials for bootcamp</h2>
 <p>Although you need not access or use the materials from bootcamp during the meeting, many attendees may wish to step through the code in parallel with the instructor. You can access all data files and code at our <a href="https://github.com/psu-psychology/r-bootcamp-2019/">GitHub repo</a>. <em>Note:</em> We are still actively updating the materials in preparation for the workshop, so you may need to download updates to these materials over the course of the meeting (details below).</p>
+<div id="setting-up-a-project-within-rstudio" class="section level3">
+<h3>Setting up a project within Rstudio</h3>
+<p>To create a new project in Rstudio, choose <code>File &gt; New Project</code>. In the dialog box that pops up, choose ‘Version Control’.</p>
+<p><img src="img/proj_vc.png" /></p>
+<p>On the next screen, select ‘Github’:</p>
+<p><img src="img/proj_github.png" /></p>
+<p>Finally, on the following screen, enter the link for the R bootcamp 2019 repository in the Repository URL field:</p>
+<p><code>https://github.com/psu-psychology/r-bootcamp-2019.git</code></p>
+<p><img src="img/proj_repodetails.png" /></p>
+<p>In the field “Create project as subdirectory of,” choose where <strong>on your computer</strong> you want the files to be stored.</p>
+<p>After you have the project open, you may wish to get the ‘latest and greatest’ for a given training module. As instructors, we may ask you to ‘pull the latest updates.’ This just means executing the ‘git pull’ command, which you could do from the command line, or even easier, in the Rstudio window, on the upper right, look for the ‘Git’ tab. To get the latest files, click ‘Pull.’ This will bring up a window that will display Rstudio’s progress in retrieving the files. This should bring you up to date on all of the modules.</p>
+<p><img src="img/proj_gitpull.png" /></p>
+</div>
+<div id="if-you-understand-github-already" class="section level3">
+<h3>If you understand Github already</h3>
 <p>To download all course materials, you can clone the entire Github repository using the command <code>git clone https://github.com/psu-psychology/r-bootcamp-2018.git</code>. This should be run in a terminal window.</p>
 <p>If you’ve already downloaded the materials, but the instructor suggests getting the latest updates, go to the directory where you’ve stored this the materials on your computer. Then, on the command line, type <code>git pull</code>.</p>
 <p>You can also use Github Desktop to clone the repository using a more user-friendly interface: <a href="https://desktop.github.com" class="uri">https://desktop.github.com</a>.</p>
-<p>If Git is unfamiliar to you, you can obtain a zip (compressed) archive of the current version of all files here: <a href="https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip" class="uri">https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip</a>. This link should auto-update, so you get updates by simply downloading this again.</p>
+<p>If Git is unfamiliar to you and you just want a snapshot of the materials, you can obtain a zip (compressed) archive of the current version of all files here: <a href="https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip" class="uri">https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip</a>. This link should auto-update, so you get updates by simply downloading this again, but we suggest using the project approach above.</p>
+</div>
 </div>
 <div id="explore-your-pass-space" class="section level2">
 <h2>Explore Your PASS space</h2>

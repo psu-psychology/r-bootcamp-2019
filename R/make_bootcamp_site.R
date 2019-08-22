@@ -18,5 +18,17 @@ rmarkdown::render(input = "talks/slow-r.Rmd",
 rmarkdown::render(input = "talks/r-eproducible-science.Rmd", 
                   output_format = c("html_document"))
 
+# Albohn et al.
+rmarkdown::render(input = "talks/data_analyses.Rmd", 
+                  output_format = c("html_document"))
+
+rmarkdown::render(input = "talks/data_analyses_practice.Rmd", 
+                  output_format = c("html_document"))
+
+# Ram & Brinberg
+# Didn't render 2019-08-21-05:00. No time to debug
+# rmarkdown::render(input = "talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd", 
+#                   output_format = c("html_document"))
+
 # Render site last so that updated versions get copied to docs/
 rmarkdown::render_site()

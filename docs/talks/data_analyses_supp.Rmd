@@ -1,0 +1,188 @@
+---
+title: "Supplemental Materials for Data Analyses"
+author: "Daniel Albohn, Kayla Brown, & Yiming Qian"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    code_foldering: show
+    mathjax: default
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+```{r setup, include=FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE)
+options(width = 150, digits = 3)
+
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
+              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables")
+purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)
+```
+
+```{r}
+# sat_act <- sat.act %>%
+#   mutate(., gender_fac = ifelse(gender == 1, "male", "female")) %>%
+#   mutate(.,
+#     gender_fac = case_when(gender == 1 ~ "male",
+#                            gender == 2 ~ "female"),
+#     education_fac = case_when(education == 0 ~ "none",
+#                               education == 1 ~ "some_hs",
+#                               education == 2 ~ "high_school",
+#                               education == 3 ~ "some_college",
+#                               education == 4 ~ "college",
+#                               education == 5 ~ "graduate")
+#   )
+data("sat.act", package="psych")
+sat.act <- sat.act %>% dplyr::rename(sex=gender) %>%
+mutate(sex = factor(sex, levels = c(1,2), labels = c("male", "female")))
+```
+
+# Chi-Squared
+## Visualizing Chi-Squared.
+```{r fig.height=7, fig.width=7}
+vcd::mosaic(~ sex+education, data = sat.act, shade = TRUE, legend = TRUE)
+```
+
+# Correlation
+The Pearson product moment correlation seeks to measure the linear association between two variables,
+$x$ and $y$ on a standardized scale ranging from $r = -1 -- 1$.
+
+The correlation of x and y is a covariance that has been standardized by the standard deviations of $x$ and $y$.
+This yields a scale-insensitive measure of the linear association of $x$ and $y$. For much more conceptual detail,
+see: https://psu-psychology.github.io/psy-597-SEM/01_correlation_regression/01_Correlation_and_Regression.html.
+
+$$r_{XY}= \frac{s_{XY}}{s_{X} s_{Y}}$$
+
+## Visualizing Correlations
+To visualize this relationship, we can pass the raw data to `ggplot` and get a simple regression line using
+`stat_smooth()` with the `lm` method.
+
+```{r}
+ggplot(sat.act, aes(x=age, y=ACT)) +
+  geom_jitter(width=0.1) +
+  stat_smooth(method="lm", se=FALSE)
+```
+
+# Linear Models
+```{r}
+lm_SAT <- lm(SATV ~ SATQ, data=sat.act)
+```
+
+## Notes on overarching regression principles
+
+In simple regression, we are interested in a relationship of the form:
+$$
+Y = B_0 + B_1 X
+$$
+where $Y$ is the dependent variable (criterion) and $X$ is the predictor (covariate). The intercept is represented by $B0$ and the slope for the $X$ predictor by $B1$.
+
+When conducting regression, we typically try to capture linear relationships among variables. We can introduce higher-order polynomial terms (e.g., quadratic models) or splines (more flexible shapes), but this beyond the scope here.
+
+
+## Alternative graphical disagnostic plots.
+
+We can also get useful diagnostic plots for free using the `plot()` function:
+```{r}
+plot(lm_SAT)
+```
+
+
+## Notes on bootstraping
+Nonparametric bootstrapping approximates the sampling distribution for a statistic of interest (e.g., a slope) by resampling the existing data with replacement many times and examining the resulting density.
+
+
+## Viszualizing regression results 
+
+# with two predictors -- one categorical, one continous
+It appears that these are both influential predictors. We could examine the relationship graphically.
+```{r}
+ggplot(sat.act, aes(x=SATV, y=SATQ, color=sex)) + 
+  geom_point() + 
+  scale_color_discrete(name="Sex", breaks = c("1", "2"), labels = c("Male", "Female")) +
+  labs(title = "Multiple Regression", x = "SATV", y = "SATQ") +
+  stat_smooth(method=lm, se=FALSE)
+```
+
+# regression interaction plots (one categorical, one continous)
+```{r}
+# 2-way interation plotting
+ggplot(data=sat.act, 
+       aes(x=age, y=SATQ, colour = sex)) +
+  geom_jitter()+
+  labs(x = "Age", y = "Math Score", colour = "Sex") +
+  theme_bw()+
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  stat_smooth(method='lm', se=TRUE, fullrange=TRUE) +
+  scale_color_manual(labels = c("Male", "Female"), values = c("#d21959", "#4aded3"))
+theme(axis.text=element_text(size=12),
+      axis.title=element_text(size=14))
+```
+
+
+## emmeans plots
+The `emmeans` package also provides useful plots to understand pairwise differences:
+```{r}
+sat.act$agef[sat.act$age < 25] <- 1
+sat.act$agef[sat.act$age >= 25 & sat.act$age <= 50] <- 2
+sat.act$agef[sat.act$age > 50] <- 3
+
+# setting as factors
+sat.act$agef <- as.factor(sat.act$agef)
+sat.act$gender <- as.factor(sat.act$sex)
+
+# running the model
+sat.lm <- lm(SATQ ~ agef + SATV, data = sat.act)
+sat.emm.s <- emmeans(sat.lm, "agef")
+plot(sat.emm.s, comparisons = TRUE)
+```
+The blue bars are confidence intervals for the EMMs, and the red arrows are for the comparisons among them. If an arrow from one mean overlaps an arrow from another group, the difference is not significant, based on the adjust setting (which defaults to "tukey"). (Note: Don't ever use confidence intervals for EMMs to perform comparisons; they can be very misleading.)
+
+
+## visualizing the interaction from pairwise comparisons
+We can visualize the interaction as follows:
+```{r}
+ggplot(data=sat.act, 
+       aes(x=SATV, y=SATQ, colour = factor(agef))) +
+  geom_jitter()+
+  labs(x = "Verbal Score", y = "Math Score", colour = "Age") +
+  theme_bw()+
+  theme(
+    plot.background = element_blank()
+    ,panel.grid.major = element_blank()
+    ,panel.grid.minor = element_blank()
+    ,panel.border = element_blank()
+  ) +
+  stat_smooth(method='lm', se=FALSE, fullrange=TRUE) +
+  scale_color_manual(labels = c("Under 25", "25-50", "Over 50"), values = c("red", "green", "blue"))
+theme(axis.text=element_text(size=12),
+      axis.title=element_text(size=14))
+```
+
+## Testing non-linear effects
+# A few other emmeans features
+In the sat.act dataset, we have treated age as a factor. If we keep this representation (as opposed to entering age as continuous), we can easily get orthogonal polynomial contrasts in `emmeans`. For example, is the effect of age linearly related to SATV, or might it be quadratic or cubic?
+```{r}
+sat.emm.p <- emmeans(sat.lm, "agef")
+ply <- contrast(sat.emm.p, "poly")
+ply
+coef(ply) #show the contrast coefficients
+```
+
+
+## Multivariate regeression models
+Finally, we can examine effects in multivariate regression models (i.e., multiple DVs). Here, we can examine the both the verbal and math scores and if they are associated with age, gender (sex), education, or ACT scores. 
+```{r}
+org.int <- lm(cbind(SATV, SATQ) ~ age + gender + education + ACT, data = sat.act)
+summary(org.int)
+```
+
+

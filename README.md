@@ -9,5 +9,6 @@ Files related to the R bootcamp held in August 2019.
 ## Rendering the site
 
 - Clone the repository.
-- From within the repository directory, run `rmarkdown::render_site()`.
-- You may then view the site locally in `docs/`.
+- From within the repository directory, run `rmarkdown::render_site()`. 
+- To ensure that all of the associated RMarkdown documents get updated, too, run `source("R/make_bootcamp_site.R")` and then run this command from the console `make_bootcamp_site()`.
+- You may then view the updated site locally in `docs/`.

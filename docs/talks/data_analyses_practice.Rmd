@@ -1,0 +1,99 @@
+---
+title: "Basic Analyses in R: Hands on Practice"
+author: "Daniel Albohn, Kayla Brown, & Yiming Qian"
+date: "`r Sys.time()`"
+output:
+  html_document:
+    code_foldering: show
+    mathjax: default
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+```{r packages, message = FALSE}
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
+              "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables")
+purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)
+```
+
+# Hands on practice: data analyses
+For this hands on practice, load the `spi` data set from the `psych` package.
+
+1. Check the help file, structure, and first few observations of the data
+
+```{r}
+# Write your code here!
+
+```
+
+2. Change the integer categorical or factor variables by cross-referencing
+the help page and filling in the pipeline below (note when knitting this
+document, you may want to change `eval` to `TRUE` once you complete this
+exercise). Use either `ifelse()`, `case_when()`, or `factor()` then make
+sure that your code appropriately changed each variable with `str()` or
+`class()`
+
+```{r eval = FALSE}
+spi <- spi %>%
+  mutate(.,
+    sex = factor(),
+    health = factor(),
+    education = factor(),
+    smoke = factor(),
+    exer = factor()
+  )
+
+# Write your code here!
+str(spi)
+```
+
+## Descriptives and Chi-squared
+
+1. Use either `describe()` or `skim()` to describe the data by each categorical
+variable
+
+```{r}
+# Write your code here!
+
+```
+
+
+2. Describe the data by both categorical variables at once
+
+```{r}
+# Write your code here!
+
+```
+
+
+3. Perform a chi-squared test assessing whether there is a differences in smoking
+by education level
+
+```{r}
+# Write your code here!
+
+```
+
+## Correlation
+
+1. Get the covariance and correlation matrix for the relationship between
+three numeric values of your choosing
+
+```{r}
+# Write your code here!
+
+```
+
+2. Perform a test of significance on two of the variables selected above
+
+```{r}
+  # Write your code here!
+
+```
+
+## Linear Models
+
+## ANOVAs

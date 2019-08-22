@@ -27,7 +27,7 @@ This document describes how to log-on and use Penn State's RStudio Server instan
     
 ## Procedure
 
-1. Connect to the Penn State network.
+1. Connect to the Penn State network (wifi ssid: psu).
 
 2. Start your web browser.
 

@@ -44,6 +44,7 @@ Dan Albohn, dna5021 AT-SIGN psu PERIOD edu</br>
 Mimi Brinberg, mjb6504 AT-SIGN psu PERIOD edu</br>
 Kayla Brown, kwb5191 AT-SIGN psu PERIOD edu</br>
 Meng Chen, mxc681 AT-SIGN psu PERIOD edu</br>
+Nathan Hall, nate.hall329 AT-SIGN gmail PERIOD com</br>
 Rebecca Janis, ruj134 AT-SIGN psu PERIOD edu</br>
 Linying Ji, lzj114 AT-SIGN psu PERIOD edu</br>
 Jungmin Li, jzl95 AT-SIGN psu PERIOD edu</br>
@@ -120,9 +121,7 @@ Or (or in addition) you may want to install [R](https://cran.r-project.org) and 
 
 Here is the [GitHub repo](https://github.com/psu-psychology/r-bootcamp-2019/) where the course files are shared.
 
-To download all course materials, you can clone the entire Github repository using the command ```git clone https://github.com/psu-psychology/r-bootcamp-2019.git```.
-You can also use Github Desktop to clone the repository using a more user-friendly interface: <https://desktop.github.com>
-If Git is unfamiliar to you, you can obtain a zip archive of the current version of all files here: <https://github.com/psu-psychology/r-bootcamp-2019/archive/master.zip>
+We recommend creating a new project inside Rstudio to link with the Github site. This will allow you to 'pull' the latest changes to the repository, ensuring that you have the most current materials. Please follow the [instructions here](before-the-bootcamp.html#obtain-the-materials-for-bootcamp).
 
 ## Acknowledgments
 

@@ -10,10 +10,11 @@ output:
 
 ## Interested in attending?
 
-Please register by completing [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7).
-We will ask for confirmation at a later date.
-Please note that space is limited.
-Please don't sign-up if you you are uncertain about whether you will be able to attend.
+Registration is now closed.
+<!-- Please register by completing [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7). -->
+<!-- We will ask for confirmation at a later date. -->
+<!-- Please note that space is limited. -->
+<!-- Please don't sign-up if you you are uncertain about whether you will be able to attend. -->
 
 ## Pre-bootcamp survey
 
@@ -28,15 +29,15 @@ Continental breakfast, coffee and tea.
 
 ### 9:00 am - 12:00 pm, 210 & 211 Keller 
 
-| **Plenary**, 210 Keller [HTML slides](talks/bootcamp-day-1-intro.html), [Zoom webinar](https://psu.zoom.us/j/984037146) |
+| **Plenary**, 210 & 211 Keller [HTML slides](talks/bootcamp-day-1-intro.html), [Zoom webinar](https://psu.zoom.us/j/984037146) |
 |-------------------------------------------------------|
 | 09:00 am • Welcome, introductions, & housekeeping     |
 | 09:15 am • Why We R Here                              |
 | 09:45 am • Break                                      |
 
-| **Slow-R Track**, 210 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/985720879) |  | **Fast-R Track**, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
+| **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/985720879) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/803157230) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg)  |
+| 10:00 - 11:00am • RStudio, R console, object classes & data types (Rick Gilmore)                |  | 10:00 - 11:00 am • Multilevel models, moderation, & probing interactions in `lme4` (Mimi Brinberg), [HTML slides](talks/RBootcamp_MLMInteractions_2019_0820_Final2.html) , [Rmd source](talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd)  |
 | 11:00 am - 12:00 pm • Hands on with RStudio |  | 11:00 am - 12:00 pm • Hands on with multilevel models |
 
 ## Thu, Aug 22, 2019 
@@ -47,7 +48,7 @@ Continental breakfast, coffee and tea.
 
 ### 9:00 am - 12:15 pm, 210 & 211 Keller 
 
-| **Slow-R Track**, 210 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 211 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
+| **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
 | 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
 | 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |
@@ -76,8 +77,8 @@ Continental breakfast, coffee and tea.
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
 | 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
 | 01:30 pm • R-eproducible Science (Rick Gilmore), [HTML slides](talks/r-reproducible-science.html)      |
-| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) |
+| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html) |
 | 02:45 pm • Break                                            |
-| 03:00 pm • Hands on practice                                |
+| 03:00 pm • Hands on practice, [HTML slides](talks/data_analyses_practice.html)                                |
 | 04:00 pm • End                                              |
 | 04:15 pm • Optional Happy Hour @ Whisker's                  |
