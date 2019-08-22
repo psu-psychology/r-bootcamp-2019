@@ -9,7 +9,7 @@ The goal of this two-day workshop is to provide a broad introduction to the use 
 Participants are **not** expected to have prior experience with R or another programming language. 
 The scope and schedule of the course is provided [here](https://psu-psychology.github.io/r-bootcamp-2019/schedule.html).
 
-**Bootcamp registration is now closed. See you next week!**
+**Bootcamp registration is now closed. See you there!**
 
 <!-- To register, complete [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7). -->
 
@@ -60,6 +60,20 @@ Wednesday, August 21, 2019, 9:00 am - 12:00 pm (breakfast 8:30 am)</br>
 Thursday, August 22, 2019, 9:00 am - 12:15 pm (breakfast 8:30 am)</br>
 Friday, August 23, 2019, 9:00 am - 4:30 pm (breakfast 8:30 am; lunch 12:15 pm)</br>
 
+```{r}
+library(tidyverse)
+attendees <- data.frame(day=c("Day 1", "Day 2", "Day 3"), name_badges =c(75, 48, NA))
+
+attendees %>%
+  ggplot(.) +
+  aes(x = day, y = name_badges) +
+  geom_point() +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, 100)) +
+  xlab("") +
+  theme(axis.text = element_text(size = "1.2em"))
+```
+
 Meals and beverages in the [Moore Building Lobby](http://www.psumap.com/#Moore).
 
 Sessions in 210 & 211 [Keller Building](http://www.psumap.com/#Keller)</br>
@@ -80,13 +94,7 @@ Plus, RStudio has fully featured free versions, including some available entirel
 Here are some data about the registrants as of `r Sys.time()`:
 
 ```{r registrant-data, message=FALSE, warning=FALSE, include=FALSE}
-pkg_list <- c("googlesheets", "googledrive", "tidyverse", "ggplot2", "ggmosaic")
-lapply(pkg_list, library, quietly = TRUE, character.only = TRUE)
-
-# r_funcs <- list.files("R", "\\.R$", full.names = TRUE)
-# lapply(r_funcs, source, echo = FALSE)
-source("R/registrants.R")
-update_registration_data()
+# update_registration_data()
 rg <- readr::read_csv("data/csv/registrants.csv")
 ```
 

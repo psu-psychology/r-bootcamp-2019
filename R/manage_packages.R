@@ -10,7 +10,8 @@ bootcamp_pkgs <- c("afex",
                    "emmeans",
                    "ez",
                    "ggfortify",
-                   "googlesheets", 
+                   "ggmosaic",
+                   "googlesheets",
                    "googledrive",
                    "Hmisc",
                    "interactions",
@@ -26,7 +27,8 @@ bootcamp_pkgs <- c("afex",
                    "skimr",
                    "swirl",
                    "tidyverse",
-                   "tufte")
+                   "tufte",
+                   "vcd")
 
 install_bootcamp_pkgs <- function(pkgs = bootcamp_pkgs, install_message = TRUE,
                                   force_reinstall = FALSE) {
@@ -50,7 +52,7 @@ install_pkg <- function(pkg, install_message = FALSE, force_reinstall = FALSE) {
   } else {
     if(require(pkg, character.only = TRUE, quietly = TRUE)) {
       if (install_message) {
-        message(paste0("Package '", pkg, "': already installed.\n"))      
+        message(paste0("Package '", pkg, "': already installed.\n"))
       }
     } else {
       if (install_message) {

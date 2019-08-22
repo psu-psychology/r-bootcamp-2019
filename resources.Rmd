@@ -8,6 +8,12 @@ output:
       number_section: FALSE
 ---
 
+## Bootcamp resources
+
+- [Box folder](https://bit.ly/2L0lomd) with RMarkdown (.Rmd) files.
+- [GitHub repository](https://github.com/psu-psychology/r-bootcamp-2019)
+- Supplemental RMarkdown files for [data visualization](talks/data_visualization_supp.Rmd) and [data analysis](talks/data_analyses_supp.Rmd)
+
 ## Penn State resources
 
 - PSU [QuantDev R tutorials](https://quantdev.ssri.psu.edu/tutorials) (mostly statistical methods)
