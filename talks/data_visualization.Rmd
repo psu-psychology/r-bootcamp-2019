@@ -164,13 +164,14 @@ theme_set(theme_minimal()) # sets the theme for all graphs
 
 # Aesthetics (aes)
 
-Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of geoms.
+Aesthetic mappings describe how variables in the data are mapped to visual properties (aesthetics) of visualizations.
 
 **What goes inside `aes()` and what goes outside?**  
-If you are mapping the aesthetic to a variable in your data, it goes inside `aes()` (e.g. having the points' color vary based on a variable in the data).  
-If you're mapping the aesthetic to a single value, it can go outside `aes()` (e.g. making all the points red).  
+Data goes outside aes.  
+Mapping a variable in your data to an aesthetic goes inside `aes()` (e.g. having the points' color vary based on a variable in the data).  
+Setting an aesthetic to a single value can go outside `aes()` (e.g. making all the points red).  
 
-**Do aesthetic mappings go inside `ggplot()` or inside `geom_*()`?**  
+**When do aesthetic mappings go inside `ggplot()` vs inside `geom_*()`?**  
 If you want the aesthetic mapping to apply to all the geoms, put it inside ggplot(). If you want it to apply only to a single geom, put it inside `geom_*()`.   
 
 **What aesthetics are there?**  
@@ -254,10 +255,10 @@ Scatter plot with lines for specified values of the continuous moderator (+/- 1 
 Uses the `interactions` package.
 
 ```{r interaction-3}
-# Run your model to feed into jtools functions
+# First run your model
 lm1 <- lm(ACT~SATQ*SATV, sat.act) 
 
-# Creating a +/- 1SD plot
+# Provide that model to the interact_plot function
 interactions::interact_plot(lm1, pred = SATQ, modx = SATV,
               plot.points = TRUE,
               x.label = "SATQ",
@@ -285,8 +286,7 @@ Axis titles, labels and breaks, plot title, plot caption, font sizes, theme, gri
 
 ```{r finish}
 plot +
-  labs(color = "Sex",
-       title = "Relationship between SATQ and SATV by sex and education",
+  labs(title = "Relationship between SATQ and SATV by sex and education",
        subtitle = "Data from SAPA project",
        caption = "N = 687") + 
   scale_y_continuous(breaks = seq(200, 800, by = 100)) +
