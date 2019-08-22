@@ -109,7 +109,7 @@ ggpairs(sat.act %>% na.omit(), progress=FALSE,
         lower = list(combo = wrap("facethist", bins=6)))
 ```
 
-Additional advanced suggestions for scatterplots can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Scatterplots).
+Additional advanced suggestions for scatterplots can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#scatterplots).
 
 # Examining group differences - bar graphs
 
@@ -152,7 +152,7 @@ ggplot(sat.act.sum, aes(x=education, y=ACT)) +
                   width=.2, position=position_dodge(.9))
 ```
 
-Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Bar Graphs).
+Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#bargraphs).
 
 # Setting a theme
 
