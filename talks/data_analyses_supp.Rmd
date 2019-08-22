@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE)
 options(width = 150, digits = 3)
 
-pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car",
+pkg_list <- c("tidyverse", "psych", "ez", "rcompanion", "knitr", "car", "plyr", "dplyr",
               "afex", "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables")
 purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)
 ```
@@ -186,8 +186,7 @@ summary(org.int)
 ```
 
 # ANOVA
-## Visualizing ANOVA.
-Visualization: Color line plot by a second group: "gender"
+Visualizing ANOVA: Color line plot by a second group: "gender"
 ``` {r two-way-ANOVA-visualization-1}
 data_summary <- function(data, varname, groupnames){
   require(plyr)
@@ -201,10 +200,7 @@ data_summary <- function(data, varname, groupnames){
  return(data_sum)
 }
 sat_act <- sat.act %>%
-  mutate(., gender_fac = ifelse(gender == 1, "male", "female")) %>%
   mutate(.,
-    gender_fac = case_when(gender == 1 ~ "male",
-                           gender == 2 ~ "female"),
     education_fac = case_when(education == 0 ~ "none",
                               education == 1 ~ "some_hs",
                               education == 2 ~ "high_school",
@@ -213,9 +209,9 @@ sat_act <- sat.act %>%
                               education == 5 ~ "graduate")
   )
 df3 <- data_summary(sat_act, varname="ACT", 
-                    groupnames=c("education_fac", "gender_fac"))
+                    groupnames=c("education_fac", "gender"))
 df3$education_fac <- factor(df3$education_fac,levels=c("none", "some_hs","high_school", "some_college", "college","graduate"))
-ggplot(df3, aes(x=education_fac, y=ACT, group=gender_fac, color=gender_fac)) + 
+ggplot(df3, aes(x=education_fac, y=ACT, group=gender, color=gender)) + 
     geom_errorbar(aes(ymin=ACT-sd, ymax=ACT+sd), width=.1, 
                   position=position_dodge(0.05)) +
    geom_line() + 
