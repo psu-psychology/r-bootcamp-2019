@@ -19,7 +19,6 @@
 library(shiny)
 library(shinyjs)
 library(ShinyPsych)
-library(gmailr)
 
 # Section A: assign external values ============================================
 
@@ -27,14 +26,14 @@ library(gmailr)
 outputDir <- "./post-survey-data/"
 
 # Vector with page ids used to later access objects
-idsVec <- c("Instructions", "Survey", "Survey_two", "Goodbye")
+idsVec <- c("Instructions", "Survey_one", "Survey_two", "Goodbye")
 
 # create page lists for the instructions and the last page
 instructions.list <- createPageList(fileName = "Instructions.txt",
                                     globId = "Instructions",
                                     defaulttxt = FALSE)
-survey.list <- createPageList(fileName = "Survey.txt",
-                              globId = "Survey",
+survey.list <- createPageList(fileName = "Survey_one.txt",
+                              globId = "Survey_one",
                               defaulttxt = FALSE)
 survey_two.list <- createPageList(fileName = "Survey_two.txt",
                               globId = "Survey_two",
@@ -48,7 +47,7 @@ goodbye.list <- createPageList(fileName = "Goodbye.txt",
 ui <- fixedPage(
 
   # App title
-  title = "2018 R Bootcamp Survey",
+  title = "2019 R Bootcamp Survey",
   uiOutput("MainAction"),
 
   # For Shinyjs functions
@@ -94,13 +93,14 @@ server <- function(input, output, session) {
       )}
 
     # display survey page
-    if (CurrentValues$page == "survey") {
 
+    if (CurrentValues$page == "survey_one") {
+      
       return(
         # create html logic of instructions page
         createPage(pageList = survey.list,
-                   pageNumber = CurrentValues$Survey.num,
-                   globId = "Survey", ctrlVals = CurrentValues)
+                   pageNumber = CurrentValues$Survey_one.num,
+                   globId = "Survey_one", ctrlVals = CurrentValues)
       )}
 
 
@@ -129,14 +129,14 @@ server <- function(input, output, session) {
 
 
   observeEvent(input[["Instructions_next"]],{
-    nextPage(pageId = "instructions", ctrlVals = CurrentValues, nextPageId = "survey",
+    nextPage(pageId = "instructions", ctrlVals = CurrentValues, nextPageId = "survey_one",
              pageList = instructions.list, globId = "Instructions")
   })
-
-  observeEvent(input[["Survey_next"]],{
-    nextPage(pageId = "survey", ctrlVals = CurrentValues,
+ 
+  observeEvent(input[["Survey_one_next"]],{
+    nextPage(pageId = "survey_one", ctrlVals = CurrentValues,
              nextPageId = "survey_two", pageList = survey.list,
-             globId = "Survey")
+             globId = "Survey_one")
   })
 
 
@@ -149,8 +149,8 @@ server <- function(input, output, session) {
                   pageList = instructions.list, globId = "Instructions",
                   inputList = input)
 
-    onInputEnable(pageId = "survey", ctrlVals = CurrentValues,
-                  pageList = survey.list, globId = "Survey",
+    onInputEnable(pageId = "survey_one", ctrlVals = CurrentValues,
+                  pageList = survey.list, globId = "Survey_one",
                   inputList = input, charNum = 4)
 
     onInputEnable(pageId = "survey_two", ctrlVals = CurrentValues,
