@@ -429,29 +429,34 @@ Suppose we want to see if the ACT scores differ with education levels and gender
 Two-way ANOVA test is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. First, let's see the count, mean and sd of each level.
 
 ``` {r two-way-ANOVA-demonstration-1}
-group_by(sat_act,education, gender) %>%
+group_by(sat.act,education, gender) %>%
   summarise(
     count = n(),
     mean = mean(ACT, na.rm = TRUE),
     sd = sd(ACT, na.rm = TRUE)
   )
 ```
+
+
 ``` {r two-way-ANOVA-demonstration-2}
-sat_act$id<-1:nrow(sat_act)
+sat.act$id<-1:nrow(sat.act)
 # Compute the analysis of variance
-res.aov <- aov_ez("id","ACT",sat_act, between=c("education","gender"))
+res.aov <- aov_ez("id","ACT",sat.act, between=c("education","gender"))
 # Summary of the analysis
 print(res.aov)
 ```
 We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is the interaction effect between education and gender.
 
-If we want to compare each level with the other, we can computed those with pairwise comparisons using `emmeans`.
+If we want to compare each level with the other, we can compute those with pairwise comparisons using `emmeans`.
 ``` {r two-way-ANOVA-post-hoc}
-m1 <- emmeans(res.aov, ~ education_fac*gender_fac)
+m1 <- emmeans(res.aov, ~ education*gender)
 summary(as.glht(pairs(m1)))
 ```
 
 #### Line plots with multiple groups
+
+<!-- TODO(Yiming?): This still needs to be debugged. -->
+
 Visualization: Color line plot by a second group: "gender"
 ``` {r two-way-ANOVA-visualization-1}
 data_summary <- function(data, varname, groupnames){
@@ -460,12 +465,12 @@ data_summary <- function(data, varname, groupnames){
     c(mean = mean(x[[col]], na.rm=TRUE),
       sd = sd(x[[col]], na.rm=TRUE))
   }
-  data_sum<-ddply(data, groupnames, .fun=summary_func,
+  data_sum <- ddply(data, groupnames, .fun=summary_func,
                   varname)
   data_sum <- rename(data_sum, c("mean" = varname))
  return(data_sum)
 }
-df3 <- data_summary(sat_act, varname="ACT", 
+df3 <- data_summary(sat.act, varname="ACT", 
                     groupnames=c("education_fac", "gender_fac"))
 df3$education_fac <- factor(df3$education_fac,levels=c("none", "some_hs","high_school", "some_college", "college","graduate"))
 ggplot(df3, aes(x=education_fac, y=ACT, group=gender_fac, color=gender_fac)) + 
@@ -476,10 +481,10 @@ ggplot(df3, aes(x=education_fac, y=ACT, group=gender_fac, color=gender_fac)) +
    scale_color_brewer(palette="Paired")+theme_minimal()
 ```
 ***
-### Repeated measure ANOVA
+### Repeated measures ANOVA
 It is common in data analysis. For example, participants take more than one tasks or conditions. In longitudinal study, data is collected from each participants more than once. Assume there is different time point in this dataset. Let's check whether ACT scores vary by time point and education.
 ``` {r two-way-ANOVA-demonstration-4}
-sat_act <- sat.act %>% 
+sat.act <- sat.act %>% 
   mutate(education = rep(sample(1:5, 140, replace = TRUE), each=5),
          id = rep(1:140, each = 5),
          time = rep(1:5, 140)
@@ -488,7 +493,7 @@ sat_act <- sat.act %>%
 res.aov2<-aov_ez(
   id = "id",
   dv = "ACT",
-  data = sat_act,
+  data = sat.act,
   between = c("education"),
   within = c("time")
 )
@@ -500,13 +505,6 @@ summary(res.aov2)
 t-test: comparing means between two groups in a sample (t.test function)
 Linear regression: comparing one or more factors in a sample (lm, mlm,or lmer function)
 
-
 # Hands on practice: Data Analyses
 Download the [practice RMarkdown file](https://github.com/psu-psychology/r-bootcamp-2019/raw/master/talks/data_analyses_practice.Rmd)
-and open it. We will be using the `spi` data set from the `psych` package for the practice
-questions.
-
-
-
-
-
+and open it. We will be using the `spi` data set from the `psych` package for the practice questions.

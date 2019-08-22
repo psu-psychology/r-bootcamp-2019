@@ -51,3 +51,9 @@
 2019-08-20 17:21:10,"limited",2,"Soda",21,8,"Friday","Yes","Slight",NA
 2019-08-20 22:27:34,"some",3,"Beer",23,8,"Saturday","Yes","Significant","spss_sas"
 2019-08-20 23:06:26,"limited",9,"Tea",27,10,"Saturday","That's a personal question","Significant","spss_sas"
+2019-08-21 09:22:22,"limited",2,"Beer",24,7.5,"Thursday","That's a personal question","Significant","spss_sas"
+2019-08-21 09:30:07,"none",10,"Water",26,8,"Thursday","Yes","Slight","none"
+2019-08-21 09:30:39,"some",7,"Coffee",22,NA,"Thursday","That's a personal question","Slight","python"
+2019-08-21 10:03:09,"some",3,"Wine",25,7,"Saturday","Yes","Significant","spss_sas"
+2019-08-21 10:09:30,"none",2,"Beer",22,9,"Thursday","No","Don't know",NA
+2019-08-21 12:30:22,"limited",2,"Coffee",34,9,"Friday","That's a personal question","Slight","spss_sas"

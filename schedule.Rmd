@@ -50,8 +50,8 @@ Continental breakfast, coffee and tea.
 
 | **Slow-R Track**, 211 Keller, [HTML slides](talks/slow-r.html), [Zoom webinar](https://psu.zoom.us/j/367554693) |  | **Fast-R Track**, 210 Keller, [Zoom webinar](https://psu.zoom.us/j/582539667) |
 |----------------------------------------------------------|-|----------------------------------------------------------|
-| 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist)               |
-| 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan` |
+| 09:00 - 09:45 am • Data indexing and subsetting (Rick Gilmore) |  | 09:00 - 10:00 am • Introduction to structural equation modeling (SEM) in `lavaan` (Michael Hallquist), [HTML slides](talks/lavaan_tutorial.html)               |
+| 09:45 - 10:30 am • Hands on practice   | | 10:00 am - 10:30 am • Hands on with `lavaan`, [HTML exercises](talks/lavaan_exercise.html), [HTML answer key](talks/lavaan_exercise_key.html) |
 | 10:30 - 10:45 am • Break                  | | 10:30 - 10:45 am • Break                 |
 | 10:45 - 11:30 am • Packages, scripts, & functions (Rick Gilmore)   |  | 10:45 - 11:45 am • Dynamical systems analysis using `dynr` (Sy-Miin Chow) |
 | 11:30 am - 12:15 pm • Hands on practice |  | 11:45 am - 12:15 pm • Hands-on practice/demo with `dynr` |
