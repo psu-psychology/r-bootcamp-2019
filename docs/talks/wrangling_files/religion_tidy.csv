@@ -1,0 +1,181 @@
+"religion","income","freq"
+"Agnostic","<$10k",27
+"Agnostic","$10-20k",34
+"Agnostic","$20-30k",60
+"Agnostic","$30-40k",81
+"Agnostic","$40-50k",76
+"Agnostic","$50-75k",137
+"Agnostic","$75-100k",122
+"Agnostic","$100-150k",109
+"Agnostic",">150k",84
+"Agnostic","Don't know/refused",96
+"Atheist","<$10k",12
+"Atheist","$10-20k",27
+"Atheist","$20-30k",37
+"Atheist","$30-40k",52
+"Atheist","$40-50k",35
+"Atheist","$50-75k",70
+"Atheist","$75-100k",73
+"Atheist","$100-150k",59
+"Atheist",">150k",74
+"Atheist","Don't know/refused",76
+"Buddhist","<$10k",27
+"Buddhist","$10-20k",21
+"Buddhist","$20-30k",30
+"Buddhist","$30-40k",34
+"Buddhist","$40-50k",33
+"Buddhist","$50-75k",58
+"Buddhist","$75-100k",62
+"Buddhist","$100-150k",39
+"Buddhist",">150k",53
+"Buddhist","Don't know/refused",54
+"Catholic","<$10k",418
+"Catholic","$10-20k",617
+"Catholic","$20-30k",732
+"Catholic","$30-40k",670
+"Catholic","$40-50k",638
+"Catholic","$50-75k",1116
+"Catholic","$75-100k",949
+"Catholic","$100-150k",792
+"Catholic",">150k",633
+"Catholic","Don't know/refused",1489
+"Don’t know/refused","<$10k",15
+"Don’t know/refused","$10-20k",14
+"Don’t know/refused","$20-30k",15
+"Don’t know/refused","$30-40k",11
+"Don’t know/refused","$40-50k",10
+"Don’t know/refused","$50-75k",35
+"Don’t know/refused","$75-100k",21
+"Don’t know/refused","$100-150k",17
+"Don’t know/refused",">150k",18
+"Don’t know/refused","Don't know/refused",116
+"Evangelical Prot","<$10k",575
+"Evangelical Prot","$10-20k",869
+"Evangelical Prot","$20-30k",1064
+"Evangelical Prot","$30-40k",982
+"Evangelical Prot","$40-50k",881
+"Evangelical Prot","$50-75k",1486
+"Evangelical Prot","$75-100k",949
+"Evangelical Prot","$100-150k",723
+"Evangelical Prot",">150k",414
+"Evangelical Prot","Don't know/refused",1529
+"Hindu","<$10k",1
+"Hindu","$10-20k",9
+"Hindu","$20-30k",7
+"Hindu","$30-40k",9
+"Hindu","$40-50k",11
+"Hindu","$50-75k",34
+"Hindu","$75-100k",47
+"Hindu","$100-150k",48
+"Hindu",">150k",54
+"Hindu","Don't know/refused",37
+"Historically Black Prot","<$10k",228
+"Historically Black Prot","$10-20k",244
+"Historically Black Prot","$20-30k",236
+"Historically Black Prot","$30-40k",238
+"Historically Black Prot","$40-50k",197
+"Historically Black Prot","$50-75k",223
+"Historically Black Prot","$75-100k",131
+"Historically Black Prot","$100-150k",81
+"Historically Black Prot",">150k",78
+"Historically Black Prot","Don't know/refused",339
+"Jehovah's Witness","<$10k",20
+"Jehovah's Witness","$10-20k",27
+"Jehovah's Witness","$20-30k",24
+"Jehovah's Witness","$30-40k",24
+"Jehovah's Witness","$40-50k",21
+"Jehovah's Witness","$50-75k",30
+"Jehovah's Witness","$75-100k",15
+"Jehovah's Witness","$100-150k",11
+"Jehovah's Witness",">150k",6
+"Jehovah's Witness","Don't know/refused",37
+"Jewish","<$10k",19
+"Jewish","$10-20k",19
+"Jewish","$20-30k",25
+"Jewish","$30-40k",25
+"Jewish","$40-50k",30
+"Jewish","$50-75k",95
+"Jewish","$75-100k",69
+"Jewish","$100-150k",87
+"Jewish",">150k",151
+"Jewish","Don't know/refused",162
+"Mainline Prot","<$10k",289
+"Mainline Prot","$10-20k",495
+"Mainline Prot","$20-30k",619
+"Mainline Prot","$30-40k",655
+"Mainline Prot","$40-50k",651
+"Mainline Prot","$50-75k",1107
+"Mainline Prot","$75-100k",939
+"Mainline Prot","$100-150k",753
+"Mainline Prot",">150k",634
+"Mainline Prot","Don't know/refused",1328
+"Mormon","<$10k",29
+"Mormon","$10-20k",40
+"Mormon","$20-30k",48
+"Mormon","$30-40k",51
+"Mormon","$40-50k",56
+"Mormon","$50-75k",112
+"Mormon","$75-100k",85
+"Mormon","$100-150k",49
+"Mormon",">150k",42
+"Mormon","Don't know/refused",69
+"Muslim","<$10k",6
+"Muslim","$10-20k",7
+"Muslim","$20-30k",9
+"Muslim","$30-40k",10
+"Muslim","$40-50k",9
+"Muslim","$50-75k",23
+"Muslim","$75-100k",16
+"Muslim","$100-150k",8
+"Muslim",">150k",6
+"Muslim","Don't know/refused",22
+"Orthodox","<$10k",13
+"Orthodox","$10-20k",17
+"Orthodox","$20-30k",23
+"Orthodox","$30-40k",32
+"Orthodox","$40-50k",32
+"Orthodox","$50-75k",47
+"Orthodox","$75-100k",38
+"Orthodox","$100-150k",42
+"Orthodox",">150k",46
+"Orthodox","Don't know/refused",73
+"Other Christian","<$10k",9
+"Other Christian","$10-20k",7
+"Other Christian","$20-30k",11
+"Other Christian","$30-40k",13
+"Other Christian","$40-50k",13
+"Other Christian","$50-75k",14
+"Other Christian","$75-100k",18
+"Other Christian","$100-150k",14
+"Other Christian",">150k",12
+"Other Christian","Don't know/refused",18
+"Other Faiths","<$10k",20
+"Other Faiths","$10-20k",33
+"Other Faiths","$20-30k",40
+"Other Faiths","$30-40k",46
+"Other Faiths","$40-50k",49
+"Other Faiths","$50-75k",63
+"Other Faiths","$75-100k",46
+"Other Faiths","$100-150k",40
+"Other Faiths",">150k",41
+"Other Faiths","Don't know/refused",71
+"Other World Religions","<$10k",5
+"Other World Religions","$10-20k",2
+"Other World Religions","$20-30k",3
+"Other World Religions","$30-40k",4
+"Other World Religions","$40-50k",2
+"Other World Religions","$50-75k",7
+"Other World Religions","$75-100k",3
+"Other World Religions","$100-150k",4
+"Other World Religions",">150k",4
+"Other World Religions","Don't know/refused",8
+"Unaffiliated","<$10k",217
+"Unaffiliated","$10-20k",299
+"Unaffiliated","$20-30k",374
+"Unaffiliated","$30-40k",365
+"Unaffiliated","$40-50k",341
+"Unaffiliated","$50-75k",528
+"Unaffiliated","$75-100k",407
+"Unaffiliated","$100-150k",321
+"Unaffiliated",">150k",258
+"Unaffiliated","Don't know/refused",597

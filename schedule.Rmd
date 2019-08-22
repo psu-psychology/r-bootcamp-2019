@@ -67,7 +67,7 @@ Continental breakfast, coffee and tea.
 | Plenary                                                     |
 |-------------------------------------------------------------|
 | [Morning Zoom webinar](https://psu.zoom.us/j/460935266)     |
-| 09:00 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
+| 09:00 am • [Data wrangling & pipelines (primarily `tidyverse`)](modules.html#data_wrangling) (Michael Hallquist)|
 | 09:45 am • Data wrangling hands-on                          |
 | 10:30 am • Break                                            |
 | 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html), [Rmd source](talks/data_visualization.Rmd) |
