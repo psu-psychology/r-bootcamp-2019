@@ -70,8 +70,8 @@ Continental breakfast, coffee and tea.
 | 09:00 am • Data wrangling & pipelines (primarily `tidyverse`) (Michael Hallquist)|
 | 09:45 am • Data wrangling hands-on                          |
 | 10:30 am • Break                                            |
-| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis)    |
-| 11:30 am • Data visualization hands-on                      |
+| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html) |
+| 11:30 am • Data visualization hands-on, , [HTML exercises](talks/data_visualization_practice.html)                      |
 | 12:00 pm • Lunch in Moore Building Lobby                    |
 |                                                             |
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
