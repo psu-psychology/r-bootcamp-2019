@@ -4,13 +4,14 @@ author: "Holly, Rebecca & Alicia Vallorani"
 date: "`r Sys.time()`"
 output:
   html_document:
-    code_foldering: show
     mathjax: default
     theme: spacelab
     toc: yes
     toc_depth: 3
     toc_float: yes
     code_folding: show
+params:
+  path_2_scripts: "../R/"
 ---
 
 ```{r setup, include=FALSE}
@@ -20,19 +21,44 @@ if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacma
 pacman::p_load(tidyverse, psych, GGally, Rmisc, interactions) # install (if needed) and load packages
 ```
 
-# Hands on practice: data analyses
+# Import data
+
 For this hands on practice, load the `spi` data set from the `psych` package.
 
-1. Check the help file, structure, and first few observations of the data and the structure of the data.
-```{r}
+```{r load-spi}
 # Load data and convert sex and education to factors
-source("R/load_spi.R")
+require(dplyr)
+data("spi", package="psych")
+spi <- spi %>% 
+  dplyr::rename(exercise = exer) %>%
+  dplyr::select(age, sex, health, p1edu, p2edu, 
+                education, wellness,
+                exercise, smoke, ER) %>%
+  mutate(sex=factor(sex, levels=c(1,2), 
+                    labels=c("male", "female")),
+         wellness=factor(wellness, levels=c(1,2), 
+                         labels=c("Low", "High")),
+         exercise=factor(exercise, levels=c(1,2,3), 
+                         labels=c("Rarely", "Sometimes", "Often")),
+         wellness=factor(wellness, levels=c(1,2), 
+                         labels=c("Low", "High")),
+         ER=factor(ER, levels=c(1,2,3,4), 
+                   labels=c("None", "1x", "2x", "3+"))) %>%
+  na.omit()
+```
+
+# Visualization Exercises
+
+1. Check the help file, structure, and first few observations of the data and the structure of the data.
+
+```{r}
 
 # Write your code here!
 
 ```
 
 2. Examine the distribution of your continuous variables.
+
 ```{r}
 
 # Write your code here!
@@ -40,6 +66,7 @@ source("R/load_spi.R")
 ```
 
 3. Create a scatter plot that examines the relation between age and health.
+
 ```{r}
 
 # Write your code here!
@@ -47,6 +74,7 @@ source("R/load_spi.R")
 ```
 
 4. Add a categorical variable to your scatterplot such as sex or exercise using color and/or shape as the asthetic. Try playing with the alpha level of the points. 
+
 ```{r}
 
 # Write your code here!
@@ -54,6 +82,7 @@ source("R/load_spi.R")
 ```
 
 5. Add a regression line to your scatterplot
+
 ```{r}
 
 # Write your code here
@@ -61,14 +90,15 @@ source("R/load_spi.R")
 ```
 
 6. Try using ggpairs to examine multiple relations between your variables simultaneously. You can examine the entire dataset or select particular variables to include using dplyr::select() in the pipe.
+
 ```{r}
 
 # Write your code here!
 
 ```
 
-
 7. Use a bar graph to examine a count of ER visits.
+
 ```{r}
 
 # Write your code here!
@@ -77,6 +107,7 @@ source("R/load_spi.R")
 
 
 8. Use a bar graph to examine mean health by ER visits. You can use na.rm = TRUE inside geom_bar() to remove missing data.
+
 ```{r}
 
 # Write your code here!
@@ -84,6 +115,7 @@ source("R/load_spi.R")
 ```
 
 9. Create a bar graph examining health by ER visits with error bars using Rmisc and summarySE().
+
 ```{r}
 
 # Write your code here!
@@ -91,6 +123,7 @@ source("R/load_spi.R")
 ```
 
 10. Use a bar graph to examine a three way interaction between health, ER and sex. Hint: Use color to define sex.
+
 ```{r}
 
 # Write your code here!
@@ -98,6 +131,7 @@ source("R/load_spi.R")
 ```
 
 11. Say you were interested in relations between health, wellness and sex. How would you visualize this relation?
+
 ```{r}
 
 # Write your code here!
@@ -105,6 +139,7 @@ source("R/load_spi.R")
 ```
 
 12. Try exporting one of your favorite plots you made!
+
 ```{r}
 
 # Write your code here!
