@@ -27,7 +27,6 @@ For this hands on practice, load the `spi` data set from the `psych` package.
 
 ```{r load-spi}
 # Load data and convert sex and education to factors
-require(dplyr)
 data("spi", package="psych")
 spi <- spi %>% 
   dplyr::rename(exercise = exer) %>%
