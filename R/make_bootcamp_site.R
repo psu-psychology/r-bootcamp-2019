@@ -2,6 +2,14 @@
 #
 # Updates and makes R bootcamp site
 
+# Install and/or load packages
+source("R/manage_packages.R")
+install_bootcamp_pkgs() # Not essential, but probably good practice
+
+# Copy *.Rmd to Box (ROG only)
+source("R/copy_rmd_2_box.R")
+copy_rmd_2_box()
+
 # Update and clean data from registrants and survey
 source("R/registrants.R")
 source("R/survey.R")
@@ -26,7 +34,7 @@ rmarkdown::render(input = "talks/data_analyses_practice.Rmd",
                   output_format = c("html_document"))
 
 # Ram & Brinberg
-# Didn't render 2019-08-21-05:00. No time to debug
+# Didn't render 2019-08-21-05:00. No time to debug.
 # rmarkdown::render(input = "talks/RBootcamp_MLMInteractions_2019_0820_Final2.Rmd", 
 #                   output_format = c("html_document"))
 
