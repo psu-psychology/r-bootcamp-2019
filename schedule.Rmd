@@ -71,7 +71,7 @@ Continental breakfast, coffee and tea.
 | 09:45 am • Data wrangling hands-on                          |
 | 10:30 am • Break                                            |
 | 10:45 am • [Data visualization](modules.html#data_visualization) (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html), [Rmd source](talks/data_visualization.Rmd) |
-| 11:30 am • Data visualization hands-on, , [HTML exercises](talks/data_visualization_practice.html), [Rmd source](talks/data_visualization_practice.Rmd)                      |
+| 11:30 am • Data visualization hands-on, [HTML exercises](talks/data_visualization_practice.html), [Rmd source](talks/data_visualization_practice.Rmd)                      |
 | 12:00 pm • Lunch in Moore Building Lobby                    |
 |                                                             |
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
