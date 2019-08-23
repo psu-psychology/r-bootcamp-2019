@@ -236,7 +236,7 @@ ggplot(sat.act, aes(x=education, y=SATV, fill = sex)) +
 ```
 
 Does the effect of sex on SATV scores differ by education level? Maybe for people without a high school education (0). 
-Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_vizualization_supp.html#Interactions).
+Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_visualization_supp.html#interactions).
 
 ## Dichotomous by continuous
 
