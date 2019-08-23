@@ -432,6 +432,7 @@ Suppose we want to see if the ACT scores differ with education levels and gender
 A two-way between-subjects ANOVA is used to evaluate simultaneously the effect of two grouping variables (A and B) on a response variable. First, let's see the summary of each condition.
 
 ``` {r two-way-ANOVA-demonstration-1}
+str(sat.act)
 describeBy(sat.act$ACT,list(sat.act$education,sat.act$gender), mat=TRUE,digits=2) %>% 
   dplyr::select(-vars, -item, -trimmed, -mad, -range, -se)
 ```
@@ -445,7 +446,7 @@ res.aov <- aov_ez(id="id", dv="ACT", data = sat.act, between=c("education","gend
 # Summary of the analysis
 print(res.aov)
 ```
-We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is no sognificant interaction effect between education and gender.
+We can conclude that education is statistically significant. ACT score is positively related with education. Also, there is no significant interaction effect between education and gender.
 
 ### Pairwise comparison among education levels
 
