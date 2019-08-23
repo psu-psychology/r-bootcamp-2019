@@ -462,13 +462,15 @@ print(sat_pairs_aov)
 Repeated measures ANOVA is commonly used in data analysis. For example, participants take more than one tasks or conditions. In longitudinal study, data is collected from each participant more than once. Assume there are different time points in this dataset. After introduce the time point variable into the data, let's check whether ACT scores vary by time point and education.
 
 ``` {r two-way-ANOVA-demonstration-4}
+set.seed(1999) # Needed for getting same results
+
 sat.act <- sat.act %>% 
   mutate(education = factor(rep(sample(1:5, 140, replace = TRUE), each=5)),
          id = rep(1:140, each = 5),
          time = rep(1:5, 140)
          )
 
-res.aov2<-aov_ez(
+res.aov2 <- aov_ez(
   id = "id",
   dv = "ACT",
   data = sat.act,
