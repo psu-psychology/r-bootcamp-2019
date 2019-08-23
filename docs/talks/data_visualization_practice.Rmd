@@ -57,7 +57,6 @@ spi <- spi %>%
 2. Examine the distribution of your continuous variables.
 
 ```{r}
-
 # Write your code here!
 
 ```

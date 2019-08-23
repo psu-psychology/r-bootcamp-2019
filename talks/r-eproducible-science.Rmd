@@ -110,7 +110,7 @@ survey %>%
 
 ### A manifesto for reproducible science
 
-[[@Munafo2017-dc]](http://doi.org/10.1038/s41562-016-0021)
+Source: [Munafo et al., 2017](http://doi.org/10.1038/s41562-016-0021)
 
 <div class="centered">
 <a href="http://www.nature.com/articles/s41562-016-0021/figures/1">
@@ -122,7 +122,7 @@ survey %>%
 
 ## What do we mean by 'reproducibility'?
 
-[Goodman et al., 2016](http://doi.org/10.1126/scitranslmed.aaf5027)
+Source: [Goodman et al., 2016](http://doi.org/10.1126/scitranslmed.aaf5027)
 
 - *Methods* reproducibility
     - Enough details about materials & methods recorded (& reported)
