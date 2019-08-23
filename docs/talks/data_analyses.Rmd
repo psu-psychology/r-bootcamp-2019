@@ -86,9 +86,9 @@ describeBy(sat.act) %>%
   dplyr::select(-vars, -trimmed, -mad, -range, -se)
 ```
 
-The `describe()` function also allows to descriptive statistics by a grouping variable
+The `describe()` function also allows us to get descriptive statistics by a grouping variable
 using the partner function `describeBy()`. If we wanted to get descriptive statistics
-by `sex_fac` we simply pass that column to an argument.
+by `sex` we simply pass that column to an argument.
 
 ```{r describe-2}
 describeBy(sat.act, group = c("sex"), mat=TRUE) %>%
@@ -179,9 +179,10 @@ we can computed those with pairwise comparisons using `rcompanion`.
 
 ```{r rcomp-pairwise}
 rcompanion::pairwiseNominalIndependence(edu_sex_table,
+                                        compare = "row", # or compare = "column"
                                         fisher = FALSE,
                                         gtest = FALSE,
-                                        correct = "holm")
+                                        method = "holm")
 ```
 
 # Correlations
