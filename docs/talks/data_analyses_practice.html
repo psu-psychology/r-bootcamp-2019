@@ -1600,7 +1600,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Basic Analyses in R: Hands on Practice</h1>
 <h4 class="author">Daniel Albohn, Kayla Brown, &amp; Yiming Qian</h4>
-<h4 class="date">2019-08-23 09:20:02</h4>
+<h4 class="date">2019-08-23 09:56:10</h4>
 
 </div>
 
@@ -1617,9 +1617,8 @@ pacman::p_load(pkg_list, character.only = TRUE)</code></pre>
 </ol>
 <pre class="r"><code># Write your code here!</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Change the integer categorical to <strong>new</strong> factor variables by cross-referencing the help page and filling in the pipeline below (note when knitting this document, you may want to change <code>eval</code> to <code>TRUE</code> once you complete this exercise).</li>
+<li>Change the integer categorical to <strong>new</strong> factor variables by cross-referencing the help page and filling in the pipeline below (note when knitting this document, you may want to change <code>eval</code> to <code>TRUE</code> once you complete this exercise). Use either <code>ifelse()</code>, <code>case_when()</code>, or <code>factor()</code> then make sure that your code appropriately changed each variable with <code>str()</code> or <code>class()</code></li>
 </ol>
-<p>Use either <code>ifelse()</code>, <code>case_when()</code>, or <code>factor()</code> then make sure that your code appropriately changed each variable with <code>str()</code> or <code>class()</code></p>
 <pre class="r"><code>spi &lt;- spi %&gt;%
   mutate(.,
     sex_f = factor(),
@@ -1655,7 +1654,7 @@ str(spi)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Perform a test of significance on two of the variables selected above</li>
 </ol>
-<pre class="r"><code>  # Write your code here!</code></pre>
+<pre class="r"><code># Write your code here!</code></pre>
 </div>
 <div id="linear-models" class="section level2">
 <h2>Linear Models</h2>
