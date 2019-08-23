@@ -25,7 +25,7 @@ pacman::p_load(tidyverse, psych, GGally, Rmisc, interactions) # install (if need
 # Goals of this markdown
 This markdown is designed to provide an introduction to data visualization in R. 
 Primarily it will cover ggplot2; although a few advanced options are covered here or available in supplementary materials. 
-Questions about code can be directed to Alicia Vallorani (auv27@psu.edu).
+Questions about code can be directed to Alicia Vallorani (auv27 at psu.edu).
 
 ## What is ggplot()?
 The ggplot() function sets the foundation for building any kind of plot. 
@@ -48,7 +48,7 @@ str(sat.act)
 ```
 
 # Examine univariate distributions - histograms
-First, let's examine the distributions of the variables included in the dataset. We can build histograms that look at a single variable or look at multiple variables simultaneously
+First, let's examine the distributions of the variables included in the dataset. We can build histograms that look at a single variable or multiple variables simultaneously.
 
 ```{r}
 # Looking at a histogram for a single variable
@@ -60,6 +60,10 @@ ggplot(sat.act %>% dplyr::select(-sex, -education) %>% # removing dichotomous va
          gather(), aes(value)) + # grouping for visualization
     geom_histogram(bins = 20) + 
     facet_wrap(~key, scales = "free_x") # free_x allows for differing x-axes 
+
+# 13 rows containing non-finite values = NA values in SATQ
+# warnings =/= errors; your code will still run if you get a warning, it just
+# lets you know that there may be an issue that you want to consider
 ```
 
 # Examining zero-order relations - scatterplots
@@ -75,7 +79,7 @@ ggplot(sat.act, aes(age, ACT)) +
   ylab("Score") + 
   xlab("Age") +
   ggtitle("ACT scores by age") +
-  # You can set different themes to alter the general appearance of your graphs (more descritption in the asthetics section)
+  # You can set different themes to alter the general appearance of your graphs (more description in the aesthetics section)
   theme_classic()
 ```
 
@@ -140,16 +144,19 @@ ggplot(sat.act, aes(education, ACT)) +
 We can also include error bars using the summarySE() function from the Rmisc package.
 
 ```{r}
-# creating a summary of the variables of interest to extract error bars 
+# Summary data for error bars
 sat.act.sum <- summarySE(sat.act, measurevar="ACT", groupvars=c("education")) 
 sat.act.sum
 
 # we use the summary we created to plot
-ggplot(sat.act.sum, aes(x=education, y=ACT)) + 
-    geom_bar(stat="summary", fun.y="mean") +
-    geom_errorbar(aes(ymin=ACT-se,
-                      ymax=ACT+se), 
-                  width=.2, position=position_dodge(.9))
+ggplot(sat.act.sum, aes(education, ACT)) + 
+  geom_bar(stat="summary", fun.y="mean") +
+  ylab("Average score") +
+  xlab("Education level") +
+  ggtitle("Average ACT scores at each education level") +
+  geom_errorbar(aes(ymin=ACT-se, ymax=ACT+se), 
+                width=.2, position=position_dodge(.9)) +
+  theme_classic()
 ```
 
 Additional advanced suggestions for bar graphs can be found in the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_visualization_supp.html#bar_graphs).
