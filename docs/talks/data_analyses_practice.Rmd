@@ -31,7 +31,7 @@ data("spi", package = "psych")
 
 ```
 
-2. Change the integer categorical to **new** factor variables by cross-referencing
+2. Change the integer variables to **new** categorical/factor variables by cross-referencing
 the help page and filling in the pipeline below (note when knitting this
 document, you may want to change `eval` to `TRUE` once you complete this
 exercise). Use either `ifelse()`, `case_when()`, or `factor()` then make
