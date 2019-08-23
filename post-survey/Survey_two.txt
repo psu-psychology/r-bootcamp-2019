@@ -1,5 +1,11 @@
 id	text	page	type	choices	choiceNames	reverse	placeholder	min	max	disabled	checkType	width	height	inline	randomize
 NA	Final Feedback	1	h2	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+NA	What part(s) of bootcamp were most helpful to you?	1	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+most_helpful	Helpful topic(s):	1	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+NA	What would you change about the structure of bootcamp?	1	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+schedule_changes	Structure changes:	1	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+NA	What was your favorite component of the bootcamp?	1	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
+fav_comp	Favorite components:	1	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
 NA	Are there any topics that were not covered that you would have liked to learn about?	1	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
 other_topics	Other topics for the future:	1	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
 NA	Do you have any other or additional feedback to help improve R bootcamp?	1	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0
