@@ -7,18 +7,19 @@ output:
     theme: spacelab
     toc: yes
     toc_depth: 3
-    toc_float: yes
+    toc_float: no
     code_folding: show
+    df_print: kable
 ---
 <style type="text/css">
-body{ font-size: 18px; max-width: 1600px; margin: auto; padding: 1em; }
+body{ font-size: 18px; max-width: 1800px; margin: auto; padding: 1em; }
 code.r{ font-size: 20px; }
 pre { font-size: 16px; }
-h1 { font-size: 26px; }
-h2 { font-size: 23px; }
-h3 { font-size: 20px; }
+p { padding-top: 10px; padding-bottom: 4px; }
+h1 { font-size: 28px; }
+h2 { font-size: 25px; }
+h3 { font-size: 21px; }
 </style>
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -273,3 +274,11 @@ df4_united <- df4 %>% unite(col = "full_name", first_name, last_name, sep=" ")
 ```{r, echo=FALSE}
  df4_united %>% kable_table()
 ```
+
+# Advanced reshaping
+
+If you find yourself needing more advanced reshaping powers, look at the `reshape2` package, a predecessor of `tidyr`. Even though `tidyr` is more recent, it is also more simplified and does not offer robust facilities for reshaping `lists` and `arrays`. Moreover, for `data.frame` objects, the `dcast` function from `reshape2` offers a flexible syntax for specifying how multi-dimensional data should be reshaped into a 2-D data.frame. The `dcast` approach has been extended by the `data.table` package, which provides a fast, flexible, and memory-efficient approach to basic data reshaping (though there is a learning curve). Here are a couple of resources:
+
+Reshape2 tutorial: <http://seananderson.ca/2013/10/19/reshape.html>
+
+Further extensions using data.table package: <https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html>

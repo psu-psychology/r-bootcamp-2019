@@ -1,0 +1,175 @@
+---
+title: "Tidyr Wrangling Exercises Key"
+author: "You!"
+date: "8/22/2019"
+output:
+  html_document:
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+    df_print: kable
+---
+<style type="text/css">
+body{ font-size: 18px; max-width: 1600px; margin: auto; padding: 1em; }
+code.r{ font-size: 20px; }
+pre { font-size: 16px; }
+h1 { font-size: 26px; }
+h2 { font-size: 23px; }
+h3 { font-size: 20px; }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require(pacman)) { install.packages("pacman"); library(pacman) }
+p_load(tidyverse, knitr)
+options(digits=3)
+set.seed(1001) #to make rnorm consistent across knits
+```
+
+# tidyr reminders
+
+The tidyr package provides a small number of functions for reshaping data into a tidy format. Tidy data are defined by:
+
+1. Each variable forms a column
+2. Each observation forms a row
+3. Each type of observational unit (e.g., persons, schools, counties) forms a table.
+
+Imagine a dataset where you have ratings of well-being and anxiety measured 4 times in a longitudinal study.
+
+The dataset looks like this:
+
+```{r}
+df <- data.frame(subid=1:10, 
+                 well_w1=rnorm(10, 5, 1), 
+                 well_w2=rnorm(10, 6, 1), 
+                 well_w3=rnorm(10, 7, 1),
+                 anx_w1=rnorm(10, 9, 1), 
+                 anx_w2=rnorm(10, 6, 1), 
+                 anx_w3=rnorm(10, 7, 1))
+
+df
+```
+
+# gather: gather many related columns into a key-value pair
+
+This is not especially tidy. We have three columns that represent the same variable on three occasions. It would be cleaner to have a time variable (key) and two variables representing well-being and anxiety.
+
+**Objective**: Use gather to bring together the wellbeing columns.
+
+```{r}
+df_long <- df %>% gather(key=time, value=wellbeing, well_w1, well_w2, well_w3)
+df_long
+```
+
+Better, but now our time variable is a mix of variable information and time information. We can retain just the last character as time using mutate from *dplyr* and parse_number from *readr*. I've given you the syntax below for free -- you'll just need to adapt it to your naming scheme.
+
+```{r}
+df_long <- df_long %>% mutate(time=parse_number(time))
+df_long
+```
+
+Okay, but now anxiety feels left out... shouldn't the same approach apply?
+
+When you use the subtraction syntax (subtracting a variable), gather assumes that all variables *except* subid should be gathered.
+
+**Objective**: Gather both well-being and anxiety columns into one key-value pair.
+
+The data should look something like this (just the first 6 rows here):
+
+```
+##    subid    time     value
+## 1      1 well_w1  7.188648
+## 2      2 well_w1  4.822453
+## 3      3 well_w1  4.814725
+## 4      4 well_w1  2.493464
+## 5      5 well_w1  4.442689
+## 6      6 well_w1  4.856441
+```
+
+```{r}
+df_long <- df %>% gather(key=time, value=value, -subid)
+df_long
+```
+
+# separate: split the values of a variable at a position in the character string
+
+Now, the time variable has both information about the measure (well versus anx) and time (1-3). This is a job for separate!
+
+**Objective**: Take the wellbeing + anxiety key-value pair and `separate` the measure (well-being versus anxiety) and the time (1, 2, 3) into separate variables.
+
+```{r}
+df_long <- df_long %>% separate(time, into=c("measure", "time"), sep = "_")
+head(df_long)
+nrow(df_long)
+```
+
+Cool, but we see that time has the 'w' prefix and isn't a number. If your analysis uses a numeric (continuous) time representation (e.g., multilevel models), this won't work. Let's parse the number out of it, as above. Again, I've given you the syntax, you just need to make sure it matches your naming.
+
+```{r}
+df_long <- df_long %>% mutate(time=parse_number(time))
+head(df_long)
+```
+
+This now qualifies as tidy. But it is not necessarily right for every application. For example, in longitudinal SEM (e.g., latent curve models), time is usually encoded by specific loadings onto intercept and slope factors. This requires a 'wide' data format similar to where we started. Let's use tidyr to demonstrate how to go backwards in our transformation process -- long-to-wide.
+
+# spread: convert a key-value 
+
+We can imagine an intermediate step in which we have the values of each measure as columns, instead of encoding them with respect to both measure and time.
+
+**Objective**: We want to use `spread` to achieve a dataset that looks like this:
+
+```
+##    subid time       anx     well
+## 1      1    1  9.478812 7.188648
+## 2      1    2  5.374468 6.302645
+## 3      1    3  5.989688 6.937929
+## 4      2    1  9.229342 4.822453
+## 5      2    2  6.546099 7.634392
+## 6      2    3  5.195278 7.096602
+## 7      3    1  8.862074 4.814725
+## 8      3    2  6.155699 5.378153
+## 9      3    3  5.379621 8.562951
+```
+
+```{r}
+df_intermediate <- df_long %>% spread(key=measure, value=value)
+df_intermediate
+
+df_intermediate %>% nrow() #show number of rows
+```
+
+## unite: paste together values of two variables (usually as string)
+
+This is moving in the right direction, but if we want the column to encode both time and variable, we need to unite the time- and measure-related information. The unite function does exactly this, essentially pasting together the values of multiple columns into a single column.
+
+**Objective**: Use `unite` to achieve a dataset that looks like this:
+
+```
+##   subid vartime    value
+## 1     1  well_w1 7.188648
+## 2     2  well_w1 4.822453
+## 3     3  well_w1 4.814725
+## 4     4  well_w1 2.493464
+## 5     5  well_w1 4.442689
+## 6     6  well_w1 4.856441
+```
+
+```{r}
+df_wide <- df_long %>% unite(col="vartime", measure, time, sep="_w")
+head(df_wide)
+```
+
+Looks promising. Let's go back to `spread` now that we have a key that encodes all variable (column) information.
+
+**Objective**: Use `spread` to generate a long-form dataset that matches the original format.
+
+```{r}
+df_wide <- df_wide %>% spread(key=vartime, value=value)
+df_wide
+```
+
+We've now transformed our long-form dataset back into a wide dataset.
+
+

@@ -1,5 +1,5 @@
 ---
-title: "R Bootcamp 2019: Data wrangling in dplyr"
+title: "Data wrangling in dplyr"
 author: "Michael Hallquist"
 date: "`r Sys.Date()`"
 output:
@@ -7,27 +7,47 @@ output:
     theme: spacelab
     toc: yes
     toc_depth: 3
-    toc_float: yes
+    toc_float: no
     code_folding: show
+    df_print: kable
 ---
 <style type="text/css">
-body{ font-size: 18px; max-width: 1400px; margin: auto; padding: 1em; }
+body{ font-size: 18px; max-width: 1800px; margin: auto; padding: 1em; }
 code.r{ font-size: 20px; }
 pre { font-size: 16px; }
+p { padding-top: 10px; padding-bottom: 4px; }
+h1 { font-size: 28px; }
+h2 { font-size: 25px; }
+h3 { font-size: 21px; }
 </style>
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(digits=2) 
 if (!require(pacman)) { install.packages("pacman"); library(pacman) }
-p_load(dplyr, readr, tidyr, knitr, multilevel)
+p_load(dplyr, readr, tidyr, knitr, multilevel, kableExtra)
+
+#helper function for printing tables in a consistent format
+kable_table <- function(df, n=Inf, p=Inf) { 
+  p <- min(ncol(df), p)
+  df %>% head(n=n) %>% dplyr::select(1:!!p) %>% kable() %>% kable_styling(bootstrap_options = c("striped", "condensed"), full_width = F)
+}
 ```
 
-The goal of this document is to provide a basic introduction to using the *tidyr* and *dplyr* packages in R for data tidying and wrangling.
+The goal of this document is to provide a basic introduction to data wrangling using functions from the so-called 'tidyverse' approach. The tidyverse (https://www.tidyverse.org) is a set of data science packages in `R` that are intended to provide a consistent paradigm for working with data. This approach unifies a previously inchoate landscape of different functions and packages in `R` that could be daunting to new users.
 
-## Before we start: beware namespace collisions!
+Although we do not claim that the tidyverse approach is best according to all possible criteria, we do believe that it is the best paradigm for working with data in R for social scientists, many of whom do not have a formal background in computer programming.
 
-One of the most irritating problems you may encounter in the tidyverse world is code that previously worked suddenly throws an inexplicable error. For example:
+Here, we will draw primarily from the *tidyr* and *dplyr* packages in R.
+
+For an excellent book-length treatment of the tidyverse approach, see [R for Data Science](https://r4ds.had.co.nz) by Hadley Wickham and Garrett Grolemund.
+
+# Before we start: beware namespace collisions!
+
+One of the most irritating problems you may encounter in the tidyverse world (and more generally, in R) is when code that previously worked suddenly throws an inexplicable error. 
+
+For example: 
 
 ```
 > survey %>% group_by(R_exp) %>% 
@@ -37,11 +57,11 @@ Error in summarize(., m_age = mean(Psych_age_yrs), sd_age = sd(Psych_age_yrs)) :
 argument "by" is missing, with no default
 ```
 
-By using fairly intuitive verbs such as 'summarize' and 'select', dplyr (and sometimes tidyr) can use the same function names as other packages. For example, `Hmisc` has a `summarize` function that operates. The predecessor to `dplyr` was called `plyr` -- although largely outmoded, it has a few remaining functions that remain very useful. But... these functions operate differently (the syntax is note the same!).
+By using fairly intuitive data wrangling verbs such as 'summarize' and 'select', `dplyr` (and sometimes `tidyr`) can use the same function names as other packages. For example, `Hmisc` has a `summarize` function that does not operate in the same way as `summarize` in `dplyr`. Also, the predecessor to `dplyr` was called `plyr`. Although largely outmoded, it has a few remaining functions that may be useful. But... many of these functions have the same names in `dplyr` but operate differently (the syntax is not the same!), which can be a common source of collisions when using `dplyr`.
 
-This points to the problem of what are called 'namespace collisions.' That is, when R looks for a function (or any object) in the Global environment, it searches through a 'path'. You can see the nitty gritty using `searchpaths()`. But the TL;DR is that if you -- or any function you call on -- loads another package, that package may override a dplyr function and make your code crash!
+This points to the problem of what are called 'namespace collisions.' That is, when R looks for a function (or any object) in the global environment, it searches through a 'path'. You can see the nitty gritty using `searchpaths()`. But the TL;DR is that if you -- or any function you call on -- loads another package, that package may override a dplyr function and make your code crash!
 
-### What to do?
+## What to do?
 
 1. Watch out for warnings about objects being 'masked' when packages are loaded.
 2. Explicitly specify the package where your desired function lives using the double colon operator. Example: `dplyr::summarize`.
@@ -54,141 +74,236 @@ library(dplyr)
 library(Hmisc)
 ```
 
-
 ```{r, echo=FALSE}
 #clean up the mess a bit...
 detach("package:Hmisc", unload=TRUE)
 ```
 
-## tidyr walkthough
+# Data pipelines
 
-The tidyr package provides a small number of functions for reshaping data into a tidy format. Tidy data are defined by:
-
-1. Each variable forms a column
-2. Each observation forms a row
-3. Each type of observational unit (e.g., persons, schools, counties) forms a table.
-
-Imagine a dataset where you have ratings of well-being and anxiety measured 4 times in a longitudinal study.
-
-Imagine that someone sends you a dataset that looks like this:
-
-```{r}
-df <- data.frame(subid=1:10, 
-                 sub_w1=rnorm(10, 5, 1), sub_w2=rnorm(10, 6, 1), sub_w3=rnorm(10, 7, 1),
-                 anx_w1=rnorm(10, 9, 1), anx_w2=rnorm(10, 6, 1), anx_w3=rnorm(10, 7, 1))
-
-kable(round(df,3))
-```
-
-### gather: gather many related columns into a key-value pair
-
-This is not especially tidy. We have three columns that represent the same variable on three occasions. It would be cleaner to have a time variable (key) and two variables representing well-being and anxiety.
-
-```{r}
-df_long <- df %>% gather(key=time, value=wellbeing, sub_w1, sub_w2, sub_w3)
-print(df_long)
-```
-
-Better, but now our time variable is a mix of variable information and time information. We can retain just the last character as time using mutate from *dplyr* and parse_number from *readr*.
-
-```{r}
-df_long <- df_long %>% mutate(time=parse_number(time))
-kable(round(df_long, 3))
-```
-
-Okay, but now anxiety feels left out... shouldn't the same approach apply?
-
-When you use the subtraction syntax (subtracting a variable), gather assumes that all variables *except* subid should be gathered.
-
-```{r}
-df_long <- df %>% gather(key=time, value=value, -subid)
-print(df_long)
-```
-
-### separate: split the values of a variable at a position in the character string
-
-Now, the time variable has both information about the measure (sub versus anx) and time (1-3). This is a job for separate!
-
-```{r}
-df_long <- df_long %>% separate(time, into=c("measure", "time"), sep = "_")
-head(df_long)
-nrow(df_long)
-```
-
-Cool, but we see that time has the 'w' prefix and isn't a number. If your analysis uses a numeric (continuous) time representation (e.g., multilevel models), this won't work. Let's parse the number out of it.
-
-```{r}
-df_long <- df_long %>% mutate(time=parse_number(time))
-head(df_long)
-```
-
-This now qualifies as tidy. But it is not necessarily right for every application. For example, in longitudinal SEM (e.g., latent curve models), time is usually encoded by specific loadings onto intercept and slope factors. This requires a 'wide' data format similar to where we started. Let's use tidyr to demonstrate how to go backwards in our transformation process -- long-to-wide.
-
-### spread: convert a key-value 
-
-We can imagine an intermediate step in which we have the values of each measure as columns, instead of encoding them with respect to both measure and time.
-
-```{r}
-print(df_intermediate <- df_long %>% spread(key=measure, value=value))
-df_intermediate %>% nrow()
+Although not properly a part of `dplyr`, the `tidyverse` paradigm encourages the use of so-called data pipelines when writing the syntax for a multi-step data transformation procedure. The pipe operator `%>%` is provided by the `magrittr` package, which is loaded by `dplyr`. Data pipeline syntax is intended to provide a readable syntax for the order in which data operations are performed. You can think of this as a recipe for data wrangling. For example:
 
 ```
-
-### unite: paste together values of two variables (usually as string)
-
-This is moving in the right direction, but if we want the column to encode both time and variable, we need to unite the time- and measure-related information. The unite function does exactly this, essentially pasting together the values of multiple columns into a single column.
-
-```{r}
-df_wide <- df_long %>% unite(col="vartime", measure, time)
-head(df_wide)
+1. Read data from the file: 'mydata.csv'
+2. Rename SDATE to submission_date; rename ed to education
+3. Only keep subject IDs above 10 (the first 9 were in-lab pilot subjects)
+4. Drop the timestamp and survey_settings variables
+5. Compute the log of income as a new variable called log_income
+6. Arrange the data by ID, then submission_date (where each subject submitted many surveys)
+7. Ensure that ID and submission_date are the left-most columns in the data
 ```
 
-Looks promising. Let's go back to spread now that we have a key that encodes all variable (column) information.
+We would write this out as a dplyr pipeline using the pipe operator `%>%` to chain together data operations.
 
-```{r}
-df_wide <- df_wide %>% spread(key=vartime, value=value)
+```
+dataset <- read.csv("mydata.csv") %>%
+  rename(submission_date=SDATE, education=ed) %>%
+  filter(ID < 10) %>%
+  select(-timestamp, -survey_settings) %>%
+  mutate(log_income = log(income)) %>%
+  arrange(ID, submission_date) %>%
+  select(ID, submission_date, everything())
 ```
 
-We've now transformed our long-form dataset back into a wide dataset.
+This pipeline approach is in contrast to traditional data operations in functional programming where the syntax usually follows a similar structure to mathematical notation, such as $f(g(x))$. In this notation, first we apply $g(x)$, then we apply $f(x)$ on the resulting value (i.e., from inner to outer).
 
-### advanced reshaping
-
-If you find yourself needing more advanced reshaping powers, look at the `reshape2` package, a predecessor of `tidyr`. Even though `tidyr` is more recent, it is also more simplified and does not offer robust facilities for reshaping lists and arrays. Moreover, for `data.frame` objects, the `dcast` function from `reshape2` offers a flexible syntax for specifying how multi-dimensional data should be reshaped into a 2-D data.frame. Here are a couple of resources:
-
-Reshape2 tutorial: <http://seananderson.ca/2013/10/19/reshape.html>
-
-Further extensions using data.table package: <https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html>
-
-## dplyr walkthrough
-
-Now that we have basic tools to tidy data, let's discuss data wrangling using `dplyr`.
-
-Let's start with the survey from our bootcamp. What's the average age of individuals in the bootcamp, stratified by R expertise?
-
-Note that `summarize` removes a single level of ungrouping. Here, we only have one grouping variable, so the output of `summarize` will be 'ungrouped.'
-
-```{r}
-survey <- read_csv("../data/survey_clean.csv")
-
-survey %>% group_by(R_exp) %>% dplyr::summarize(m_age=mean(Psych_age_yrs), sd_age=sd(Psych_age_yrs))
+In `R`, we might see something like this:
+```
+arrange(summarize(
+  filter(data, variable == numeric_value), Total = sum(variable)), 
+  desc(Total)
+)
 ```
 
-What if I want to have means and SDs for several continuous variables by R expertise? The `summarize_at` function provides functionality to specify several variables using `vars()` and potentially several summary functions using `funs()`.
+Although this is not a terrible syntax, it gets confusing to keep track of "the output of this function is the input to the next one."
 
-```{r}
-survey %>% group_by(R_exp) %>% summarize_at(vars(Psych_age_yrs, Sleep_hrs, Banjo), funs(m=mean, sd=sd))
+In a data pipeline approach, the equivalent syntax would be:
+
+```
+data %>%
+  filter(variable == "value") %>%
+  summarize(Total = sum(variable)) %>%
+  arrange(desc(Total))
 ```
 
-We can also make this more beautiful using techniques we've already seen above... R is programming with data. We just extend out our data pipeline a bit. The `extract` function here is like separate, but with a bit more oomph using regular expressions. This is a more intermediate topic, but there is a tutorial here: <http://www.regular-expressions.info/tutorial.html>.
+This is easier to read from left to right.
+
+## (Aside) The history of 'pipes'
+
+An alternative syntax to the $f(g(x))$ emerged long ago from Unix terminal programming, which uses `|` as the pipe operator.
+
+`find . –iname '*.pdf' | grep –v 'figure' | sort –n`
+
+In Linux shell, this says
+
+```
+1. In the current directory (.), find all files called (something).pdf
+2. Remove any file that contains the string 'figure'
+3. Sort the files in ascending numeric order
+```
+
+The idea of "pipes" and "redirection" in shell scripting is that the command can be read from left to right, where the pipe `|` indicates that the output of left command is provided as input to the right command.
+
+# Use of 'this' reference in tidyverse
+
+Sometimes it is useful to refer to the current dataset or variable explicitly in tidyverse data wrangling syntax. 
+
+dplyr/magrittr tends to hide this from us for convenience, but it's there under the hood.
+
+```iris %>% filter(Sepal.Length > 7)```
+
+is the same as
+
+```iris %>% filter(., Sepal.Length > 7)```
+
+So, '.' refers to the current dataset or variable (depending on context) in dplyr operations. And if you don't specify where the '.' falls in your syntax, it will always be passed as the first argument to the downstream function.
+
+# Special values to watch out for in data wrangling
+
+-  NA: missing
+    - na.rm=TRUE available in many functions
+    - Also, see na.omit(), na.exclude(), na.fail(), na.pass()
+- NULL: null set
+    - Often used when something is undefined
+- Inf: infinite
+- NaN: Not a number. 
+    - Result of an invalid computation, e.g., log(-1)
+- warnings(): If R mentions a warning in data wrangling, make sure you've handled it or know its origin. **Don't just ignore these!**
+
+# dplyr fundamentals
+
+The `dplyr` package is at the core of data wrangling in the `tidyverse`, providing a set of wrangling verbs that collectively form a coherent language for data transformations.
+
+## Core verbs
+
+1. **filter**: subset or remove observations (rows)
+2. **select**: subset or remove a group of columns (variables)
+3. **mutate**: add or modify one or more variables (transforming the data)
+4. **summarize**: collapse multiple values into a single value (e.g., by summing or taking means; aggregation)
+5. **arrange**: change the order of observations (i.e., sort the data)
+
+## Additional important verbs
+
+6. **join**: Combine datasets on matching variable(s) (i.e., merge two datasets)
+7. **group_by**: divide dataset according to one or more categorical variables (factors)
+8. **ungroup**: Remove grouping from data operations
+9. **rename**: change the names of one or more variables
+10. **recode**: change the values of a discrete variable (especially factor)
+11. **slice**: subset rows based on numeric order
+12. **distinct**: Remove observations that are duplicates (cf. unique)
+
+## A first pass through our bootcamp survey
+
+To learn `dplyr`, let's start with the survey from our bootcamp. What's the average age of individuals in the bootcamp, stratified by R expertise?
+
+Note that `summarize` removes a single level of ungrouping. Here, we only have one grouping variable, `r_exp`, so the output of `summarize` will be 'ungrouped.'
+
+```{r, message=FALSE}
+survey <- read_csv("../data/csv/survey.csv") %>%
+  mutate(r_exp=ordered(r_exp, levels=c("none", "limited", "some", "lots", "pro")))
+
+survey %>% group_by(r_exp) %>% 
+  dplyr::summarize(n=n(), m_age=mean(age_yrs), sd_age=sd(age_yrs)) %>% 
+  kable_table()
+```
+
+What if I want to have means and SDs for several continuous variables grouped by R expertise? The `summarize_at` function provides functionality to specify several variables using `vars()` and potentially several summary functions by passing them in a named `list`.
 
 ```{r}
-survey %>% group_by(R_exp) %>% summarize_at(vars(Psych_age_yrs, Sleep_hrs, Banjo), funs(m=mean, sd=sd)) %>%
-  gather(key=var, value=value, -R_exp) %>% 
+survey %>% group_by(r_exp) %>% 
+  summarize_at(vars(age_yrs, sleep_hrs, got_s8), list(m=mean, sd=sd)) %>% 
+  kable_table()
+```
+
+Let's slow this down:
+
+### group_by
+
+```
+survey %>% group_by(r_exp)
+```
+
+This tells `dplyr` to divide the `survey` data into a set of smaller `data.frame` objects, one per level of `r_exp`. Internally, this looks something like the output below. After this division of the dataset into chunks, `summarize` will work on each chunk individually.
+
+```{r, echo=FALSE}
+lapply(split(as.data.frame(survey), survey$r_exp), function(x) { row.names(x) <- 1:nrow(x); x[1:min(6, nrow(x)),1:4] }) #don't worry about the code if you're looking at this!
+```
+
+### summarize_at
+
+All variants of `summarize`, including `summarize_at`, transform from a dataset that has many rows to a dataset that has a single row per grouping unit. If you do not use `group_by`, summarize will yield an overall summary statistic in the entire dataset. For example, to get the mean and SD of hours slept last night, irrespective of R experience, we could just use a simple `summarize`:
+
+```{r}
+survey %>% 
+  summarize(m_sleep=mean(sleep_hrs, na.rm=T), sd_sleep=sd(sleep_hrs, na.rm=T)) %>% 
+  kable_table()
+```
+
+But because we used `group_by(r_exp)` above, we got unique summaries of the variables at each level of R experience.
+
+The `summarize_at` function accepts two primary arguments. First, we specify a set of variables that we wish to summarize in the same way (i.e., compute the same summary statistics). Second, we specify which statistics we wish to compute. In our case, the syntax was:
+
+```
+summarize_at(vars(age_yrs, sleep_hrs, got_s8), list(m=mean, sd=sd))
+```
+
+The `vars()` function specifies the unquoted names of variables in the dataset we wish to summarize, separated by commas.
+
+The `list()` object created here asks `dplyr` to compute the mean and SD of each variable in the `vars()` statement at *each level* of R experience (the `group_by` basis). The names of the list elements (left side) --- here, `m` and `sd` --- become the suffixes added for each variable. The value of the element (right side) --- here, `mean` and `sd` --- are the functions that should be used to compute a summary statistic (they should return one number per grouped variable).
+
+**Passing arguments to summary functions**
+
+Notice above how the mean and SD for sleep was missing (`NA`) for the 'some' group. This is because someone (or maybe a few people) didn't fill out that item! In `R`, many functions have an `na.rm` argument that indicates whether to remove missing data before computing the statistic. If we wish to pass this argument to `mean` and `sd` here, we have two options:
+
+First, we can pass arguments as additional arguments to `summarize_at` like this:
+
+```
+summarize_at(
+  vars(some, variables, here), 
+  list(s1=summary1function, s2=summary2function), 
+  args_passed_on_1=TRUE, args_passed_on_2="Hot dog"
+)
+```
+
+Here, the values of `args_passed_on_1` and `args_passed_on_2` will be provided as additional arguments to every function in the list (here, we have two of them).
+
+Second, to be even more precise, we can switch to what `dplyr` and `purrr` call 'lambdas' where we use the tilde (~) to write out the exact function calls.
+
+```
+summarize_at(
+  vars(some, variables, here), 
+  list(~mean(., na.rm=TRUE), ~sd(., na.rm=TRUE))
+)
+```
+
+The lambda approach uses `.` to denote 'this' to `dplyr` --- that is, whatever data dplyr is chewing on at that moment.
+
+```{r}
+survey %>% group_by(r_exp) %>% 
+  summarize_at(
+    vars(age_yrs, sleep_hrs, got_s8), 
+    list(m=mean, sd=sd), na.rm=TRUE
+  ) %>% 
+  kable_table()
+```
+
+### Making a summarize pipeline even more beautiful
+
+We can also make the output more beautiful using tidying techniques we've already seen in the [tidyr tutorial](talks/tidy_data_conceptual.html). Remember that `R` is all about programming for data science. In particular, notice that we have some columns that are means and others that are SDs. 
+
+We can just extend our data pipeline a bit. The `extract` function from `tidyr` here is like `separate`, but with a bit more oomph using regular expressions. This is a more intermediate topic, but there is a useful tutorial here: <http://www.regular-expressions.info/tutorial.html>.
+
+```{r}
+survey %>% group_by(r_exp) %>% 
+  summarize_at(vars(age_yrs, sleep_hrs, got_s8), list(m=mean, sd=sd)) %>%
+  gather(key=var, value=value, -r_exp) %>% 
   extract(col="var", into=c("variable", "statistic"), regex=("(.*)_(.*)$")) %>%
-  spread(key=statistic, value=value) %>% arrange(variable, R_exp)
+  spread(key=statistic, value=value) %>% arrange(variable, r_exp) %>%
+  kable_table()
 ```
 
-### Examining univbct dataset using dplyr.
+
+# Examining a more complex multilevel dataset using dplyr
 
 Let's examine the univbct data, which contains longitudinal observations of job satisfaction, commitment, and readiness to deploy. From the documentation `?univbct`:
 
@@ -196,39 +311,42 @@ Let's examine the univbct data, which contains longitudinal observations of job 
 This data set contains the complete data set used in Bliese and Ployhart (2002). The data is longitudinal data converted to univariate (i.e., stacked) form. Data were collected at three time points. A data frame with 22 columns and 1485 observations from 495 individuals.
 ```
 
+We have 1485 observations of military personnel nested within companies, which are nested within batallions: <https://en.wikipedia.org/wiki/Battalion>.
+
 ```{r}
 data(univbct, package="multilevel")
 str(univbct)
 ```
 
-We have 1485 observations of military personnel nested within companies, which are nested within batallions: <https://en.wikipedia.org/wiki/Battalion>.
-
 Let's enact the core 'verbs' of dplyr to understand and improve the structure of these data.
 
-### filter: obtaining observations (rows) based on some criteria
+## filter: obtaining observations (rows) based on some criteria
 
-Filter only men in company A
+*Objective*: filter only men in company A
 
 ```{r}
 company_A_men <- filter(univbct, COMPANY=="A" & GENDER==1)
 #print 10 observations at random to check the accuracy of the filter
-kable(company_A_men %>% sample_n(10))
+#p=11 just shows the first 11 columns to keep it on one page for formatting
+company_A_men %>% sample_n(10) %>% kable_table(p=11)
 ```
 
-What about the number of people in companies A and B?
+How many people are in companies A and B?
 ```{r}
 filter(univbct, COMPANY %in% c("A","B")) %>% nrow()
 ```
 
-Or counts by company and battalion
+What about counts by company and battalion?
 ```{r}
-univbct %>% group_by(BTN, COMPANY) %>% count()
+univbct %>% group_by(BTN, COMPANY) %>% count() %>%
+  kable_table(n=12)
 ```
 
 
-### select: obtaining variables (columns) based on some criteria
+## select: obtaining variables (columns) based on some criteria
 
 Let's start by keeping only the three core dependent variables over time: jobsat, commit, ready. Keep SUBNUM as well for unique identification.
+
 ```{r}
 dvs_only <- univbct %>% dplyr::select(SUBNUM, JOBSAT1, JOBSAT2, JOBSAT3, 
                                       COMMIT1, COMMIT2, COMMIT3, 
@@ -242,65 +360,81 @@ dvs_only <- univbct %>% dplyr::select(SUBNUM, starts_with("JOBSAT"), starts_with
 ```
 
 Other selection mechanisms:
+
 * contains: variable name contains a literal string
-* starts_with
-* ends_with
+* starts_with: variable names start with a string
+* ends_with: variable names end with a string
+* num_range: variables that have a common prefix (e.g., 'reasoning') and a numeric range (e.g., 1-20)
 * matches: variable name matches a regular expression
 * one_of: variable is one of the elements in a character vector. Example: select(one_of(c("A", "B")))
 
-Note that select and filter can be combined to subset both observations and variables of interest. For example, look at readiness to deploy in battalion 299 only
+See `?select_helpers` for more details.
 
+## select + filter
+
+Note that select and filter can be combined to subset both observations and variables of interest. 
+
+For example, look at readiness to deploy in battalion 299 only:
 ```{r}
-univbct %>% filter(BTN==299) %>% dplyr::select(SUBNUM, READY1, READY2, READY3) %>% head
+univbct %>% filter(BTN==299) %>% dplyr::select(SUBNUM, READY1, READY2, READY3) %>% 
+  kable_table(n=6)
 ```
 
-Select is also useful for dropping variables that are not of interest.
-
+Select is also useful for dropping variables that are not of interest using a kind of subtraction syntax.
 ```{r}
 nojobsat <- univbct %>% dplyr::select(-starts_with("JOBSAT"))
 names(nojobsat)
 ```
 
-### mutate: add one or more variables that are a function of other variables
+## mutate: add one or more variables that are a function of other variables
 
 (Row-wise) mean of commit scores over waves. Note how you can used `select()` within a mutate to run a function on a subset of the data.
 
 ```{r}
-univbct <- univbct %>% mutate(commitmean=rowMeans(dplyr::select(., COMMIT1, COMMIT2, COMMIT3)))
+univbct <- univbct %>% 
+  mutate(commitmean=rowMeans(dplyr::select(., COMMIT1, COMMIT2, COMMIT3)))
 ```
 
 Mutate can manipulate several variables in one call. Here, mean center any variable that starts with COMMIT
-and add the suffix _cm for clarity. Also compute the percentile rank for each of these columns, with _pct as suffix. Note the use of the `vars` function here, which acts identically to `select`, but in the context of a summary or mutation operation on specific variables.
+and add the suffix `_cm` for clarity. Also compute the percentile rank for each of these columns, with _pct as suffix. Note the use of the `vars` function here, which acts identically to `select`, but in the context of a summary or mutation operation on specific variables.
 
 ```{r}
 meancent <- function(x) { x - mean(x, na.rm=TRUE) } #simple worker function to mean center a variable
-univbct <- univbct %>% mutate_at(vars(starts_with("COMMIT")), funs(cm=meancent, pct=percent_rank))
-univbct %>% dplyr::select(starts_with("COMMIT")) %>% summarize_all(mean, na.rm=TRUE) %>% gather()
+
+univbct <- univbct %>% 
+  mutate_at(vars(starts_with("COMMIT")), list(cm=meancent, pct=percent_rank))
+
+univbct %>% 
+  dplyr::select(starts_with("COMMIT")) %>% 
+  summarize_all(mean, na.rm=TRUE) %>% gather() %>%
+  kable_table()
 ```
 
-### arrange: reorder observations in specific order
+## arrange: reorder observations in specific order
 
 Order data by ascending battalion, company, then subnum
+
 ```{r}
 univbct <- univbct %>% arrange(BTN, COMPANY, SUBNUM)
 ```
 
 Descending sort: descending battalion, ascending company, ascending subnum
+
 ```{r}
 univbct <- univbct %>% arrange(desc(BTN), COMPANY, SUBNUM)
 ```
 
-### A more realistic example: preparation for multilevel analysis
+## A more realistic example: preparation for multilevel analysis
 
 In MLM, one strategy for disentangling within- versus between-person effects is to include both within-person-centered variables and person means in the model (Curran & Bauer, 2011).
 
-We can achieve this easily for our three DVs here using a single pipeline that combines tidying and mutation. Using -1 as the `sep` argument to `separate` splits the string at the second-to-last position (i.e., starting at the right).
+We can achieve this easily for our three DVs here using a single pipeline that combines tidying and mutation. Using `-1` as the `sep` argument to `separate` splits the string at the second-to-last position (i.e., starting at the right).
 
-For reshaping to work smoothly, we need a unique identifier for each row. Also, `univbct` is stored in a dangerously untidy format in which variables with suffix 1-3 indicate a 'wide format', but the data is also in long format under variables such as 'JSAT' and 'COMMIT.'
+For reshaping to work smoothly, we need a unique identifier for each row. Also, `univbct` is stored in a dangerously untidy format in which variables with suffix 1-3 indicate a 'wide format', but the data is *also* in long format under variables such as 'JSAT' and 'COMMIT.' In other words, there is a peculiar redundancy in the data that is altogether confusing.
 
 Take a look:
 ```{r}
-univbct %>% dplyr::select(SUBNUM, starts_with("JOBSAT"), JSAT) %>% head(n=20)
+univbct %>% dplyr::select(SUBNUM, starts_with("JOBSAT"), JSAT) %>% kable_table(n=12)
 ```
 
 We first need to eliminate this insanity. Group by subject number and retain only the first row (i.e., keep the wide version).
@@ -324,8 +458,8 @@ forMLM <- univbct %>% dplyr::select(SUBNUM, JOBSAT1, JOBSAT2, JOBSAT3,
 Now, let's perform the centering described above. You could do this in one pipeline -- I just separated things here for conceptual clarity.
 ```{r}
 forMLM <- forMLM %>% group_by(SUBNUM) %>% 
-  mutate_at(vars(COMMIT, JOBSAT, READY), funs(wicent=meancent, pmean=mean)) %>%
+  mutate_at(vars(COMMIT, JOBSAT, READY), list(wic=meancent, pm=mean)) %>%
   ungroup()
 
-head(forMLM)
+forMLM %>% kable_table(n=10) %>% kable_styling(font_size = 14)
 ```
