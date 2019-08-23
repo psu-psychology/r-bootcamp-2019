@@ -1,6 +1,7 @@
-files <- c("./talks/data_visualization.Rmd",
-           "./talks/data_visualization_practice.Rmd",
-           "./talks/data_visualization_supp.Rmd")
+library(stringr)
+files <- c("talks/data_visualization.Rmd",
+           "talks/data_visualization_practice.Rmd",
+           "talks/data_visualization_supp.Rmd")
 
 # purrr::walk(files, rmarkdown::render, output_format = "html_document")
 
