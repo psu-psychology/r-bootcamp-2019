@@ -33,9 +33,7 @@ For this hands on practice, load the `spi` data set from the `psych` package.
 2. Change the integer categorical to **new** factor variables by cross-referencing
 the help page and filling in the pipeline below (note when knitting this
 document, you may want to change `eval` to `TRUE` once you complete this
-exercise).
-
-Use either `ifelse()`, `case_when()`, or `factor()` then make
+exercise). Use either `ifelse()`, `case_when()`, or `factor()` then make
 sure that your code appropriately changed each variable with `str()` or
 `class()`
 
@@ -93,7 +91,7 @@ three numeric values of your choosing
 2. Perform a test of significance on two of the variables selected above
 
 ```{r}
-  # Write your code here!
+# Write your code here!
 
 ```
 

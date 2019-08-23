@@ -44,10 +44,7 @@ fastr33_rr	"How would you rate the session on  R-eproducible Sceince? (1 - not i
 fast33_diff	"Overall, how difficult was the material in the above session?"	6	selectInput	"1,2,3,4"	"Too easy/familiar, Just right (good pace and level of difficulty), A bit fast (wished things were slower or explained more), Too difficult (not useful because it was too fast and/or there was too much material)"	NA	NA	NA	NA	0	NA	500px	NA	0	0	tracks	5
 fastr34_data	"How would you rate the session on  basic data analyses? (1 - not informative, 7 = very informative)"	6	sliderInput	1	NA	NA	NA	1	7	0	NA	500px	NA	NA	0	tracks	5
 fast34_diff	"Overall, how difficult was the material in the above session?"	6	selectInput	"1,2,3,4"	"Too easy/familiar, Just right (good pace and level of difficulty), A bit fast (wished things were slower or explained more), Too difficult (not useful because it was too fast and/or there was too much material)"	NA	NA	NA	NA	0	NA	500px	NA	0	0	tracks	5
-fastr13_handson	"Overall, how helpful were the ""hands on"" practice potions of the bootcamp? (1 - not informative, 7 = very informative)"	7	sliderInput	1	NA	NA	NA	1	7	0	NA	500px	NA	NA	0	tracks	NA
-fastr13_iprac	"Overall, how helpful were the ""iPRACTISE potions of the bootcamp? (1 - not informative, 7 = very informative)"	7	sliderInput	1	NA	NA	NA	1	7	0	NA	500px	NA	NA	0	tracks	NA
-NA	Final Feedback	8	h2	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	NA	NA
-NA	Are there any topics that were not covered that you would have liked to learn about?	8	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	NA	NA
-other_topics	Other topics for the future:	8	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	NA	NA
-NA	Do you have any other or additional feedback to help improve R bootcamp?	8	p	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	NA	NA
-other_feedback	Other feedback:	8	textAreaInput	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	NA	NA
+NA	Survey General Information	7	h2	NA	NA	NA	NA	NA	NA	0	NA	500px	NA	NA	0	tracks	5
+NA	"<p><a href=""https://psu-psychology.github.io/r-bootcamp-2019/schedule.html"" target=""_blank"">Remind yourself about the schedule here!</a></p>"	7	HTML	NA	NA	NA	NA	NA	NA	0	NA	NA	NA	NA	0	tracks	5
+gen1_handson	"Overall, how helpful were the ""hands on"" practice potions of the bootcamp? (1 - not informative, 7 = very informative)"	7	sliderInput	1	NA	NA	NA	1	7	0	NA	500px	NA	NA	0	tracks	NA
+gen2_iprac	"Overall, how helpful were the ""iPRACTISE potions of the bootcamp? (1 - not informative, 7 = very informative)"	7	sliderInput	1	NA	NA	NA	1	7	0	NA	500px	NA	NA	0	tracks	NA
