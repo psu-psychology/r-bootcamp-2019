@@ -110,7 +110,7 @@ survey %>%
 
 ### A manifesto for reproducible science
 
-[[@Munafo2017-dc]](http://doi.org/10.1038/s41562-016-0021)
+[Munafo et al., 2017](http://doi.org/10.1038/s41562-016-0021)
 
 <div class="centered">
 <a href="http://www.nature.com/articles/s41562-016-0021/figures/1">
@@ -129,7 +129,7 @@ survey %>%
     - Same results with same materials & methods
 - *Results* reproducibility
     - Same results from independent study
--*Inferential* reproducibility
+- *Inferential* reproducibility
     - Same inferences from one or more studies or reanalyses
     
 ## Achieving *methods* reproducibility
