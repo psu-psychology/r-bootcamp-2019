@@ -1312,7 +1312,7 @@ window.initializeCodeFolding = function(show) {
 
     // create a collapsable div to wrap the code in
     var div = $('<div class="collapse r-code-collapse"></div>');
-    if (show)
+    if (show || $(this)[0].classList.contains('fold-show'))
       div.addClass('in');
     var id = 'rcode-643E0F36' + currentIndex++;
     div.attr('id', id);
@@ -1428,7 +1428,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -1601,14 +1600,15 @@ div.tocify {
 
 <h1 class="title toc-ignore">Basic Analyses in R: Hands on Practice</h1>
 <h4 class="author">Daniel Albohn, Kayla Brown, &amp; Yiming Qian</h4>
-<h4 class="date">2019-08-21 04:57:55</h4>
+<h4 class="date">2019-08-23 08:34:23</h4>
 
 </div>
 
 
-<pre class="r"><code>pkg_list &lt;- c(&quot;tidyverse&quot;, &quot;psych&quot;, &quot;ez&quot;, &quot;rcompanion&quot;, &quot;knitr&quot;, &quot;car&quot;,
-              &quot;afex&quot;, &quot;ggfortify&quot;, &quot;Hmisc&quot;, &quot;emmeans&quot;, &quot;jtools&quot;, &quot;apaTables&quot;)
-purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)</code></pre>
+<pre class="r"><code>pkg_list &lt;- c(&quot;tidyverse&quot;, &quot;psych&quot;, &quot;rcompanion&quot;, &quot;knitr&quot;, &quot;car&quot;, &quot;afex&quot;, &quot;ez&quot;,
+              &quot;ggfortify&quot;, &quot;Hmisc&quot;, &quot;emmeans&quot;, &quot;jtools&quot;, &quot;apaTables&quot;, &quot;dplyr&quot;)
+# purrr::walk(pkg_list, require, quietly = TRUE, character.only = TRUE)
+pacman::p_load(pkg_list, character.only = TRUE)</code></pre>
 <div id="hands-on-practice-data-analyses" class="section level1">
 <h1>Hands on practice: data analyses</h1>
 <p>For this hands on practice, load the <code>spi</code> data set from the <code>psych</code> package.</p>
@@ -1617,15 +1617,16 @@ purrr::walk(pkg_list, library, quietly = TRUE, character.only = TRUE)</code></pr
 </ol>
 <pre class="r"><code># Write your code here!</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Change the integer categorical or factor variables by cross-referencing the help page and filling in the pipeline below (note when knitting this document, you may want to change <code>eval</code> to <code>TRUE</code> once you complete this exercise). Use either <code>ifelse()</code>, <code>case_when()</code>, or <code>factor()</code> then make sure that your code appropriately changed each variable with <code>str()</code> or <code>class()</code></li>
+<li>Change the integer categorical to <strong>new</strong> factor variables by cross-referencing the help page and filling in the pipeline below (note when knitting this document, you may want to change <code>eval</code> to <code>TRUE</code> once you complete this exercise).</li>
 </ol>
+<p>Use either <code>ifelse()</code>, <code>case_when()</code>, or <code>factor()</code> then make sure that your code appropriately changed each variable with <code>str()</code> or <code>class()</code></p>
 <pre class="r"><code>spi &lt;- spi %&gt;%
   mutate(.,
-    sex = factor(),
-    health = factor(),
-    education = factor(),
-    smoke = factor(),
-    exer = factor()
+    sex_f = factor(),
+    health_f = factor(),
+    education_f = factor(),
+    smoke_f = factor(),
+    exer_f = factor()
   )
 
 # Write your code here!
@@ -1658,6 +1659,25 @@ str(spi)</code></pre>
 </div>
 <div id="linear-models" class="section level2">
 <h2>Linear Models</h2>
+<p><strong>Note</strong>: For the following questions, make sure to not use any of categorical variables you created above (<code>lm()</code> requires integer variables for the <code>y</code> variable)</p>
+<ol style="list-style-type: decimal">
+<li>Let’s look at the association between education and health. In other words, does education predict health?</li>
+</ol>
+<pre class="r"><code># Write code here</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Now lets see if there may be an interaction between two variables that predicts health. Let’s see if education and smoking interact to predict health</li>
+</ol>
+<pre class="r"><code># Write code here</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Extending the lesson now lets add a control variable. Let’s see if the interaction between wellness and education predicts helath contorling for age.</li>
+</ol>
+<pre class="r"><code># Write code here</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Now lets get the results into a tidy table 4a. First a table of all parameters</li>
+</ol>
+<pre class="r"><code># Write code here</code></pre>
+<p>4b. Now a table of the golbal parameters</p>
+<pre class="r"><code># Write code here</code></pre>
 </div>
 <div id="anovas" class="section level2">
 <h2>ANOVAs</h2>
