@@ -1,0 +1,120 @@
+---
+title: "Slow-R Notebook"
+output: html_notebook
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+
+# Background
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+# Vectors
+
+Vectors or "atomic" vectors in R are one dimensional groups of things that have the same class.
+
+## Make a vector of numbers
+
+```{r make-numeric-vect}
+# Modify this code so that it produces a vector of numbers.
+# To check your work, run this chunk by pressing the right arrow button
+my_nums <- 
+
+if (is.numeric(my_nums)) {
+  message("Righto!")
+} else {
+  message("Sorry, try again.")
+}
+```
+
+Use the colon (`:`) operator to make a vector of numbers between 1 and 23.
+
+```{r}
+# Modify the code as suggested
+chromosome_index <- 
+  
+if (is.numeric(chromosome_index)) {
+  message("Them's numbers, alright")
+} else {
+  message("Show me the numbers!")
+}
+
+if (length(chromosome_index == 23)) {
+  message("Right length!")
+  }
+if (max(chromosome_index == 23)) {
+  message("Maximum is 23!")
+}
+if (min(chromosome_index) == 1) {
+  message("Minimum is 1!")
+}
+```
+
+## Make a vector of character strings
+
+```{r make-character-vect}
+# Modify this code so that it produces a vector of your initials
+my_initials <- 
+  
+if (is.character(my_initials)) {
+  message("Outstanding initials!")
+} else {
+  message("Better luck next time.")
+}
+
+# Test to see if elements are single characters.
+# Uses `lapply()` command that applies a function, here `length()`
+# to each element in `my_initials`
+message("Are these single letters?")
+(single_letters <- unlist(lapply(my_initials, length)) == 1)
+```
+
+Let's move beyond vectors of single letters.
+
+```{r make-bigger-character-vect}
+# Modify this code so that it produces a vector of first names
+
+some_first_names <-
+  
+if (is.character(some_first_names)) {
+  message("Great people!")
+} else {
+  message("Sorry, Charlie.")
+}
+```
+
+## Make repeating things and sequences
+
+Use the `seq()` command to make a sequence of even numbers from 2 to 18.
+
+```{r seq}
+# Modify the code to make the desired sequence
+my_evens <- seq(from =, to =, by =)
+
+# I like to test conditions this way. Makes it easy to see what's up.
+(nine_numbers <- length(my_evens) == 9)
+(min_is_2 <- min(my_evens) == 2)
+(max_is_18 <- max(my_evens) == 18)
+
+if (nine_numbers & min_is_2 & max_is_18) {
+  message("You're a star student!")
+} else {
+  message("Keep trying!")
+}
+```
+

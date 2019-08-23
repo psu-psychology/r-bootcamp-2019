@@ -88,7 +88,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -437,6 +436,38 @@ h3 { font-size: 18px; }
 </ul>
 <hr />
 </div>
+<div id="data-wrangling" class="section level1">
+<h1>Data wrangling</h1>
+<ul>
+<li><a href="talks/tidy_data_conceptual.html">Tidy data and tidyr overview</a> (Michael Hallquist) | <a href="talks/tidy_data_conceptual.Rmd">Rmd</a></li>
+<li><a href="talks/dplyr_walkthrough_2019.html">dplyr and wrangling walkthrough</a> (Michael Hallquist) | <a href="talks/dplyr_walkthrough_2019.Rmd">Rmd</a></li>
+</ul>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><a href="talks/joins_tutorial_bnj.html">Review joins tutorial in Rstudio</a> | <a href="talks/joins_tutorial_bnj.Rmd">Rmd</a></li>
+<li><a href="talks/tidyr_exercises.html">Complete tidyr exercises</a> | <a href="talks/tidyr_exercises.Rmd">Rmd</a> | <a href="talks/tidyr_exercises_key.html">Key</a></li>
+<li><a href="talks/bryan_dplyr_exercises.html">Complete dplyr exercises</a> | <a href="talks/bryan_dplyr_exercises.Rmd">Rmd</a></li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="data-visualization" class="section level1">
+<h1>Data visualization</h1>
+<ul>
+<li><a href="talks/ggplot_grammar.html">Grammar of graphics</a> | <a href="talks/ggplot_grammar.Rmd">Rmd</a> (Nate Hall)</li>
+<li><a href="talks/data_visualization.html">Basic visualization using ggplot2</a> | <a href="talks/data_visualization.Rmd">Rmd</a> (Holly Zaharchuk, Rebecca Janis &amp; Alicia Vallorani)</li>
+<li><a href="talks/data_visualization_supp.html">Supplemental materials for lecture</a> | <a href="talks/data_visualization_supp.Rmd">Rmd</a></li>
+<li><a href="talks/data_visualization_practice.html">ggplot2 practice exercise</a> | <a href="talks/data_visualization_practice.Rmd">Rmd</a></li>
+</ul>
+<p><em>Other resources</em></p>
+<ul>
+<li>Jenny Bryan <a href="https://github.com/jennybc/ggplot2-tutorial">ggplot2 tutorial</a> | <a href="https://github.com/jennybc/ggplot2-tutorial/archive/master.zip">Download</a></li>
+<li><a href="http://ggplot2.tidyverse.org/reference/">ggplot2 documentation</a></li>
+<li>ggplot2 tutorial that provides useful guidance on detailed formatting: <a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html" class="uri">https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html</a></li>
+</ul>
+<hr />
+</div>
 <div id="r-eproducible-science" class="section level1">
 <h1>R-eproducible Science</h1>
 <ul>
@@ -446,29 +477,16 @@ h3 { font-size: 18px; }
 </ul>
 <hr />
 </div>
+<div id="basic-data-analyses" class="section level1">
+<h1>Basic data analyses</h1>
+<ul>
+<li><a href="talks/data_analyses.html">Basic data analyses in R</a>: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) | <a href="talks/data_analyses.Rmd">Rmd</a></li>
+<li><a href="talks/data_analyses_supp.html">Data analysis supplemental materials</a> | <a href="talks/data_analyses_supp.Rmd">Rmd</a></li>
+<li><a href="talks/data_analyses_practice.html">Data analysis practice exercises</a> | <a href="talks/data_analyses_practice.Rmd">Rmd</a></li>
+</ul>
+</div>
 <div id="resources-from-previous-years" class="section level1">
 <h1>Resources from previous years</h1>
-<div id="data-wrangling" class="section level2">
-<h2>Data wrangling</h2>
-<!-- - [tidyr and dplyr walkthrough](talks/dplyr_walkthrough_2018.html) (Michael Hallquist) | [Rmd](talks/dplyr_walkthrough_2018.Rmd) -->
-<div id="joining-datasets" class="section level3">
-<h3>Joining datasets</h3>
-<!-- - dplyr [joins tutorial](talks/joins_tutorial_bnj.html) (Ben Johnson) | [zip](zips/johnson_joins.zip) | [Rmd](talks/joins_tutorial_bnj.Rmd) -->
-<hr />
-</div>
-</div>
-<div id="data-visualization" class="section level2">
-<h2>Data visualization</h2>
-<!-- - Conceptual overview of [ggplot2 and graphics output](talks/Hallquist_ggplot2_overview.pptx) -->
-<!-- - Alicia Vallorani [ggplot2 walkthrough](talks/ggplot2_tutorial_vallorani.html) -->
-<p><em>Other resources</em></p>
-<ul>
-<li>Jenny Bryan <a href="https://github.com/jennybc/ggplot2-tutorial">ggplot2 tutorial</a> | <a href="https://github.com/jennybc/ggplot2-tutorial/archive/master.zip">Download</a></li>
-<li><a href="http://ggplot2.tidyverse.org/reference/">ggplot2 documentation</a></li>
-<li>ggplot2 tutorial that provides useful guidance on detailed formatting: <a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html" class="uri">https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html</a></li>
-</ul>
-<hr />
-</div>
 <div id="best-practices-in-r-programming" class="section level2">
 <h2>Best practices in R programming</h2>
 <!-- - Setting up a Github repo as an R project | [Video](mov/rstudio-project-on-github.mp4) -->
@@ -479,13 +497,18 @@ h3 { font-size: 18px; }
 </ul>
 <hr />
 </div>
-<div id="correlation-and-regression-in-r" class="section level2">
-<h2>Correlation and regression in R</h2>
-<!-- - Basic [correlation and regression walkthrough](talks/correlation_regression.html) (Michael Hallquist) | [Rmd](talks/correlation_regression.Rmd) -->
 </div>
-<div id="anova-and-categorical-data" class="section level2">
-<h2>ANOVA and categorical data</h2>
-<!-- - Basic [ANOVA and categorical data walkthrough](talks/anova_categorical.html) (Michael Hallquist) | [Rmd](talks/anova_categorical.Rmd) -->
+<div id="correlation-and-regression-in-r" class="section level1">
+<h1>Correlation and regression in R</h1>
+<ul>
+<li>Basic <a href="https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.html">correlation and regression walkthrough</a> (Michael Hallquist) | <a href="https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.Rmd">Rmd</a></li>
+</ul>
+</div>
+<div id="anova-and-categorical-data" class="section level1">
+<h1>ANOVA and categorical data</h1>
+<ul>
+<li>Basic <a href="https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.html">ANOVA and categorical data walkthrough</a> (Michael Hallquist) | <a href="https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.Rmd">Rmd</a></li>
+</ul>
 <p><em>Other resources</em></p>
 <ul>
 <li>More about the <a href="http://singmann.org/anova-in-r-afex-may-be-the-solution-you-are-looking-for/">aov_ez function</a></li>
@@ -493,7 +516,6 @@ h3 { font-size: 18px; }
 <li>Probing interactions using the <a href="https://cran.r-project.org/web/packages/jtools/vignettes/interactions.html">jtools package</a></li>
 </ul>
 <hr />
-</div>
 <div id="exploratory-factor-analysis" class="section level2">
 <h2>Exploratory factor analysis</h2>
 <!-- - [Exploratory factor analysis tutorial](talks/IntroBasicEFA_2018_0815.html) (Nilam Ram) | [zip](zips/ram_efa.zip) | [Slides](talks/RBootcamp_IntroFactorAnalysis_2018_0816.pdf) | [Rmd](talks/IntroBasicEFA_2018_0815.Rmd) | [QuantDev link](https://quantdev.ssri.psu.edu/tutorials/intro-basic-exploratory-factor-analysis) -->

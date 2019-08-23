@@ -320,7 +320,7 @@ $(document).ready(function () {
 
 <p><img src="https://www.r-project.org/Rlogo.png" /></p>
 <p>Welcome to the R Bootcamp for PSU researchers. The goal of this two-day workshop is to provide a broad introduction to the use of the R programming language for social science research. Participants are <strong>not</strong> expected to have prior experience with R or another programming language. The scope and schedule of the course is provided <a href="https://psu-psychology.github.io/r-bootcamp-2019/schedule.html">here</a>.</p>
-<p><strong>Bootcamp registration is now closed. See you next week!</strong></p>
+<p><strong>Bootcamp registration is now closed. See you there!</strong></p>
 <!-- To register, complete [this Google Form](https://forms.gle/y3DQ64zSxzG1VgdE7). -->
 <div id="instructors" class="section level2">
 <h2>Instructors</h2>
@@ -337,6 +337,30 @@ $(document).ready(function () {
 <div id="meeting-times-and-location" class="section level2">
 <h2>Meeting times and location</h2>
 <p>Wednesday, August 21, 2019, 9:00 am - 12:00 pm (breakfast 8:30 am)</br> Thursday, August 22, 2019, 9:00 am - 12:15 pm (breakfast 8:30 am)</br> Friday, August 23, 2019, 9:00 am - 4:30 pm (breakfast 8:30 am; lunch 12:15 pm)</br></p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ──────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
+## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
+## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
+## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ─────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>attendees &lt;- data.frame(day=c(&quot;Day 1&quot;, &quot;Day 2&quot;, &quot;Day 3&quot;), name_badges =c(75, 48, NA))
+
+attendees %&gt;%
+  ggplot(.) +
+  aes(x = day, y = name_badges) +
+  geom_point() +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, 100)) +
+  xlab(&quot;&quot;) +
+  theme(axis.text = element_text(size = &quot;1.2em&quot;))</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning in numnotnull(&quot;fontsize&quot;): NAs introduced by coercion
+
+## Warning in numnotnull(&quot;fontsize&quot;): NAs introduced by coercion</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Meals and beverages in the <a href="http://www.psumap.com/#Moore">Moore Building Lobby</a>.</p>
 <p>Sessions in 210 &amp; 211 <a href="http://www.psumap.com/#Keller">Keller Building</a></br></p>
 <p>A <a href="schedule.html">detailed schedule</a> may be found by following the link.</br></p>
@@ -348,7 +372,7 @@ $(document).ready(function () {
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-08-22 04:39:43:</p>
+<p>Here are some data about the registrants as of 2019-08-23 08:13:30:</p>
 <p>We have 115 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The data are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)</p>
 <pre class="r"><code># Make table
 pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg)

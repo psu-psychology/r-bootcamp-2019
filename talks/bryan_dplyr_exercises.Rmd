@@ -1,0 +1,422 @@
+---
+title: "dplyr Wrangling Exercises"
+author: "You!"
+date: "8/23/2019"
+output:
+  html_document:
+    theme: spacelab
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    code_folding: show
+---
+<style type="text/css">
+body{ font-size: 18px; max-width: 1600px; margin: auto; padding: 1em; }
+code.r{ font-size: 20px; }
+pre { font-size: 16px; }
+h1 { font-size: 26px; }
+h2 { font-size: 23px; }
+h3 { font-size: 20px; }
+</style>
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+if (!require(pacman)) { install.packages("pacman"); library(pacman) }
+p_load(tidyverse, knitr, gapminder)
+options(digits=3)
+```
+
+These exercises are slightly adapted from Jenny Bryan's wonderful dplyr overview here: https://stat545.com/block009_dplyr-intro.html. Thus, the answers can be found on those pages, but I've removed the solutions here for you to work on it directly.
+
+# Load `dplyr` and `gapminder`
+
+I choose to load the `tidyverse`, which will load `dplyr`, among other packages we use incidentally below. Also load `gapminder`.
+```{r}
+library(dplyr)
+library(gapminder)
+```
+
+# Say hello to the Gapminder tibble
+
+The `gapminder` data frame is a special kind of data frame: a tibble.
+
+```{r}
+gapminder
+```
+
+Its tibble-ness is why we get nice compact printing. For a reminder of the problems with base data frame printing, go type `iris` in the R Console or, better yet, print a data frame to screen that has lots of columns.
+
+Note how gapminder's `class()` includes `tbl_df`; the "tibble" terminology is a nod to this.
+
+```{r}
+class(gapminder)
+```
+
+There will be some functions, like `print()`, that know about tibbles and do something special. There will others that do not, like `summary()`. In which case the regular data frame treatment will happen, because every tibble is also a regular data frame.
+
+To turn any data frame into a tibble use `as_tibble()`:
+
+```{r}
+as_tibble(iris)
+```
+
+# Think before you create excerpts of your data ...
+
+If you feel the urge to store a little snippet of your data:
+
+```{r}
+(canada <- gapminder[241:252, ])
+```
+
+Stop and ask yourself ...
+
+> Do I want to create mini datasets for each level of some factor (or unique combination of several factors) ... in order to compute or graph something?  
+
+If YES, __use proper data aggregation techniques__ or facetting in `ggplot2` -- __don’t subset the data__. Or, more realistic, only subset the data as a temporary measure while you develop your elegant code for computing on or visualizing these data subsets.
+
+If NO, then maybe you really do need to store a copy of a subset of the data. But seriously consider whether you can achieve your goals by simply using the `subset =` argument of, e.g., the `lm()` function, to limit computation to your excerpt of choice. Lots of functions offer a `subset =` argument!
+
+Copies and excerpts of your data clutter your workspace, invite mistakes, and sow general confusion. Avoid whenever possible.
+
+Reality can also lie somewhere in between. You will find the workflows presented below can help you accomplish your goals with minimal creation of temporary, intermediate objects.
+
+# Use `filter()` to subset data row-wise.
+
+`filter()` takes logical expressions and returns the rows for which all are `TRUE`.
+
+**Objectives**:
+
+1. Find observations where life expectancy is less than 29
+2. Find observations from Rwanda after the year 1979
+3. Find observations from both Rwanda and Afghanistan
+
+```{r}
+#answers here
+```
+
+**NB**. Under no circumstances should you subset your data the way I did at first:
+
+```{r eval = FALSE}
+excerpt <- gapminder[241:252, ]
+```
+
+Why is this a terrible idea?
+
+  * It is not self-documenting. What is so special about rows 241 through 252?
+  * It is fragile. This line of code will produce different results if someone changes the row order of `gapminder`, e.g. sorts the data earlier in the script.
+  
+# Meet the new pipe operator
+
+Before we go any further, we should exploit the new pipe operator that the tidyverse imports from the [`magrittr`](https://github.com/smbache/magrittr) package by Stefan Bache. This is going to change your data analytical life. You no longer need to enact multi-operation commands by nesting them inside each other, like so many [Russian nesting dolls](http://blogue.us/wp-content/uploads/2009/07/Unknown-21.jpeg). This new syntax leads to code that is much easier to write and to read.
+
+Here's what it looks like: `%>%`. The RStudio keyboard shortcut: Ctrl + Shift + M (Windows), Cmd + Shift + M (Mac).
+
+Let's demo then I'll explain. Print the first 6 rows of the gapminder data using a pipe `$>$` with `head()`
+
+```{r}
+#answer here
+```
+
+This is equivalent to `head(gapminder)`. The pipe operator takes the thing on the left-hand-side and __pipes__ it into the function call on the right-hand-side -- literally, drops it in as the first argument.
+
+Never fear, you can still specify other arguments to this function! To see the first 3 rows of Gapminder, how would you pass the `n=3` argument in a pipe syntax?
+
+```{r}
+#answer here
+```
+
+I've advised you to think "gets" whenever you see the assignment operator, `<-`. Similary, you should think "then" whenever you see the pipe operator, `%>%`.
+
+You are probably not impressed yet, but the magic will soon happen.
+
+# Use `select()` to subset the data on variables or columns.
+
+Use `select()` to subset the data on variables. Specifically, select the `year` and `lifeExp` columns.
+
+```{r}
+#answer here
+```
+
+# Revel in the convenience of dplyr
+
+**Objective**: get the `year` and `lifeExp` variables for Cambodia
+
+```{r}
+#answer here
+```
+
+# Use `mutate()` to add new variables
+
+Imagine we wanted to recover each country's GDP. After all, the Gapminder data has a variable for population (`pop`) and GDP per capita (`gdpPercap`). Let's multiply them together.
+
+`mutate()` is a function that defines and inserts new variables into a tibble. You can refer to existing variables by name.
+
+```{r}
+#answer here
+```
+
+Hmmmm ... those GDP numbers are almost uselessly large and abstract. Consider the [advice of Randall Munroe of xkcd](http://fivethirtyeight.com/datalab/xkcd-randall-munroe-qanda-what-if/):
+
+>One thing that bothers me is large numbers presented without context... 'If I added a zero to this number, would the sentence containing it mean something different to me?' If the answer is 'no,' maybe the number has no business being in the sentence in the first place."
+
+Maybe it would be more meaningful to consumers of my tables and figures to stick with GDP per capita. But what if I reported GDP per capita, *relative to some benchmark country*. Since Canada is my adopted home, I'll go with that. 
+
+I need to create a new variable that is `gdpPercap` divided by Canadian `gdpPercap`, taking care that I always divide two numbers that pertain to the same year.
+
+Objectives:
+
+  * Filter down to the rows for Canada.
+  * Create a new temporary variable in a copy of gapminder called `my_gap`:
+    - Extract the `gdpPercap` variable from the Canadian data.
+    - Replicate it once per country in the dataset, so it has the right length.
+  * Divide raw `gdpPercap` by this Canadian figure.
+  * Discard the temporary variable of replicated Canadian `gdpPercap`.
+
+```{r}
+#answer here
+```
+
+Note that, `mutate()` builds new variables sequentially so you can reference earlier ones (like `tmp`) when defining later ones (like `gdpPercapRel`). Also, you can get rid of a variable by setting it to `NULL`.
+
+How could we sanity check that this worked? The Canadian values for `gdpPercapRel` better all be 1!
+
+```{r}
+# answer here
+```
+
+# Use `arrange()` to row-order data in a principled way
+
+`arrange()` reorders the rows in a data frame. 
+
+**Objective**: Order the data by year then country, as opposed to by country then year.
+
+```{r}
+#answer here
+```
+
+Or maybe you want just the data from 2007, sorted on life expectancy?
+
+```{r}
+#answer here
+```
+
+Oh, you'd like to sort on life expectancy in **desc**ending order? Then use `desc()`.
+
+```{r}
+#answer here
+```
+
+I advise that your analyses NEVER rely on rows or variables being in a specific order. But it's still true that human beings write the code and the interactive development process can be much nicer if you reorder the rows of your data as you go along. Also, once you are preparing tables for human eyeballs, it is imperative that you step up and take control of row order.
+
+## Use `rename()` to rename variables
+
+When I first cleaned this Gapminder excerpt, I was a [`camelCase`](http://en.wikipedia.org/wiki/CamelCase) person, but now I'm all about [`snake_case`](http://en.wikipedia.org/wiki/Snake_case). So I am vexed by the variable names I chose when I cleaned this data years ago. Let's rename some variables!
+
+**Objectives**
+
+1. Rename gdpPercap to gdp_percap
+2. Rename gdpPercapRel to gdp_percap_rel
+
+```{r}
+#answer here
+```
+
+# `select()` can rename and reposition variables
+
+You've seen simple use of `select()`. There are two tricks you might enjoy:
+
+  1. `select()` can rename the variables you request to keep.
+  2. `select()` can be used with `everything()` to hoist a variable up to the front of the tibble.
+  
+```{r}
+gapminder %>%
+  filter(country == "Burundi", year > 1996) %>% 
+  select(yr = year, lifeExp, gdpPercap) %>% 
+  select(gdpPercap, everything())
+```
+
+`everything()` is one of several helpers for variable selection. Read its help to see the rest.
+
+# `group_by()` is a mighty weapon
+
+I have found ~~friends and family~~ collaborators love to ask seemingly innocuous questions like, "which country experienced the sharpest 5-year drop in life expectancy?". In fact, that is a totally natural question to ask. But if you are using a language that doesn't know about data, it's an incredibly annoying question to answer.
+
+dplyr offers powerful tools to solve this class of problem.
+
+  * `group_by()` adds extra structure to your dataset -- grouping information -- which lays the groundwork for computations within the groups.
+  * `summarize()` takes a dataset with $n$ observations, computes requested summaries, and returns a dataset with 1 observation.
+  * Window functions take a dataset with $n$ observations and return a dataset with $n$ observations.
+  * `mutate()` and `summarize()` will honor groups.
+  * You can also do very general computations on your groups with `do()`, though elsewhere in this course, I advocate for other approaches that I find more intuitive, using the `purrr` package.
+  
+Combined with the verbs you already know, these new tools allow you to solve an extremely diverse set of problems with relative ease.
+
+# Counting things up
+
+Let's start with simple counting.  How many observations do we have per continent?
+
+```{r}
+#answer here
+```
+
+Let us pause here to think about the tidyverse. You could get these same frequencies using `table()` from base R.
+
+```{r}
+table(gapminder$continent)
+str(table(gapminder$continent))
+```
+
+But the object of class `table` that is returned makes downstream computation a bit fiddlier than you'd like. For example, it's too bad the continent levels come back only as *names* and not as a proper factor, with the original set of levels. This is an example of how the tidyverse smooths transitions where you want the output of step i to become the input of step i + 1.
+
+The `tally()` function is a convenience function that knows to count rows. It honors groups.
+
+**Objective** Use `tally` to obtain counts of observations by continent.
+
+```{r}
+#answer here
+```
+
+The `count()` function is an even more convenient function that does both grouping and counting.
+
+**Objective** Use `count` to obtain the same details (counts by continent)
+
+```{r}
+#answer here
+```
+
+What if we wanted to add the number of unique countries for each continent? You can compute multiple summaries inside `summarize()`. Use the `n_distinct()` function to count the number of distinct countries within each continent.
+
+```{r}
+#answer here
+```
+
+# General summarization
+
+The functions you'll apply within `summarize()` include classical statistical summaries, like  `mean()`, `median()`, `var()`, `sd()`, `mad()`, `IQR()`, `min()`, and `max()`. Remember they are functions that take $n$ inputs and distill them down into 1 output.
+
+Although this may be statistically ill-advised, let's compute the average life expectancy by continent.
+
+```{r}
+#answer here
+```
+
+`summarize_at()` applies the same summary function(s) to multiple variables. Let's compute average and median life expectancy and GDP per capita by continent by year ... but only for 1952 and 2007.
+
+```{r}
+#answer here
+```
+
+Let's focus just on Asia. What are the minimum and maximum life expectancies seen by year?
+
+```{r}
+#answer here
+```
+
+Of course it would be much more interesting to see *which* country contributed these extreme observations. Is the minimum (maximum) always coming from the same country? We tackle that with window functions shortly.
+
+# Grouped mutate
+
+Sometimes you don't want to collapse the $n$ rows for each group into one row. You want to keep your groups, but compute within them.
+
+## Computing with group-wise summaries
+
+Let's make a new variable that is the years of life expectancy gained (lost) relative to 1952, for each individual country. We group by country and use `mutate()` to make a new variable. The `first()` function extracts the first value from a vector. Notice that `first()` is operating on the vector of life expectancies *within each country group*.
+
+**Note**: From this point forward, I give you Jenny's answers verbatim since most of what follows would be considered intermediate dplyr skills, and this is an introductory lesson.
+
+```{r}
+gapminder %>% 
+  group_by(country) %>% 
+  select(country, year, lifeExp) %>% 
+  mutate(lifeExp_gain = lifeExp - first(lifeExp)) %>% 
+  filter(year < 1963)
+```
+
+Within country, we take the difference between life expectancy in year $i$ and life expectancy in 1952. Therefore we always see zeroes for 1952 and, for most countries, a sequence of positive and increasing numbers.
+
+# Window functions
+
+Window functions take $n$ inputs and give back $n$ outputs. Furthermore, the output depends on all the values. So `rank()` is a window function but `log()` is not. Here we use window functions based on ranks and offsets.
+
+Let's revisit the worst and best life expectancies in Asia over time, but retaining info about *which* country contributes these extreme values.
+
+```{r}
+gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp) %>%
+  group_by(year) %>%
+  filter(min_rank(desc(lifeExp)) < 2 | min_rank(lifeExp) < 2) %>% 
+  arrange(year) %>%
+  print(n = Inf)
+```
+
+We see that (min = Afghanistan, max = Japan) is the most frequent result, but Cambodia and Israel pop up at least once each as the min or max, respectively. That table should make you impatient for our upcoming work on tidying and reshaping data! Wouldn't it be nice to have one row per year?
+
+How did that actually work? First, I store and view a partial that leaves off the `filter()` statement. All of these operations should be familiar.
+
+```{r}
+asia <- gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp) %>%
+  group_by(year)
+asia
+```
+
+Now we apply a window function -- `min_rank()`. Since `asia` is grouped by year, `min_rank()` operates within mini-datasets, each for a specific year. Applied to the variable `lifeExp`, `min_rank()` returns the rank of each country's observed life expectancy. FYI, the `min` part just specifies how ties are broken. Here is an explicit peek at these within-year life expectancy ranks, in both the (default) ascending and descending order.
+
+For concreteness, I use `mutate()` to actually create these variables, even though I dropped this in the solution above. Let's look at a bit of that.
+
+```{r}
+asia %>%
+  mutate(le_rank = min_rank(lifeExp),
+         le_desc_rank = min_rank(desc(lifeExp))) %>% 
+  filter(country %in% c("Afghanistan", "Japan", "Thailand"), year > 1995)
+```
+
+Afghanistan tends to present 1's in the `le_rank` variable, Japan tends to present 1's in the `le_desc_rank` variable and other countries, like Thailand, present less extreme ranks.
+
+You can understand the original `filter()` statement now:
+
+```{r eval = FALSE}
+filter(min_rank(desc(lifeExp)) < 2 | min_rank(lifeExp) < 2)
+```
+
+These two sets of ranks are formed on-the-fly, within year group, and `filter()` retains rows with rank less than 2, which means ... the row with rank = 1. Since we do for ascending and descending ranks, we get both the min and the max.
+
+If we had wanted just the min OR the max, an alternative approach using `top_n()` would have worked.
+
+```{r}
+gapminder %>%
+  filter(continent == "Asia") %>%
+  select(year, country, lifeExp) %>%
+  arrange(year) %>%
+  group_by(year) %>%
+  #top_n(1, wt = lifeExp)        ## gets the min
+  top_n(1, wt = desc(lifeExp)) ## gets the max
+```
+
+# Grand Finale
+
+So let's answer that "simple" question: which country experienced the sharpest 5-year drop in life expectancy? Recall that this excerpt of the Gapminder data only has data every five years, e.g. for 1952, 1957, etc. So this really means looking at life expectancy changes between adjacent timepoints.
+
+At this point, that's just too easy, so let's do it by continent while we're at it.
+
+```{r}
+gapminder %>%
+  select(country, year, continent, lifeExp) %>%
+  group_by(continent, country) %>%
+  ## within country, take (lifeExp in year i) - (lifeExp in year i - 1)
+  ## positive means lifeExp went up, negative means it went down
+  mutate(le_delta = lifeExp - lag(lifeExp)) %>% 
+  ## within country, retain the worst lifeExp change = smallest or most negative
+  summarize(worst_le_delta = min(le_delta, na.rm = TRUE)) %>% 
+  ## within continent, retain the row with the lowest worst_le_delta
+  top_n(-1, wt = worst_le_delta) %>% 
+  arrange(worst_le_delta)
+```
+
+Ponder that for a while. The subject matter and the code. Mostly you're seeing what genocide looks like in dry statistics on average life expectancy.
+
+Break the code into pieces, starting at the top, and inspect the intermediate results. That's certainly how I was able to *write* such a thing. These commands do not [leap fully formed out of anyone's forehead](http://tinyurl.com/athenaforehead) -- they are built up gradually, with lots of errors and refinements along the way. I'm not even sure it's a great idea to do so much manipulation in one fell swoop. Is the statement above really hard for you to read? If yes, then by all means break it into pieces and make some intermediate objects. Your code should be easy to write and read when you're done.
+
+In later tutorials, we'll explore more of dplyr, such as operations based on two datasets.

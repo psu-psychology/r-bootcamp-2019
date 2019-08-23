@@ -98,7 +98,7 @@ survey$`Other programming languages you know`
 ```
 
 We'll have to parse this into different languages.
-Note that we can refer to the `Other programming languages you know` variable using back-tick characters: ````.
+Note that we can refer to the `Other programming languages you know` variable using back-tick "`" characters.
 A bit later, we'll want to simplify these variable names.
 For now, the following function from `R/survey.R` does most of what we need to do.
 
@@ -169,7 +169,7 @@ Next, we notice that the `Preferred number of hours spent sleeping/day` is a `ch
 survey$`Preferred number of hours spent sleeping/day`
 ```
 
-The following function fixes the "7-8" error.
+The following function fixes the "7-8" and "8-9" problems
 
 ```
 clean_hrs_sleep <- function(df) {
@@ -178,6 +178,11 @@ clean_hrs_sleep <- function(df) {
   # "7-8"
   clean_this <- df$`Preferred number of hours spent sleeping/day` == "7-8"
   df$`Preferred number of hours spent sleeping/day`[clean_this] <- "7.5"
+
+  # 8-9
+  clean_this_too <- df$`Preferred number of hours spent sleeping/day` == "8-9"
+  df$`Preferred number of hours spent sleeping/day`[clean_this_too] <- "8.5"
+
   df$`Preferred number of hours spent sleeping/day` <- as.numeric(df$`Preferred number of hours spent sleeping/day`)
   
   return(df)

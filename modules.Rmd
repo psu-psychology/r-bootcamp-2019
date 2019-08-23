@@ -53,30 +53,25 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
-# R-eproducible Science
+# Data wrangling
 
-- [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd).
-- [R Markdown example output](talks/bootcamp-survey.html) using our own survey data | [Download Rmd](talks/bootcamp-survey.Rmd)
-- Complete APA format manuscript based on `papaja` using the survey data, both in the original R Markdown format [Download Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version and the final [PDF](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version.
+- [Tidy data and tidyr overview](talks/tidy_data_conceptual.html) (Michael Hallquist) | [Rmd](talks/tidy_data_conceptual.Rmd)
+- [dplyr and wrangling walkthrough](talks/dplyr_walkthrough_2019.html) (Michael Hallquist) | [Rmd](talks/dplyr_walkthrough_2019.Rmd)
 
-***
+## Exercises
 
-# Resources from previous years
-
-## Data wrangling
-
-<!-- - [tidyr and dplyr walkthrough](talks/dplyr_walkthrough_2018.html) (Michael Hallquist) | [Rmd](talks/dplyr_walkthrough_2018.Rmd) -->
-
-### Joining datasets
-
-<!-- - dplyr [joins tutorial](talks/joins_tutorial_bnj.html) (Ben Johnson) | [zip](zips/johnson_joins.zip) | [Rmd](talks/joins_tutorial_bnj.Rmd) -->
+1. [Review joins tutorial in Rstudio](talks/joins_tutorial_bnj.html) | [Rmd](talks/joins_tutorial_bnj.Rmd)
+2. [Complete tidyr exercises](talks/tidyr_exercises.html) | [Rmd](talks/tidyr_exercises.Rmd) | [Key](talks/tidyr_exercises_key.html)
+3. [Complete dplyr exercises](talks/bryan_dplyr_exercises.html) | [Rmd](talks/bryan_dplyr_exercises.Rmd)
 
 ***
 
-## Data visualization
+# Data visualization
 
-<!-- - Conceptual overview of [ggplot2 and graphics output](talks/Hallquist_ggplot2_overview.pptx) -->
-<!-- - Alicia Vallorani [ggplot2 walkthrough](talks/ggplot2_tutorial_vallorani.html) -->
+- [Grammar of graphics](talks/ggplot_grammar.html) | [Rmd](talks/ggplot_grammar.Rmd) (Nate Hall)
+- [Basic visualization using ggplot2](talks/data_visualization.html) | [Rmd](talks/data_visualization.Rmd) (Holly Zaharchuk, Rebecca Janis & Alicia Vallorani)
+- [Supplemental materials for lecture](talks/data_visualization_supp.html) | [Rmd](talks/data_visualization_supp.Rmd)
+- [ggplot2 practice exercise](talks/data_visualization_practice.html) | [Rmd](talks/data_visualization_practice.Rmd)
 
 *Other resources*
 
@@ -85,6 +80,23 @@ This module provides a deliberately slow introduction to R that assumes that you
 - ggplot2 tutorial that provides useful guidance on detailed formatting: <https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html>
 
 ***
+
+# R-eproducible Science
+
+- [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd).
+- [R Markdown example output](talks/bootcamp-survey.html) using our own survey data | [Download Rmd](talks/bootcamp-survey.Rmd)
+- Complete APA format manuscript based on `papaja` using the survey data, both in the original R Markdown format [Download Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version and the final [PDF](https://psu-psychology.github.io/r-bootcamp-2018/talks/gilmore-hallquist-bootcamp-2018-papaja.Rmd) version.
+
+***
+
+# Basic data analyses
+
+- [Basic data analyses in R](talks/data_analyses.html): correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) | [Rmd](talks/data_analyses.Rmd)
+- [Data analysis supplemental materials](talks/data_analyses_supp.html) | [Rmd](talks/data_analyses_supp.Rmd)
+- [Data analysis practice exercises](talks/data_analyses_practice.html) | [Rmd](talks/data_analyses_practice.Rmd)
+
+
+# Resources from previous years
 
 ## Best practices in R programming
 
@@ -97,13 +109,13 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
-## Correlation and regression in R
+# Correlation and regression in R
 
-<!-- - Basic [correlation and regression walkthrough](talks/correlation_regression.html) (Michael Hallquist) | [Rmd](talks/correlation_regression.Rmd) -->
+- Basic [correlation and regression walkthrough](https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.html) (Michael Hallquist) | [Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.Rmd)
 
-## ANOVA and categorical data
+# ANOVA and categorical data
 
-<!-- - Basic [ANOVA and categorical data walkthrough](talks/anova_categorical.html) (Michael Hallquist) | [Rmd](talks/anova_categorical.Rmd) -->
+- Basic [ANOVA and categorical data walkthrough](https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.html) (Michael Hallquist) | [Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.Rmd)
 
 *Other resources*
 
