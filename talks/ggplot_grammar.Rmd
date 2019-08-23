@@ -8,24 +8,26 @@ output:
     theme: architect
     highlight: github
 ---
-
-
+<style type="text/css">
+body{ max-width: 1400px; margin: auto; padding: 1em; }
+</style>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 #handy package manager that installs and loads packages used in this document
 if (!("pacman" %in% installed.packages()[,"Package"])) { install.packages("pacman") } 
-pacman::p_load(dplyr, tidyr, ggplot2, GGally, Rmisc, jtools, psych) #install (if needed) and load packages
+pacman::p_load(dplyr, tidyr, ggplot2, GGally, Rmisc, jtools, psych, prettydoc) #install (if needed) and load packages
 ```
 
 
 # Why does a plotting package have grammar?
 
-While it may sound strange, knowing the grammar of the `ggplot2` package is fundamental to being able to understand the core of how to use the package. Grammar is generally thought of as the syntactic rules of a language that can be combined with a variety of substantive material. Grammar or syntax provide the structure of how language can be expressed. In other words, the grammar of `ggplot2` is another way of saying the _rules_ of how to format a line (or lines) of code to give us a beautiful graph as the output. Importantly, other ways of creating graphics have syntax as well (including Excel and SPSS), but `ggplot` is going to be slightly different. 
+While it may sound strange, understanding the *grammar* of the `ggplot2` package is fundamental to being able to use it effectively. Grammar refers to the syntactic rules of a language that can be combined with a variety of substantive material. Grammar or syntax provide the structure of _how_ language can be expressed. 
 
-The important intuition in plotting with the `ggplot2` package is the concept of _layering_. That is, `ggplot2` attempts to move users away from thinking about point and click interfaces that produce one single graphic. Instead, the hope is to give users the freedom to think about different aspects of the graphics they would like to create that can give a highly customizable graphics experience. In the references below, you'll see a link to the "R Graphics Cookbook", which should further one's intuition that `ggplot2` has the desirable property of allowing users to use more modular pieces of code to create beautiful plots exactly to the user's specification.
+In other words, the grammar of `ggplot2` is provides the _rules_ of how to write code to give us a beautiful graph as the output. Importantly, other ways of creating graphics have syntax as well (including Excel and SPSS), but `ggplot` is slightly different. 
 
+_Layering_ is a key concept in plotting with the `ggplot2` package. That is, `ggplot2` attempts to move users away from thinking about point and click interfaces that produce one single graphic. Instead, the hope is to give users the freedom to think about the graphics they would like to create in a highly customizable framework. In the references below, you'll see a link to the "R Graphics Cookbook", which should further one's intuition that `ggplot2` has the desirable property of allowing users to use more modular pieces of code to create beautiful plots exactly to the user's specification.
 
 # Layering in ggplot
 
@@ -42,7 +44,7 @@ plot(gg_verbal_object)
 ```
 
 
-When we talk about layers in ggplot, We're talking about creating a graphic from scratch by stacking layers on top of one another, like such:
+When we talk about layers in ggplot, we're talking about creating a graphic from scratch by stacking layers on top of one another, like such:
 
 
 ```{r label, out.width = "100%", fig.cap = "inspired by [this website](https://skillgaze.com/2017/10/31/understanding-different-visualization-layers-of-ggplot/).", echo=FALSE}
@@ -51,7 +53,7 @@ knitr::include_graphics("ggplot_layers.pdf")
 
 
 \n
-In other words, without understanding how one stacks layers in a ggplot object we will never get to the above plot. Instead we start from scratch with the raw data which looks like this: 
+In other words, without understanding how one stacks layers in a ggplot object we will never get to the above plot. Instead we start from scratch with the raw data, which looks like this: 
 
 ```{r}
 str(sat.act); head(sat.act)
@@ -61,7 +63,9 @@ str(sat.act); head(sat.act)
 
 If we ran blindly into creating the above graph we might want to run a command that says: 
 \n\n
-`plot my data please!!`
+```
+Plot my data please!!
+```
 
 Okay, then... here we go:
 
@@ -77,19 +81,24 @@ What happened here is that we set up a ggplot object but have told it what to do
 
 Oh right, let's run a command that says:
 \
-`plot my data please, and this time include ACT score on the x axis and verbal SAT scores on the y axis!! Also, let's visualize males and females differently.`
-\
+```
+Plot my data please, and this time include ACT score on the x axis and
+  verbal SAT scores on the y axis!! Also, let's visually separate the 
+  data for males and females.
+```
 \
 In this case, we can simply _add_ aesthetic mappings to the x and y axis so the `gg_object` now knows what variables from the data.frame to plot on x and y and that males and females should be colored differently:
 
 ```{r}
-gg_object_aes <- ggplot(data = sat.act, aes(x = ACT, y = SATV, color = gender, fill = gender))  #don't worry about the difference between color and fill for now
+#don't worry about the difference between color and fill for now
+gg_object_aes <- ggplot(data = sat.act, 
+                        aes(x = ACT, y = SATV, color = gender, fill = gender))
 plot(gg_object_aes)
 ```
 \
 \
 
-Now we have x and y axes specified that correspond to in the `aes()` argument. This is what many would consider the base of a ggplot object that we can now layer on top of. We still can't see our data and in order to do so we need to add a `geom_` layer to the plot.
+Now we have x and y axes specified that correspond to in the `aes()` argument. This is what many would consider the base of a `ggplot` object that we can now layer on top of. We still can't see our data, however. In order to do so, we need to add a `geom_` layer to the plot.
 
 ## Geometric layers
 
@@ -104,7 +113,9 @@ plot(gg_object_aes)
 
 ## Facets
 
-The `facet_wrap()` and `facet_grid()` functions can split the data further into other panels on the basis of some variable that might be useful to visualize separately. For example, if we wanted different panels in our scatter plots to correspond to different levels of education we could add:
+The `facet_wrap()` and `facet_grid()` functions can split the data further into additional panels on the basis of a factor (categorical variable). This will yield a set of 'small multiple' plots in which each panel represents the same graphical idiom, but with data from a different level of the faceting variable.
+
+For example, if we wanted different panels in our scatter plots to correspond to different levels of education, we could add:
 
 ```{r}
 gg_object_aes <- gg_object_aes + facet_wrap(~education)
@@ -113,7 +124,7 @@ plot(gg_object_aes)
 
 ## Themes
 
-To add a different aesthetic touch (for example, the yellow is kindof tough to see on the white background), there are different "themes" that are built in or included in the `prettydoc` (this .Rmd) package. One that I often use is `gg_object + theme_bw()`, which is a simple black and white background with tickmarks that seem reasonable. Anyways, given the yellow on white problem,let's plot this using a dark background. 
+To add a different aesthetic touch (for example, the yellow is kindof tough to see on the white background), there are different "themes" that are built in or included in the `prettydoc` (this .Rmd) package. One that I often use is `gg_object + theme_bw()`, which is a simple black and white background with tickmarks that seem reasonable. Anyways, given the yellow on white problem, let's plot this using a dark background. 
 
 N.B. This is not the only way to solve this problem, it is just as easy to change the colors of your data points.
 
@@ -127,7 +138,11 @@ plot(gg_object_aes)
 We'll finish up by changing the labels of the x and y axis and the main title using the `labs()` function.
 
 ```{r}
-gg_object_aes <- gg_object_aes + labs(x = "ACT scores", y = "SAT Verbal", title = "This is a pretty plot", subtitle =  "And also I'm done talking")
+gg_object_aes <- gg_object_aes + 
+  labs(x = "ACT scores", y = "SAT Verbal", 
+       title = "This is a pretty plot", subtitle =  "And also I'm done talking"
+  )
+
 plot(gg_object_aes)
 ```
 
@@ -140,12 +155,16 @@ And we're back to where we started, yet we've constructed this plot layer-by-lay
 To bring things full circle there is also the option to throw this all into one command from the beginning:
 
 ```{r}
-gg_verbal_object <- ggplot(data = sat.act, aes(x = ACT, y = SATV, color = gender, fill = gender)) + geom_point() + scale_color_viridis_d(begin = .3, end = 1) + scale_fill_viridis_d(begin = .3) + geom_smooth(method = lm) + facet_wrap(~education) + theme_dark() + labs(x = "ACT scores", y = "SAT Verbal", title = "This is a pretty plot")
+gg_verbal_object <- ggplot(data = sat.act, aes(x = ACT, y = SATV, color = gender, fill = gender)) + 
+  geom_point() + scale_color_viridis_d(begin = .3, end = 1) + 
+  scale_fill_viridis_d(begin = .3) + geom_smooth(method = lm) + 
+  facet_wrap(~education) + theme_dark() + 
+  labs(x = "ACT scores", y = "SAT Verbal", title = "This is a pretty plot")
 ```
 
 There is plenty more that I haven't included, but here are some resources for you to consult as you embark on your journey into the soul of `ggplot`! 
 
-### Useful Resources
+## Useful Resources
 
 In order from easiest to use through the more conceptual.
 

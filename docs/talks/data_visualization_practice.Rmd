@@ -106,7 +106,7 @@ spi <- spi %>%
 ```
 
 
-8. Use a bar graph to examine mean health by ER visits. You can use na.rm = TRUE inside geom_bar() to remove missing data.
+8. Use a bar graph to examine mean health by ER visits. 
 
 ```{r}
 

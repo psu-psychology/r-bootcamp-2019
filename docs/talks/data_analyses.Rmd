@@ -472,7 +472,7 @@ The result shows ACT scores are positively related with education, while no sign
 ### Visualizing ANOVA
 Aside from simply printing a table, we can visualize the mean and sd of each conditions with a line plot. See the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#ANOVA) for an example.
 
-### Alternative: 
+### Alternative 
 t-test: comparing means between two groups in a sample (t.test function)
 Linear regression: comparing one or more factors in a sample (lm, mlm,or lmer function)
 
