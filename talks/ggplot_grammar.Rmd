@@ -47,9 +47,11 @@ plot(gg_verbal_object)
 When we talk about layers in ggplot, we're talking about creating a graphic from scratch by stacking layers on top of one another, like such:
 
 
-```{r label, out.width = "100%", fig.cap = "inspired by [this website](https://skillgaze.com/2017/10/31/understanding-different-visualization-layers-of-ggplot/).", echo=FALSE}
+```{r label, eval=FALSE, out.width = "100%", fig.cap = "inspired by [this website](https://skillgaze.com/2017/10/31/understanding-different-visualization-layers-of-ggplot/).", echo=FALSE}
 knitr::include_graphics("ggplot_layers.pdf")
 ```
+
+![](ggplot_layers.png){width=100%}
 
 
 \n
