@@ -83,7 +83,7 @@ where $Y$ is the dependent variable (criterion) and $X$ is the predictor (covari
 When conducting regression, we typically try to capture linear relationships among variables. We can introduce higher-order polynomial terms (e.g., quadratic models) or splines (more flexible shapes), but this beyond the scope here.
 
 
-## Alternative graphical disagnostic plots.
+## Alternative graphical diagnostic plots.
 
 We can also get useful diagnostic plots for free using the `plot()` function:
 ```{r}

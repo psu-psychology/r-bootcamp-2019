@@ -81,7 +81,6 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
-
 # R-eproducible Science
 
 - [R-eproducible Psychological Science](talks/r-eproducible-science.html) (Rick Gilmore)| [Download Rmd](talks/r-eproducible-science.Rmd).
@@ -90,15 +89,14 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
+# Basic data analyses
+
+- [Basic data analyses in R](talks/data_analyses.html): correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) | [Rmd](talks/data_analyses.Rmd)
+- [Data analysis supplemental materials](talks/data_analyses_supp.html) | [Rmd](talks/data_analyses_supp.Rmd)
+- [Data analysis practice exercises](talks/data_analyses_practice.html) | [Rmd](talks/data_analyses_practice.Rmd)
+
+
 # Resources from previous years
-
-
-## Joining datasets
-
-<!-- - dplyr [joins tutorial](talks/joins_tutorial_bnj.html) (Ben Johnson) | [zip](zips/johnson_joins.zip) | [Rmd](talks/joins_tutorial_bnj.Rmd) -->
-
-***
-
 
 ## Best practices in R programming
 
@@ -111,13 +109,13 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
-## Correlation and regression in R
+# Correlation and regression in R
 
-<!-- - Basic [correlation and regression walkthrough](talks/correlation_regression.html) (Michael Hallquist) | [Rmd](talks/correlation_regression.Rmd) -->
+- Basic [correlation and regression walkthrough](https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.html) (Michael Hallquist) | [Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/correlation_regression.Rmd)
 
-## ANOVA and categorical data
+# ANOVA and categorical data
 
-<!-- - Basic [ANOVA and categorical data walkthrough](talks/anova_categorical.html) (Michael Hallquist) | [Rmd](talks/anova_categorical.Rmd) -->
+- Basic [ANOVA and categorical data walkthrough](https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.html) (Michael Hallquist) | [Rmd](https://psu-psychology.github.io/r-bootcamp-2018/talks/anova_categorical.Rmd)
 
 *Other resources*
 

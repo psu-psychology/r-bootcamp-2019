@@ -70,14 +70,14 @@ Continental breakfast, coffee and tea.
 | 09:00 am • [Data wrangling & pipelines (primarily `tidyverse`)](modules.html#data_wrangling) (Michael Hallquist)|
 | 09:45 am • Data wrangling hands-on                          |
 | 10:30 am • Break                                            |
-| 10:45 am • Data visualization (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html), [Rmd source](talks/data_visualization.Rmd) |
+| 10:45 am • [Data visualization](modules.html#data_visualization) (Alicia Vallorani, Nathan Hall, Holly Zaharchuk, Rebecca Janis), [HTML slides](talks/data_visualization.html), [Rmd source](talks/data_visualization.Rmd) |
 | 11:30 am • Data visualization hands-on, , [HTML exercises](talks/data_visualization_practice.html), [Rmd source](talks/data_visualization_practice.Rmd)                      |
 | 12:00 pm • Lunch in Moore Building Lobby                    |
 |                                                             |
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
 | 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
-| 01:30 pm • R-eproducible Science (Rick Gilmore), [HTML slides](talks/r-reproducible-science.html), [Rmd source](talks/r-reproducible-science.Rmd)      |
-| 02:00 pm • Basic data analyses in R: correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html), [Rmd source](talks/data_analyses.Rmd) |
+| 01:30 pm • [R-eproducible Science](modules.html#r-eproducible_science) (Rick Gilmore), [HTML slides](talks/r-eproducible-science.html), [Rmd source](talks/r-eproducible-science.Rmd)      |
+| 02:00 pm • [Basic data analyses in R](modules.html#basic_data_analyses): correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html), [Rmd source](talks/data_analyses.Rmd) |
 | 02:45 pm • Break                                            |
 | 03:00 pm • Hands on practice, [HTML slides](talks/data_analyses_practice.html), [Rmd source](talks/data_analyses_practice.Rmd)                                |
 | 04:00 pm • End                                              |
