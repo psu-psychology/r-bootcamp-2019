@@ -1600,7 +1600,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Basic Analyses in R</h1>
 <h4 class="author">Daniel Albohn, Kayla Brown, &amp; Yiming Qian</h4>
-<h4 class="date">2019-08-23 11:34:33</h4>
+<h4 class="date">2019-08-23 12:36:31</h4>
 
 </div>
 
@@ -1670,7 +1670,7 @@ sat.act &lt;- sat.act %&gt;%
 ## SATV       700 612.23 112.90    620 200 800 -0.64     0.33
 ## SATQ       687 610.22 115.64    620 200 800 -0.59    -0.02</code></pre>
 <p>The <code>describe()</code> function also allows us to get descriptive statistics by a grouping variable using the partner function <code>describeBy()</code>. If we wanted to get descriptive statistics by <code>sex</code> we simply pass that column to an argument.</p>
-<pre class="r"><code>describeBy(sat.act, group = c(&quot;sex&quot;), mat=TRUE) %&gt;%
+<pre class="r"><code>describeBy(sat.act, group = c(&quot;sex&quot;), mat = TRUE) %&gt;%
   dplyr::select(-vars, -item, -trimmed, -mad, -range, -se)</code></pre>
 <pre><code>##             group1   n   mean     sd median min max   skew kurtosis
 ## sex*1         male 247   1.00   0.00      1   1   1    NaN      NaN
@@ -1686,7 +1686,7 @@ sat.act &lt;- sat.act %&gt;%
 ## SATQ1         male 245 635.87 116.02    660 300 800 -0.722   -0.122
 ## SATQ2       female 442 596.00 113.07    600 200 800 -0.577    0.129</code></pre>
 <p>We can add multiple grouping variables in the same manner.</p>
-<pre class="r"><code>describeBy(sat.act, group = c(&quot;sex&quot;, &quot;education&quot;), mat=TRUE) %&gt;%
+<pre class="r"><code>describeBy(sat.act, group = c(&quot;sex&quot;, &quot;education&quot;), mat = TRUE) %&gt;%
   dplyr::select(-vars, -item, -trimmed, -mad, -range, -se)</code></pre>
 <pre><code>##              group1       group2   n  mean     sd median min max     skew kurtosis
 ## sex*1          male         none  27   1.0   0.00    1.0   1   1      NaN      NaN
@@ -1768,12 +1768,12 @@ sat.act &lt;- sat.act %&gt;%
 ##  n obs: 700 
 ##  n variables: 6 
 ## 
-## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##   variable missing complete   n n_unique                            top_counts ordered
 ##  education       0      700 700        6 som: 275, gra: 141, col: 138, non: 57   FALSE
 ##        sex       0      700 700        2             fem: 453, mal: 247, NA: 0   FALSE
 ## 
-## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete   n   mean     sd  p0 p25 p50 p75 p100     hist
 ##       ACT       0      700 700  28.55   4.82   3  25  29  32   36 ▁▁▁▁▃▅▇▇
 ##       age       0      700 700  25.59   9.5   13  19  22  29   65 ▇▇▂▂▁▁▁▁
@@ -1789,12 +1789,12 @@ sat.act &lt;- sat.act %&gt;%
 ##  n variables: 6 
 ##  group variables: sex 
 ## 
-## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##     sex  variable missing complete   n n_unique                          top_counts ordered
 ##    male education       0      247 247        6  som: 80, col: 51, gra: 46, non: 27   FALSE
 ##  female education       0      453 453        6 som: 195, gra: 95, col: 87, non: 30   FALSE
 ## 
-## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##     sex variable missing complete   n   mean     sd  p0 p25 p50   p75 p100     hist
 ##    male      ACT       0      247 247  28.79   5.06   3  25  30  32.5   36 ▁▁▁▁▂▃▆▇
 ##    male      age       0      247 247  25.86   9.74  14  19  22  30     58 ▇▇▃▂▁▁▁▁
@@ -1812,7 +1812,7 @@ sat.act &lt;- sat.act %&gt;%
 ##  n variables: 6 
 ##  group variables: education 
 ## 
-## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##     education variable missing complete   n n_unique               top_counts ordered
 ##          none      sex       0       57  57        2  fem: 30, mal: 27, NA: 0   FALSE
 ##       some_hs      sex       0       45  45        2  fem: 25, mal: 20, NA: 0   FALSE
@@ -1821,7 +1821,7 @@ sat.act &lt;- sat.act %&gt;%
 ##       college      sex       0      138 138        2  fem: 87, mal: 51, NA: 0   FALSE
 ##      graduate      sex       0      141 141        2  fem: 95, mal: 46, NA: 0   FALSE
 ## 
-## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:integer ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##     education variable missing complete   n   mean     sd  p0   p25 p50    p75 p100     hist
 ##          none      ACT       0       57  57  27.47   5.21  15  24    28  31      36 ▁▂▅▃▇▃▃▅
 ##          none      age       0       57  57  16.95   1.04  13  17    17  18      18 ▁▁▁▁▃▁▇▆
@@ -1889,7 +1889,7 @@ chi_test</code></pre>
 ##   some_college 97.0  178.0
 ##   college      48.7   89.3
 ##   graduate     49.8   91.2</code></pre>
-<p>We could also get the chi-squared statistic from the table <code>summary()</code></p>
+<p>We could also get the chi-squared statistic from the table using <code>summary</code></p>
 <pre class="r"><code>summary(edu_sex_table)</code></pre>
 <pre><code>## Number of cases in table: 700 
 ## Number of factors: 2 
@@ -1965,6 +1965,12 @@ cor.test(~ sat.act$age + sat.act$ACT, data = sat.act)</code></pre>
 ## ACT   0.1105 1.000  0.5611  0.5871
 ## SATV -0.0424 0.561  1.0000  0.6443
 ## SATQ -0.0339 0.587  0.6443  1.0000</code></pre>
+<pre class="r"><code># Or, using tidyverse verbs...
+
+# sat.act %&gt;% 
+#   select(., age, ACT, SATV, SATQ) %&gt;% 
+#   drop_na(., SATQ) %&gt;% 
+#   cor()</code></pre>
 <p>Or, optionally for easier-on-the-eyes output we can use a number of specialized functions.</p>
 <pre class="r"><code>Hmisc::rcorr(sat.act[c(&quot;age&quot;,&quot;ACT&quot;,&quot;SATV&quot;,&quot;SATQ&quot;)] %&gt;% as.matrix(.))</code></pre>
 <pre><code>##        age  ACT  SATV  SATQ
@@ -1986,6 +1992,7 @@ cor.test(~ sat.act$age + sat.act$ACT, data = sat.act)</code></pre>
 ## ACT  0.0034        0.0000 0.0000
 ## SATV 0.2631 0.0000        0.0000
 ## SATQ 0.3744 0.0000 0.0000</code></pre>
+<p>Or directly to APA-acceptable tables. You can pass a <code>filename</code> argument to <code>apa.cor.table</code> to save it directly to file.</p>
 <pre class="r"><code>apaTables::apa.cor.table(sat.act[c(&quot;age&quot;,&quot;ACT&quot;,&quot;SATV&quot;,&quot;SATQ&quot;)])</code></pre>
 <pre><code>## 
 ## 
@@ -2065,7 +2072,7 @@ summary(lm_SAT)</code></pre>
 lm_SAT.na &lt;- lm(SATQ ~ SATV, data=sat.act.na)
 system.time(lm_SAT.boot &lt;- Boot(lm_SAT.na, R=2000))</code></pre>
 <pre><code>##    user  system elapsed 
-##   1.715   0.071   1.786</code></pre>
+##   1.782   0.077   1.860</code></pre>
 <pre class="r"><code>summary(lm_SAT.boot, high.moments=TRUE)</code></pre>
 <pre><code>## 
 ## Number of bootstrap replications R = 2000 
@@ -2466,7 +2473,6 @@ res.aov2 &lt;- aov_ez(
 ##                HF eps Pr(&gt;F[HF])
 ## time            0.966     0.0698
 ## education:time  0.966     0.3556</code></pre>
-<p>The result shows ACT scores are positively related with education, while no significant relationship between ACT scores and the time points is found.</p>
 <div id="visualizing-anova" class="section level3">
 <h3>Visualizing ANOVA</h3>
 <p>Aside from simply printing a table, we can visualize the mean and sd of each conditions with a line plot. See the <a href="https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#ANOVA">supplemental materials</a> for an example.</p>
