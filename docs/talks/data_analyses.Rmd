@@ -23,9 +23,10 @@ options(width = 150, digits = 3)
 First load the required packages for this walk through.
 
 ```{r packages, message = FALSE}
-pkg_list <- c("tidyverse", "psych", "rcompanion", "knitr", "car", "afex", 
+pkg_list <- c("tidyverse", "psych", "rcompanion", "knitr", "car", "afex", "ez",
               "ggfortify", "Hmisc", "emmeans", "jtools", "apaTables", "dplyr")
-purrr::walk(pkg_list, require, quietly = TRUE, character.only = TRUE)
+# purrr::walk(pkg_list, require, quietly = TRUE, character.only = TRUE)
+pacman::p_load(pkg_list, character.only = TRUE)
 ```
 
 **Optional package**
