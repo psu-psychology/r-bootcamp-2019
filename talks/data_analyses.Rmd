@@ -91,14 +91,14 @@ using the partner function `describeBy()`. If we wanted to get descriptive stati
 by `sex` we simply pass that column to an argument.
 
 ```{r describe-2}
-describeBy(sat.act, group = c("sex"), mat=TRUE) %>%
+describeBy(sat.act, group = c("sex"), mat = TRUE) %>%
   dplyr::select(-vars, -item, -trimmed, -mad, -range, -se)
 ```
 
 We can add multiple grouping variables in the same manner.
 
 ```{r describe-3}
-describeBy(sat.act, group = c("sex", "education"), mat=TRUE) %>%
+describeBy(sat.act, group = c("sex", "education"), mat = TRUE) %>%
   dplyr::select(-vars, -item, -trimmed, -mad, -range, -se)
 ```
 
@@ -124,7 +124,7 @@ sat.act %>%
   skimr::skim(.)
 ```
 
-```{r}
+```{r skimr-2}
 sat.act %>% 
   group_by(., education) %>% 
   skimr::skim(.)
@@ -162,7 +162,7 @@ chi_test$observed
 chi_test$expected
 ```
 
-We could also get the chi-squared statistic from the table `summary()`
+We could also get the chi-squared statistic from the table using `summary`
 
 ```{r chi-summary}
 summary(edu_sex_table)
@@ -225,6 +225,13 @@ correlation matrix (a la SPSS).
 
 ```{r}
 cor(sat.act[c("age","ACT","SATV","SATQ")], use = "pairwise.complete.obs")
+
+# Or, using tidyverse verbs...
+
+# sat.act %>% 
+#   select(., age, ACT, SATV, SATQ) %>% 
+#   drop_na(., SATQ) %>% 
+#   cor()
 ```
 
 Or, optionally for easier-on-the-eyes output we can use a number of specialized functions.
@@ -232,6 +239,9 @@ Or, optionally for easier-on-the-eyes output we can use a number of specialized 
 ```{r hmisc-corr}
 Hmisc::rcorr(sat.act[c("age","ACT","SATV","SATQ")] %>% as.matrix(.))
 ```
+
+Or directly to APA-acceptable tables. You can pass a `filename` argument to `apa.cor.table` to save it
+directly to file.
 
 ```{r apa-corr}
 apaTables::apa.cor.table(sat.act[c("age","ACT","SATV","SATQ")])
@@ -481,8 +491,6 @@ res.aov2 <- aov_ez(
 )
 summary(res.aov2)
 ```
-
-The result shows ACT scores are positively related with education, while no significant relationship between ACT scores and the time points is found.
 
 ### Visualizing ANOVA
 Aside from simply printing a table, we can visualize the mean and sd of each conditions with a line plot. See the [supplemental materials](https://psu-psychology.github.io/r-bootcamp-2019/talks/data_analyses_supp.html#ANOVA) for an example.

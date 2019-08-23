@@ -26,6 +26,7 @@ For this hands on practice, load the `spi` data set from the `psych` package.
 1. Check the help file, structure, and first few observations of the data
 
 ```{r}
+data("spi", package = "psych")
 # Write your code here!
 
 ```
@@ -100,18 +101,21 @@ three numeric values of your choosing
 above (`lm()` requires integer variables for the `y` variable)
 
 1. Let's look at the association between education and health. In other words, does education predict health?
+
 ```{r}
 # Write code here
 
 ```
 
 2. Now lets see if there may be an interaction between two variables that predicts health. Let's see if education and smoking interact to predict health
+
 ```{r}
 # Write code here
 
 ```
 
 3. Extending the lesson now lets add a control variable. Let's see if the interaction between wellness and education predicts helath contorling for age.
+
 ```{r}
 # Write code here
 
@@ -119,15 +123,56 @@ above (`lm()` requires integer variables for the `y` variable)
 
 4. Now lets get the results into a tidy table
 4a. First a table of all parameters
+
 ```{r}
 # Write code here
 
 ```
 
 4b. Now a table of the golbal parameters
+
 ```{r}
 # Write code here
 
 ```
 
 ## ANOVAs
+1. Let's look at the association between exercise and health with ANOVA. In other words, does exercise predict health? 
+
+```{r}
+# Write code here
+
+```
+
+2. Now let's add a variable that predicts exercise. Let's see if education and exercise interact to predict health. Are these two variables within-group or between-group factors? 
+
+```{r}
+# Write code here
+
+```
+
+3. Let's pretend (for practice) that `p1edu`, `p2edu` and `education` are the education levels at three time points. Let's see if education and exercise interact to predict health. Are these two variables within-group or between-group factors? 
+
+```{r}
+spi %>% 
+  gather(key="edu_period", value= "edu", p1edu, p2edu,education)  %>%
+  select("edu","edu_period","health", "exer") -> yourdataframe
+
+# Write code here
+
+```
+
+4. Choose the proper analysis, which is not limited to ANOVA.
+4a. How do sex and age influence exercise?
+
+```{r}
+# Write code here
+
+```
+
+4b. How do smoke and exercise affect wellness?
+
+```{r}
+# Write code here
+
+```
