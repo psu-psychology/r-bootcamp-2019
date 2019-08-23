@@ -337,16 +337,8 @@ $(document).ready(function () {
 <div id="meeting-times-and-location" class="section level2">
 <h2>Meeting times and location</h2>
 <p>Wednesday, August 21, 2019, 9:00 am - 12:00 pm (breakfast 8:30 am)</br> Thursday, August 22, 2019, 9:00 am - 12:15 pm (breakfast 8:30 am)</br> Friday, August 23, 2019, 9:00 am - 4:30 pm (breakfast 8:30 am; lunch 12:15 pm)</br></p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ──────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ─────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>attendees &lt;- data.frame(day=c(&quot;Day 1&quot;, &quot;Day 2&quot;, &quot;Day 3&quot;), name_badges =c(75, 48, NA))
+<pre class="r"><code>library(tidyverse)
+attendees &lt;- data.frame(day=c(&quot;Day 1&quot;, &quot;Day 2&quot;, &quot;Day 3&quot;), name_badges =c(75, 48, NA))
 
 attendees %&gt;%
   ggplot(.) +
@@ -372,7 +364,7 @@ attendees %&gt;%
 </div>
 <div id="whos-registered" class="section level2">
 <h2>Who’s registered?</h2>
-<p>Here are some data about the registrants as of 2019-08-23 08:13:30:</p>
+<p>Here are some data about the registrants as of 2019-08-23 11:49:53:</p>
 <p>We have 115 people registered so far. The following table tells us a bit about them. (These data are generated from the GoogleSheet you completed to register. The data are processed entirely in an R-based workflow that updates automatically every time we regenerate this website.)</p>
 <pre class="r"><code># Make table
 pos_dept &lt;- xtabs(formula = ~ position + dept, data = rg)

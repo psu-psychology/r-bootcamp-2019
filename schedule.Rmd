@@ -75,7 +75,7 @@ Continental breakfast, coffee and tea.
 | 12:00 pm • Lunch in Moore Building Lobby                    |
 |                                                             |
 |  [Afternoon Zoom webinar](https://psu.zoom.us/j/819372889)  |
-| 01:00 pm • iPRACTISE data wrangling and viz. assessment     |
+| 01:00 pm • [iPRACTISE data wrangling and viz. assessment](modules.html#ipractise_data_wrangling_and_visualization)     |
 | 01:30 pm • [R-eproducible Science](modules.html#r-eproducible_science) (Rick Gilmore), [HTML slides](talks/r-eproducible-science.html), [Rmd source](talks/r-eproducible-science.Rmd)      |
 | 02:00 pm • [Basic data analyses in R](modules.html#basic_data_analyses): correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian), [HTML slides](talks/data_analyses.html), [Rmd source](talks/data_analyses.Rmd) |
 | 02:45 pm • Break                                            |
