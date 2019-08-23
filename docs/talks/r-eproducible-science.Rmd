@@ -3,12 +3,14 @@ title: "R-eproducible Psychological Science"
 author: "Rick Gilmore"
 date: "`r Sys.time()`"
 logo: ../img/psu-logo.png
+css: css/hallquist.css
+bib: bib/bootcamp.bib
 output: 
   html_document:
     theme: spacelab
     toc: yes
     toc_depth: 4
-    toc_float: yes
+    toc_float: no
     code_folding: hide
 params:
     supporting_functions: "../R/survey.R"
