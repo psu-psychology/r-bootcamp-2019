@@ -62,7 +62,7 @@ Friday, August 23, 2019, 9:00 am - 4:30 pm (breakfast 8:30 am; lunch 12:15 pm)</
 
 ```{r}
 library(tidyverse)
-attendees <- data.frame(day=c("Day 1", "Day 2", "Day 3"), name_badges =c(75, 48, NA))
+attendees <- data.frame(day=c("Day 1", "Day 2", "Day 3"), name_badges =c(75, 48, 51))
 
 attendees %>%
   ggplot(.) +
@@ -71,7 +71,8 @@ attendees %>%
   theme_classic() +
   scale_y_continuous(limits = c(0, 100)) +
   xlab("") +
-  theme(axis.text = element_text(size = "1.2em"))
+  theme(axis.text = element_text(size = "1.2em")) +
+  ggtitle("Attendance estimates per day")
 ```
 
 Meals and beverages in the [Moore Building Lobby](http://www.psumap.com/#Moore).
