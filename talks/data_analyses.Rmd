@@ -247,7 +247,7 @@ Let's turn to 'simple' linear regression (one predictor, one outcome), then scal
 Let's take a look at the simple case of the association between SAT math and verbal scores.
 
 ```{r}
-ggplot(sat.act, aes(x=SATQ, y=SATV)) + 
+ggplot(sat.act, aes(x=SATV, y=SATQ)) + 
   geom_point(color='darkblue', size = 3) + 
   geom_smooth(method=lm, se=FALSE, fullrange=TRUE, color='black', size=1.2) +
   labs(x="Math Score", y="Verbal Score")
@@ -259,7 +259,7 @@ In R regression models, we use the `~` operator to denote 'regressed on'. It's n
 In formula terms, this is `SATV ~ SATQ`, which we pass as the first argument to `lm()`.
 
 ```{r}
-lm_SAT <- lm(SATV ~ SATQ, data=sat.act)
+lm_SAT <- lm(SATQ ~ SATV, data=sat.act)
 summary(lm_SAT)
 ```
 
@@ -277,7 +277,7 @@ Using functionality from the `car` and `boot` packges, we can easily get estimat
 
 ```{r}
 sat.act.na <- na.omit(sat.act)
-lm_SAT.na <- lm(SATV ~ SATQ, data=sat.act.na)
+lm_SAT.na <- lm(SATQ ~ SATV, data=sat.act.na)
 system.time(lm_SAT.boot <- Boot(lm_SAT.na, R=2000))
 summary(lm_SAT.boot, high.moments=TRUE)
 ```
@@ -369,7 +369,7 @@ print(sat.emm.p)
 print(emmeans(sat.lm, ~agef*SATV))
 ```
 
-## Pairwise comparisons among protein sources
+## Pairwise comparisons
 If we wanted to compare the pairwise differences in the effect of age group on math scores while controlling for verbal scores (and potentially other variables we add to the model), we could use the `pairs` function:
 
 ```{r}
