@@ -89,6 +89,21 @@ This module provides a deliberately slow introduction to R that assumes that you
 
 ***
 
+# iPRACTISE data wrangling and visualization
+
+Links to complete assessments:
+
+- <http://tinyurl.com/ipractiseA1>
+- <http://tinyurl.com/ipractiseA2>
+- <http://tinyurl.com/ipractiseA3>
+- <http://tinyurl.com/ipractiseA4>
+- <http://tinyurl.com/ipractiseB1>
+- <http://tinyurl.com/ipractiseB2>
+- <http://tinyurl.com/ipractiseB3>
+- <http://tinyurl.com/ipractiseB4>
+
+***
+
 # Basic data analyses
 
 - [Basic data analyses in R](talks/data_analyses.html): correlation, regression, ANOVA, categorical data (Dan Albohn, Kayla Brown, Yiming Qian) | [Rmd](talks/data_analyses.Rmd)
